@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets
+    xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>Try Catch block with throwing exception</Title>
+      <Author>Aleksandr Smyk</Author>
+      <Description>Throw new Exception with previous exception data info in try catch block</Description>
+      <Shortcut>trye</Shortcut>
+    </Header>
+    <Snippet>
+      <Code Language="csharp">
+        <![CDATA[try
+			{
+				
+			}
+			catch (Exception ex)
+			{
+				throw new Exception(ex.Message, ex);
+			}]]>
+      </Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>
