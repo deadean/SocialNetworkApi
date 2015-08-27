@@ -92,6 +92,44 @@
       <Private>True</Private>
     </Reference>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\Common.MVVM.Library\Common.MVVM.Library.csproj">
+      <Project>{67f9d3a8-f71e-4428-913f-c37ae82cdb24}</Project>
+      <Name>Common.MVVM.Library</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Common\XamarinSocialApp.Common\XamarinSocialApp.Common.csproj">
+      <Project>{71982e0d-cba7-4a1c-bff5-12b2cb52a8d2}</Project>
+      <Name>XamarinSocialApp.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Services\XamarinSocialApp.Services.Common\XamarinSocialApp.Services.Common.csproj">
+      <Project>{deb06b6b-9d2c-4cd1-a479-df65ecafa962}</Project>
+      <Name>XamarinSocialApp.Services.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Services\XamarinSocialApp.Services.UI\XamarinSocialApp.Services.UI.csproj">
+      <Project>{1c2fd418-3d6d-475f-a352-c6a4f54818aa}</Project>
+      <Name>XamarinSocialApp.Services.UI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\UI\Common\XamarinSocialApp.UI.Common.Views\XamarinSocialApp.UI.Common.Views.csproj">
+      <Project>{fc97b6ed-1306-4fe6-9989-ef6ba17dde64}</Project>
+      <Name>XamarinSocialApp.UI.Common.Views</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\UI\Common\XamarinSocialApp.UI.Common.VVm\XamarinSocialApp.UI.Common.VVm.csproj">
+      <Project>{0ad20df9-57f2-4382-875d-60fba45ed6c7}</Project>
+      <Name>XamarinSocialApp.UI.Common.VVm</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\UI\Common\XamarinSocialApp.UI.Common\XamarinSocialApp.UI.Common.csproj">
+      <Project>{cd22c543-b51f-493e-be9d-14bb117dfbac}</Project>
+      <Name>XamarinSocialApp.UI.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\UI\Services\XamarinSocialApp.UI.Services\XamarinSocialApp.UI.Services.csproj">
+      <Project>{b141c91c-d554-4ac7-84d6-0d03b7f2dd87}</Project>
+      <Name>XamarinSocialApp.UI.Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\XamarinSocialApp.Data.Common\XamarinSocialApp.Data.Common.csproj">
+      <Project>{6d00a28b-72df-43e7-ae15-4cd00ad62621}</Project>
+      <Name>XamarinSocialApp.Data.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\..\packages\Xamarin.Forms.1.4.3.6376\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets" Condition="Exists('..\..\packages\Xamarin.Forms.1.4.3.6376\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
