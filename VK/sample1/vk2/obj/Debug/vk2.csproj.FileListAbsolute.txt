@@ -1,8 +1,0 @@
-D:\Bogdan\GitHub\SocialNetworkApi\VK\sample1\vk2\obj\Debug\vk2.csprojResolveAssemblyReference.cache
-D:\Bogdan\GitHub\SocialNetworkApi\VK\sample1\vk2\obj\Debug\VVms\Views\MainWindowView.baml
-D:\Bogdan\GitHub\SocialNetworkApi\VK\sample1\vk2\obj\Debug\MainWindow.g.cs
-D:\Bogdan\GitHub\SocialNetworkApi\VK\sample1\vk2\obj\Debug\VVms\Views\MainWindowView.g.cs
-D:\Bogdan\GitHub\SocialNetworkApi\VK\sample1\vk2\obj\Debug\App.g.cs
-D:\Bogdan\GitHub\SocialNetworkApi\VK\sample1\vk2\obj\Debug\GeneratedInternalTypeHelper.g.cs
-D:\Bogdan\GitHub\SocialNetworkApi\VK\sample1\vk2\obj\Debug\vk2_MarkupCompile.cache
-D:\Bogdan\GitHub\SocialNetworkApi\VK\sample1\vk2\obj\Debug\vk2_MarkupCompile.lref
