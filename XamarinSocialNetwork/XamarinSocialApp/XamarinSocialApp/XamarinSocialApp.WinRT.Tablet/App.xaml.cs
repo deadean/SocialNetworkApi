@@ -14,6 +14,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using XLabs.Ioc;
 
 // The Blank Application template is documented at http://go.microsoft.com/fwlink/?LinkId=234227
 
@@ -55,6 +56,7 @@ namespace XamarinSocialApp.WinRT.Tablet
 			// just ensure that the window is active
 			if (rootFrame == null)
 			{
+				this.SetIoc();
 				// Create a Frame to act as the navigation context and navigate to the first page
 				rootFrame = new Frame();
 				// Set the default language
@@ -84,16 +86,16 @@ namespace XamarinSocialApp.WinRT.Tablet
 			Window.Current.Activate();
 		}
 
-		//private void SetIoc()
-		//{
-		//	var resolverContainer = new SimpleContainer();
+		private void SetIoc()
+		{
+			var resolverContainer = new SimpleContainer();
 
-		//	resolverContainer
-		//		.Register<IDisplay>(t => t.Resolve<IDevice>().Display)
-		//		.Register<IDependencyContainer>(resolverContainer);
+			resolverContainer
+				//.Register<IDisplay>(t => t.Resolve<IDevice>().Display)
+				.Register<IDependencyContainer>(resolverContainer);
 
-		//	Resolver.SetResolver(resolverContainer.GetResolver());
-		//}
+			Resolver.SetResolver(resolverContainer.GetResolver());
+		}
 
 		/// <summary>
 		/// Invoked when Navigation to a certain page fails

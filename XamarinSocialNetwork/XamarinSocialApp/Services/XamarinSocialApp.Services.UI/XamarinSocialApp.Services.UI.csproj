@@ -5,11 +5,11 @@
     <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{937C9FC3-E3E1-4452-9229-96DDC6E413C4}</ProjectGuid>
+    <ProjectGuid>{1C2FD418-3D6D-475F-A352-C6A4F54818AA}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>XamarinSocialApp</RootNamespace>
-    <AssemblyName>XamarinSocialApp</AssemblyName>
+    <RootNamespace>XamarinSocialApp.Services.UI</RootNamespace>
+    <AssemblyName>XamarinSocialApp.Services.UI</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Profile78</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
@@ -35,28 +35,18 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="App.cs" />
+    <Compile Include="Interfaces\NavigationService\INavigationServiceCommon.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="GettingStarted.Xamarin" />
-    <None Include="packages.config" />
+    <ProjectReference Include="..\..\Common\Common.MVVM.Library\Common.MVVM.Library.csproj">
+      <Project>{67f9d3a8-f71e-4428-913f-c37ae82cdb24}</Project>
+      <Name>Common.MVVM.Library</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="ExifLib, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\ExifLib.PCL.1.0.1\lib\portable-net45+sl50+win+WindowsPhoneApp81+wp80+Xamarin.iOS10+MonoAndroid10+MonoTouch10\ExifLib.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="GalaSoft.MvvmLight, Version=5.1.1.35049, Culture=neutral, PublicKeyToken=e7570ab207bcb616, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\MvvmLightLibs.5.1.1.0\lib\portable-net45+wp8+wpa81+netcore45+monoandroid1+xamarin.ios10\GalaSoft.MvvmLight.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="GalaSoft.MvvmLight.Extras, Version=5.1.1.35049, Culture=neutral, PublicKeyToken=669f0b5e8f868abf, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\MvvmLightLibs.5.1.1.0\lib\portable-net45+wp8+wpa81+netcore45+monoandroid1+xamarin.ios10\GalaSoft.MvvmLight.Extras.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Xamarin.Forms.Core, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -93,42 +83,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Common\Common.MVVM.Library\Common.MVVM.Library.csproj">
-      <Project>{67f9d3a8-f71e-4428-913f-c37ae82cdb24}</Project>
-      <Name>Common.MVVM.Library</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Common\XamarinSocialApp.Common\XamarinSocialApp.Common.csproj">
-      <Project>{71982e0d-cba7-4a1c-bff5-12b2cb52a8d2}</Project>
-      <Name>XamarinSocialApp.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Services\XamarinSocialApp.Services.Common\XamarinSocialApp.Services.Common.csproj">
-      <Project>{deb06b6b-9d2c-4cd1-a479-df65ecafa962}</Project>
-      <Name>XamarinSocialApp.Services.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Services\XamarinSocialApp.Services.UI\XamarinSocialApp.Services.UI.csproj">
-      <Project>{1c2fd418-3d6d-475f-a352-c6a4f54818aa}</Project>
-      <Name>XamarinSocialApp.Services.UI</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\UI\Common\XamarinSocialApp.UI.Common.Views\XamarinSocialApp.UI.Common.Views.csproj">
-      <Project>{fc97b6ed-1306-4fe6-9989-ef6ba17dde64}</Project>
-      <Name>XamarinSocialApp.UI.Common.Views</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\UI\Common\XamarinSocialApp.UI.Common.VVm\XamarinSocialApp.UI.Common.VVm.csproj">
-      <Project>{0ad20df9-57f2-4382-875d-60fba45ed6c7}</Project>
-      <Name>XamarinSocialApp.UI.Common.VVm</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\UI\Common\XamarinSocialApp.UI.Common\XamarinSocialApp.UI.Common.csproj">
-      <Project>{cd22c543-b51f-493e-be9d-14bb117dfbac}</Project>
-      <Name>XamarinSocialApp.UI.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\UI\Services\XamarinSocialApp.UI.Services\XamarinSocialApp.UI.Services.csproj">
-      <Project>{b141c91c-d554-4ac7-84d6-0d03b7f2dd87}</Project>
-      <Name>XamarinSocialApp.UI.Services</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\XamarinSocialApp.Data.Common\XamarinSocialApp.Data.Common.csproj">
-      <Project>{6d00a28b-72df-43e7-ae15-4cd00ad62621}</Project>
-      <Name>XamarinSocialApp.Data.Common</Name>
-    </ProjectReference>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\..\packages\Xamarin.Forms.1.4.3.6376\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets" Condition="Exists('..\..\packages\Xamarin.Forms.1.4.3.6376\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets')" />

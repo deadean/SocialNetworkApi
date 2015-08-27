@@ -1,3 +1,6 @@
 *.dll
 *.pdb
 *.mdb
+*.cache
+bin
+obj
