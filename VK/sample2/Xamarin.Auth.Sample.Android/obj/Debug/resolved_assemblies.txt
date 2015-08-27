@@ -1,0 +1,3 @@
+D:\GitHub\SocialNetworkApi\VK\sample2\Xamarin.Auth.Sample.Android\obj\Debug\assemblies\Xamarin.Auth.Sample.Android.dll
+D:\GitHub\SocialNetworkApi\VK\sample2\Xamarin.Auth.Sample.Android\obj\Debug\assemblies\Newtonsoft.Json.dll
+D:\GitHub\SocialNetworkApi\VK\sample2\Xamarin.Auth.Sample.Android\obj\Debug\assemblies\Xamarin.Auth.Android.dll

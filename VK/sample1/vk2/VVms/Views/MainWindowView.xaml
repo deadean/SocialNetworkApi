@@ -1,4 +1,4 @@
-﻿<Window x:Class="vk2.VVms.Views.MainWindowView"
+﻿<UserControl x:Class="vk2.VVms.Views.MainWindowView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -6,12 +6,20 @@
 				Height="594" Width="1255.5">
 	<Grid>
 
-
-		<WebBrowser x:Name="wbVk" HorizontalAlignment="Left" Height="489" Margin="10,65,0,0" VerticalAlignment="Top" Width="855"/>
-		<Button Content="Login VK" Tag="VK" HorizontalAlignment="Left" Margin="506,10,0,0" VerticalAlignment="Top" Width="208" Height="50" Click="Button_Click"/>
+		<WebBrowser x:Name="wbVk" HorizontalAlignment="Left" Height="489" Margin="10,65,0,0" 
+								VerticalAlignment="Top" Width="855"
+								/>
+		<Button Content="Login VK" Tag="VK" HorizontalAlignment="Left" Margin="506,10,0,0" 
+						VerticalAlignment="Top" Width="208" Height="50" 
+						Command="{Binding StartCommand}" 
+						CommandParameter="{Binding ElementName=lvMessages, Path=SelectedItem}"
+						/>
+		
 		<!--<ListView x:Name="lvMessages" ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}" HorizontalAlignment="Left" Height="276" Margin="870,65,0,0" VerticalAlignment="Top" Width="343"/>-->
 
-		<ListView x:Name="lvMessages" HorizontalAlignment="Left" Height="276" Margin="870,65,0,0" VerticalAlignment="Top" Width="343">
+		<ListView x:Name="lvMessages" ItemsSource="{Binding Messages}"
+							SelectionMode="Single"
+							HorizontalAlignment="Left" Height="276" Margin="870,65,0,0" VerticalAlignment="Top" Width="343">
 
 			<!--<ListView.ItemTemplate>
 				<DataTemplate>
@@ -27,4 +35,4 @@
 
 
 	</Grid>
-</Window>
+</UserControl>
