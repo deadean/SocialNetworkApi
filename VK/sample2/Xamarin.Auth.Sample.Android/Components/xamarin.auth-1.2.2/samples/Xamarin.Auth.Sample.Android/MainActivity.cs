@@ -4,29 +4,19 @@ using System.Threading.Tasks;
 using Android.App;
 using Android.Widget;
 using Android.OS;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
 
 namespace Xamarin.Auth.Sample.Android
 {
-	public class User
-	{
-		public string uid { get; set; }
-		public string first_name { get; set; }
-		public string last_name { get; set; }
-	}
-
-
 	[Activity (Label = "Xamarin.Auth Sample (Android)", MainLauncher = true)]
 	public class MainActivity : Activity
 	{
 		void LoginToFacebook (bool allowCancel)
 		{
 			var auth = new OAuth2Authenticator (
-				clientId: "5042701",
-				scope: "messages",
-				authorizeUrl: new Uri("https://oauth.vk.com/authorize"),
-				redirectUrl: new Uri("https://oauth.vk.com/blank.html"));
+				clientId: "App ID from https://developers.facebook.com/apps",
+				scope: "",
+				authorizeUrl: new Uri ("https://m.facebook.com/dialog/oauth/"),
+				redirectUrl: new Uri ("http://www.facebook.com/connect/login_success.html"));
 
 			auth.AllowCancel = allowCancel;
 
@@ -41,32 +31,23 @@ namespace Xamarin.Auth.Sample.Android
 				}
 
 				// Now that we're logged in, make a OAuth2 request to get the user's info.
-				var request = new OAuth2Request("GET", new Uri("https://api.vk.com/method/users.get"), null, ee.Account);
+				var request = new OAuth2Request ("GET", new Uri ("https://graph.facebook.com/me"), null, ee.Account);
 				request.GetResponseAsync().ContinueWith (t => {
+					var builder = new AlertDialog.Builder (this);
 					if (t.IsFaulted) {
+						builder.SetTitle ("Error");
+						builder.SetMessage (t.Exception.Flatten().InnerException.ToString());
+					} else if (t.IsCanceled)
+						builder.SetTitle ("Task Canceled");
+					else {
+						var obj = JsonValue.Parse (t.Result.GetResponseText());
+
+						builder.SetTitle ("Logged in");
+						builder.SetMessage ("Name: " + obj["name"]);
 					}
-					else if (t.IsCanceled) { }
-					else
-					{
-						var response = t.Result.GetResponseText();
-						var obj = JsonValue.Parse(response);
-						JsonValue resp = obj["response"];
 
-						//JObject jobject = JObject.Parse(response);
-						//User u = JsonConvert.DeserializeObject<User>(jobject.ToString());
-
-						JObject jobject1 = JObject.Parse(resp.ToString());
-						User u1 = JsonConvert.DeserializeObject<User>(jobject1.ToString());
-
-						//JObject jobject2 = JObject.Parse(jobject["response"].ToString());
-						//User u2 = JsonConvert.DeserializeObject<User>(jobject2.ToString());
-
-
-						string uid = "";
-						//string name = resp["first_name"];
-						//System.Diagnostics.Debug("Name:", name);
-						//System.Diagnostics.Debug("All:", obj);
-					}
+					builder.SetPositiveButton ("Ok", (o, e) => { });
+					builder.Create().Show();
 				}, UIScheduler);
 			};
 

@@ -1,0 +1,17 @@
+D:\GitHub\SocialNetworkApi\VK\sample2\Xamarin.Auth.Sample.Android\bin\Debug\Xamarin.Auth.Sample.Android.dll
+D:\GitHub\SocialNetworkApi\VK\sample2\Xamarin.Auth.Sample.Android\bin\Debug\Xamarin.Auth.Sample.Android.pdb
+D:\GitHub\SocialNetworkApi\VK\sample2\Xamarin.Auth.Sample.Android\bin\Debug\Xamarin.Auth.Sample.Android.apk
+D:\GitHub\SocialNetworkApi\VK\sample2\Xamarin.Auth.Sample.Android\bin\Debug\Xamarin.Auth.Sample.Android-Signed.apk
+D:\GitHub\SocialNetworkApi\VK\sample2\Xamarin.Auth.Sample.Android\bin\Debug\Xamarin.Auth.Android.dll
+D:\GitHub\SocialNetworkApi\VK\sample2\Xamarin.Auth.Sample.Android\bin\Debug\Xamarin.Auth.Android.xml
+D:\GitHub\SocialNetworkApi\VK\sample2\Xamarin.Auth.Sample.Android\obj\Debug\Xamarin.Auth.Sample.Android.dll
+D:\GitHub\SocialNetworkApi\VK\sample2\Xamarin.Auth.Sample.Android\obj\Debug\Xamarin.Auth.Sample.Android.pdb
+D:\GitHub\SocialNetworkApi\VK\sample2\Xamarin.Auth.Sample.Android\obj\Debug\android\bin\Xamarin.Auth.Sample.Android.apk
+D:\GitHub\SocialNetworkApi\VK\sample2\Xamarin.Auth.Sample.Android\obj\Debug\res\layout\main.xml
+D:\GitHub\SocialNetworkApi\VK\sample2\Xamarin.Auth.Sample.Android\obj\Debug\res\values\strings.xml
+D:\GitHub\SocialNetworkApi\VK\sample2\Xamarin.Auth.Sample.Android\obj\Debug\res\drawable\icon.png
+D:\GitHub\SocialNetworkApi\VK\sample2\Xamarin.Auth.Sample.Android\obj\Debug\R.cs.flag
+D:\GitHub\SocialNetworkApi\VK\sample2\Xamarin.Auth.Sample.Android\obj\Debug\uploadflags.txt
+D:\GitHub\SocialNetworkApi\VK\sample2\Xamarin.Auth.Sample.Android\bin\Debug\Newtonsoft.Json.dll
+D:\GitHub\SocialNetworkApi\VK\sample2\Xamarin.Auth.Sample.Android\bin\Debug\Newtonsoft.Json.xml
+D:\GitHub\SocialNetworkApi\VK\sample2\Xamarin.Auth.Sample.Android\obj\Debug\Xamarin.Auth Sample (Android).csprojResolveAssemblyReference.cache
