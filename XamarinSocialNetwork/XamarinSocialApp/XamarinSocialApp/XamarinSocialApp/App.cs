@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
 using Xamarin.Forms;
 using XamarinSocialApp.Common.Implementations.Factories;
 using XamarinSocialApp.Common.Interfaces.Factories;
@@ -13,6 +12,7 @@ using XamarinSocialApp.Services.Common.Implementations.Logging;
 using XamarinSocialApp.Services.Common.Interfaces.FileSystem;
 using XamarinSocialApp.Services.Common.Interfaces.Logging;
 using XamarinSocialApp.Services.UI.Interfaces.NavigationService;
+using XamarinSocialApp.Services.UI.Interfaces.Web.OAuth;
 using XamarinSocialApp.UI.Common.Interfaces.ViewModels;
 using XamarinSocialApp.UI.Common.Views.Implementations.Views;
 using XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels;
@@ -154,6 +154,7 @@ namespace XamarinSocialApp
 			try
 			{
 				SimpleIoc.Default.Register(() => DependencyService.Get<IFileWorkerService>());
+				SimpleIoc.Default.Register(() => DependencyService.Get<IOAuthService>());
 			}
 			catch (Exception ex)
 			{
