@@ -1,3 +1,10 @@
-D:\GitHub\SocialNetworkApi\VK\sample2\Xamarin.Auth.Sample.Android\obj\Debug\assemblies\Xamarin.Auth.Sample.Android.dll
-D:\GitHub\SocialNetworkApi\VK\sample2\Xamarin.Auth.Sample.Android\obj\Debug\assemblies\Newtonsoft.Json.dll
-D:\GitHub\SocialNetworkApi\VK\sample2\Xamarin.Auth.Sample.Android\obj\Debug\assemblies\Xamarin.Auth.Android.dll
+D:\Bogdan\GitHub\SocialNetworkApi\VK\sample2\Xamarin.Auth.Sample.Android\obj\Debug\assemblies\Xamarin.Auth.Sample.Android.dll
+D:\Bogdan\GitHub\SocialNetworkApi\VK\sample2\Xamarin.Auth.Sample.Android\obj\Debug\assemblies\Mono.Android.dll
+D:\Bogdan\GitHub\SocialNetworkApi\VK\sample2\Xamarin.Auth.Sample.Android\obj\Debug\assemblies\mscorlib.dll
+D:\Bogdan\GitHub\SocialNetworkApi\VK\sample2\Xamarin.Auth.Sample.Android\obj\Debug\assemblies\Newtonsoft.Json.dll
+D:\Bogdan\GitHub\SocialNetworkApi\VK\sample2\Xamarin.Auth.Sample.Android\obj\Debug\assemblies\System.Core.dll
+D:\Bogdan\GitHub\SocialNetworkApi\VK\sample2\Xamarin.Auth.Sample.Android\obj\Debug\assemblies\System.dll
+D:\Bogdan\GitHub\SocialNetworkApi\VK\sample2\Xamarin.Auth.Sample.Android\obj\Debug\assemblies\System.Json.dll
+D:\Bogdan\GitHub\SocialNetworkApi\VK\sample2\Xamarin.Auth.Sample.Android\obj\Debug\assemblies\System.Xml.dll
+D:\Bogdan\GitHub\SocialNetworkApi\VK\sample2\Xamarin.Auth.Sample.Android\obj\Debug\assemblies\Xamarin.Auth.Android.dll
+D:\Bogdan\GitHub\SocialNetworkApi\VK\sample2\Xamarin.Auth.Sample.Android\obj\Debug\assemblies\System.Runtime.Serialization.dll

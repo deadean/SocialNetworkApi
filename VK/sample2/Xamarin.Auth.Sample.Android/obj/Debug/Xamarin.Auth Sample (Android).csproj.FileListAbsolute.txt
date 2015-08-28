@@ -15,3 +15,18 @@ D:\GitHub\SocialNetworkApi\VK\sample2\Xamarin.Auth.Sample.Android\obj\Debug\uplo
 D:\GitHub\SocialNetworkApi\VK\sample2\Xamarin.Auth.Sample.Android\bin\Debug\Newtonsoft.Json.dll
 D:\GitHub\SocialNetworkApi\VK\sample2\Xamarin.Auth.Sample.Android\bin\Debug\Newtonsoft.Json.xml
 D:\GitHub\SocialNetworkApi\VK\sample2\Xamarin.Auth.Sample.Android\obj\Debug\Xamarin.Auth Sample (Android).csprojResolveAssemblyReference.cache
+D:\Bogdan\GitHub\SocialNetworkApi\VK\sample2\Xamarin.Auth.Sample.Android\bin\Debug\Xamarin.Auth.Sample.Android.dll
+D:\Bogdan\GitHub\SocialNetworkApi\VK\sample2\Xamarin.Auth.Sample.Android\bin\Debug\Xamarin.Auth.Sample.Android.pdb
+D:\Bogdan\GitHub\SocialNetworkApi\VK\sample2\Xamarin.Auth.Sample.Android\bin\Debug\Xamarin.Auth.Sample.Android.apk
+D:\Bogdan\GitHub\SocialNetworkApi\VK\sample2\Xamarin.Auth.Sample.Android\bin\Debug\Xamarin.Auth.Sample.Android-Signed.apk
+D:\Bogdan\GitHub\SocialNetworkApi\VK\sample2\Xamarin.Auth.Sample.Android\bin\Debug\Newtonsoft.Json.dll
+D:\Bogdan\GitHub\SocialNetworkApi\VK\sample2\Xamarin.Auth.Sample.Android\bin\Debug\Newtonsoft.Json.xml
+D:\Bogdan\GitHub\SocialNetworkApi\VK\sample2\Xamarin.Auth.Sample.Android\obj\Debug\Xamarin.Auth.Sample.Android.dll
+D:\Bogdan\GitHub\SocialNetworkApi\VK\sample2\Xamarin.Auth.Sample.Android\obj\Debug\Xamarin.Auth.Sample.Android.pdb
+D:\Bogdan\GitHub\SocialNetworkApi\VK\sample2\Xamarin.Auth.Sample.Android\obj\Debug\android\bin\Xamarin.Auth.Sample.Android.apk
+D:\Bogdan\GitHub\SocialNetworkApi\VK\sample2\Xamarin.Auth.Sample.Android\obj\Debug\res\layout\main.xml
+D:\Bogdan\GitHub\SocialNetworkApi\VK\sample2\Xamarin.Auth.Sample.Android\obj\Debug\res\values\strings.xml
+D:\Bogdan\GitHub\SocialNetworkApi\VK\sample2\Xamarin.Auth.Sample.Android\obj\Debug\res\drawable\icon.png
+D:\Bogdan\GitHub\SocialNetworkApi\VK\sample2\Xamarin.Auth.Sample.Android\obj\Debug\R.cs.flag
+D:\Bogdan\GitHub\SocialNetworkApi\VK\sample2\Xamarin.Auth.Sample.Android\obj\Debug\uploadflags.txt
+D:\Bogdan\GitHub\SocialNetworkApi\VK\sample2\Xamarin.Auth.Sample.Android\obj\Debug\Xamarin.Auth Sample (Android).csprojResolveAssemblyReference.cache

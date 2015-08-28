@@ -4,10 +4,10 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
     <Button
-        android:id="@+id/FacebookButton"
+        android:id="@+id/VkButton"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/Facebook" />
+        android:text="@string/Vk" />
     <Button
         android:text="@string/FacebookNoCancel"
         android:layout_width="fill_parent"

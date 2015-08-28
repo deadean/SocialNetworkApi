@@ -63,11 +63,11 @@ namespace Xamarin.Auth.Sample.Android
 		public partial class Id
 		{
 			
-			// aapt resource value: 0x7f060000
-			public const int FacebookButton = 2131099648;
-			
 			// aapt resource value: 0x7f060001
 			public const int FacebookButtonNoCancel = 2131099649;
+			
+			// aapt resource value: 0x7f060000
+			public const int VkButton = 2131099648;
 			
 			static Id()
 			{
@@ -98,11 +98,11 @@ namespace Xamarin.Auth.Sample.Android
 		public partial class String
 		{
 			
-			// aapt resource value: 0x7f040001
-			public const int Facebook = 2130968577;
-			
 			// aapt resource value: 0x7f040002
 			public const int FacebookNoCancel = 2130968578;
+			
+			// aapt resource value: 0x7f040001
+			public const int Vk = 2130968577;
 			
 			// aapt resource value: 0x7f040000
 			public const int app_name = 2130968576;

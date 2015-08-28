@@ -6,9 +6,16 @@ using Android.Widget;
 using Android.OS;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
+using System.Net;
 
 namespace Xamarin.Auth.Sample.Android
 {
+
+	public class VkUsers
+	{
+		public User[] response { get; set; }
+	}
+
 	public class User
 	{
 		public string uid { get; set; }
@@ -20,7 +27,22 @@ namespace Xamarin.Auth.Sample.Android
 	[Activity (Label = "Xamarin.Auth Sample (Android)", MainLauncher = true)]
 	public class MainActivity : Activity
 	{
-		void LoginToFacebook (bool allowCancel)
+
+		static string mvToken;
+		public static string Token
+		{
+			get { return mvToken; }
+			set { mvToken = value; }
+		}
+
+		static Account mvAccount;
+		public static Account Account
+		{
+			get { return mvAccount; }
+			set { mvAccount = value; }
+		}
+
+		void LoginToVk (bool allowCancel)
 		{
 			var auth = new OAuth2Authenticator (
 				clientId: "5042701",
@@ -42,37 +64,79 @@ namespace Xamarin.Auth.Sample.Android
 
 				// Now that we're logged in, make a OAuth2 request to get the user's info.
 				var request = new OAuth2Request("GET", new Uri("https://api.vk.com/method/users.get"), null, ee.Account);
-				request.GetResponseAsync().ContinueWith (t => {
-					if (t.IsFaulted) {
+				request.GetResponseAsync().ContinueWith (t => 
+				{
+					if (t.IsCompleted)
+					{
+						Token = ee.Account.Properties["access_token"].ToString();
+						Account = ee.Account;
+
+						var response = t.Result.GetResponseText();
+
+						var users = JsonConvert.DeserializeObject<VkUsers>(response);
+
+						string uid = users.response[0].uid;
+						string firstName = users.response[0].first_name;
+						string lastName = users.response[0].last_name;
+
+						new AlertDialog.Builder(this).SetPositiveButton("Ok", (o, e) => { })
+																				 .SetMessage("You logged in succesfully!")
+																				 .SetTitle("TalkManager")
+																				 .Show();
 					}
-					else if (t.IsCanceled) { }
 					else
 					{
-						var response = t.Result.GetResponseText();
-						var obj = JsonValue.Parse(response);
-						JsonValue resp = obj["response"];
-
-						//JObject jobject = JObject.Parse(response);
-						//User u = JsonConvert.DeserializeObject<User>(jobject.ToString());
-
-						JObject jobject1 = JObject.Parse(resp.ToString());
-						User u1 = JsonConvert.DeserializeObject<User>(jobject1.ToString());
-
-						//JObject jobject2 = JObject.Parse(jobject["response"].ToString());
-						//User u2 = JsonConvert.DeserializeObject<User>(jobject2.ToString());
-
-
-						string uid = "";
-						//string name = resp["first_name"];
-						//System.Diagnostics.Debug("Name:", name);
-						//System.Diagnostics.Debug("All:", obj);
+						var builder = new AlertDialog.Builder(this);
+						builder.SetMessage("Not Authenticated");
+						builder.SetPositiveButton("Ok", (o, e) => { });
+						builder.Create().Show();
+						return;
 					}
 				}, UIScheduler);
 			};
 
+
 			var intent = auth.GetUI (this);
 			StartActivity (intent);
 		}
+
+
+		OAuth2Request GetDialogs()
+		{
+			//var parameters = new ParamArrayAttribute
+			//			{ 
+			//				{ "access_token", result.AccessTokenUrl },
+			//				{ "count", "10" }
+			//};
+
+			//var request = WebRequest.Create("https://api.vk.com/method/groups.isMember.json?count=10&access_token=" + Token);
+			//var response = request.GetResponse();
+
+
+			var request = new OAuth2Request("GET", new Uri("https://api.vk.com/method/messages.getDialogs?count=10&access_token=" + Token), null, Account);
+			request.GetResponseAsync().ContinueWith (t => 
+				{
+					if (t.IsCompleted)
+					{
+						new AlertDialog.Builder(this).SetPositiveButton("Ok", (o, e) => { })
+																				 .SetMessage("You logged in succesfully!")
+																				 .SetTitle("TalkManager")
+																				 .Show();
+					}
+					else
+					{
+						var builder = new AlertDialog.Builder(this);
+						builder.SetMessage("Not Authenticated");
+						builder.SetPositiveButton("Ok", (o, e) => { });
+						builder.Create().Show();
+						return;
+					}
+				});
+
+			
+			return null;
+		}
+
 
 		private static readonly TaskScheduler UIScheduler = TaskScheduler.FromCurrentSynchronizationContext();
 
@@ -81,11 +145,11 @@ namespace Xamarin.Auth.Sample.Android
 			base.OnCreate (bundle);
 			SetContentView (Resource.Layout.Main);
 
-			var facebook = FindViewById<Button> (Resource.Id.FacebookButton);			
-			facebook.Click += delegate { LoginToFacebook(true);};
+			var vk = FindViewById<Button> (Resource.Id.VkButton);
+			vk.Click += delegate { LoginToVk(true); };
 
 			var facebookNoCancel = FindViewById<Button> (Resource.Id.FacebookButtonNoCancel);
-			facebookNoCancel.Click += delegate { LoginToFacebook(false);};
+			facebookNoCancel.Click += delegate { GetDialogs();};
 		}
 	}
 }
