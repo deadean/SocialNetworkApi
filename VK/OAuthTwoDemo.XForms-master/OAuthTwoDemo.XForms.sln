@@ -1,13 +1,20 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OAuthTwoDemo.XForms", "OAuthTwoDemo.XForms\OAuthTwoDemo.XForms.csproj", "{DB13498B-2EBE-4F01-B6D6-B2E455443F59}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OAuthTwoDemo.XForms.iOS", "iOS\OAuthTwoDemo.XForms.iOS.csproj", "{32D3A931-D4E7-4A45-BD14-ECC81D432FE4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OAuthTwoDemo.XForms.Android", "Android\OAuthTwoDemo.XForms.Android.csproj", "{71021EB0-0D33-4FF8-BF38-9955F25A5085}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{79F5D581-E6D2-4DC0-8B7D-62A534D417D7}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

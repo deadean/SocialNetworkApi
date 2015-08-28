@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamarinSocialApp", "XamarinSocialApp\XamarinSocialApp\XamarinSocialApp.csproj", "{937C9FC3-E3E1-4452-9229-96DDC6E413C4}"
 EndProject
@@ -65,6 +65,13 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamarinSocialApp.UI.Common.Views", "UI\Common\XamarinSocialApp.UI.Common.Views\XamarinSocialApp.UI.Common.Views.csproj", "{FC97B6ED-1306-4FE6-9989-EF6BA17DDE64}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamarinSocialApp.UI.Common.VVm", "UI\Common\XamarinSocialApp.UI.Common.VVm\XamarinSocialApp.UI.Common.VVm.csproj", "{0AD20DF9-57F2-4382-875D-60FBA45ED6C7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{C61C5F19-ED71-436C-AD16-9C7F41FCBD0A}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
