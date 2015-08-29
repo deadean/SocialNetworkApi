@@ -15,59 +15,19 @@ using Xamarin.Forms;
 using Newtonsoft.Json;
 using Xamarin.Auth;
 using System.Threading.Tasks;
+using XamarinSocialApp.Data.Interfaces.Entities.OAuth;
+using XamarinSocialApp.UI.Data.Implementations.Entities.OAuth;
 
 [assembly: Dependency(typeof(OAuthService))]
 
 namespace XamarinSocialApp.Droid.Services.OAuth
 {
-	public class VkUsers
-	{
-		public User[] response { get; set; }
-	}
-
-	public class VkMessagesResponse
-	{
-		[JsonProperty("response")]
-		public VkMessagesItems Response { get; set; }
-	}
-
-	public class VkMessagesItems
-	{
-		[JsonProperty("count")]
-		public int Count { get; set; }
-
-		[JsonProperty("items")]
-		public IEnumerable<MessageItem> Messages { get; set; }
-	}
-
-	public class User
-	{
-		public string uid { get; set; }
-		public string first_name { get; set; }
-		public string last_name { get; set; }
-	}
-
-	public class Message
-	{
-		[JsonProperty("user_id")]
-		public string UserId { get; set; }
-
-		[JsonProperty("body")]
-		public string Body { get; set; }
-	}
-
-	public class MessageItem
-	{
-		[JsonProperty("message")]
-		public Message Message { get; set; }
-	}
+	
 
 	public class OAuthService : IOAuthService
 	{
 
 		#region Fields
-
-		
 
 		#endregion
 
@@ -102,10 +62,13 @@ namespace XamarinSocialApp.Droid.Services.OAuth
 
 		#region Public Methods
 
-		public async Task<bool> Login()
+		public async Task<IUser> Login()
 		{
+			IUser user = null;
 			try
 			{
+				TaskCompletionSource<int> ts = new TaskCompletionSource<int>();
+
 				var auth = new OAuth2Authenticator(
 				clientId: "5042701",
 				scope: "messages",
@@ -118,14 +81,10 @@ namespace XamarinSocialApp.Droid.Services.OAuth
 				{
 					if (!ee.IsAuthenticated)
 					{
-						//var builder = new AlertDialog.Builder(this);
-						//builder.SetMessage("Not Authenticated");
-						//builder.SetPositiveButton("Ok", (o, e) => { });
-						//builder.Create().Show();
+						ts.SetResult(0);
 						return;
 					}
 
-					// Now that we're logged in, make a OAuth2 request to get the user's info.
 					var request = new OAuth2Request("GET", new Uri("https://api.vk.com/method/users.get"), null, ee.Account);
 					request.GetResponseAsync().ContinueWith(t =>
 					{
@@ -135,39 +94,33 @@ namespace XamarinSocialApp.Droid.Services.OAuth
 							Account = ee.Account;
 
 							var response = t.Result.GetResponseText();
-
-							var users = JsonConvert.DeserializeObject<VkUsers>(response);
+							var users = JsonConvert.DeserializeObject<XamarinSocialApp.Droid.Data.VkData.VkUsers>(response);
 
 							string uid = users.response[0].uid;
 							string firstName = users.response[0].first_name;
 							string lastName = users.response[0].last_name;
 
-							//new AlertDialog.Builder(this).SetPositiveButton("Ok", (o, e) => { })
-							//														 .SetMessage("You logged in succesfully!")
-							//														 .SetTitle("TalkManager")
-							//														 .Show();
+							user = new User(uid, firstName, lastName);
+
+							ts.SetResult(0);
 						}
 						else
 						{
-							//var builder = new AlertDialog.Builder(this);
-							//builder.SetMessage("Not Authenticated");
-							//builder.SetPositiveButton("Ok", (o, e) => { });
-							//builder.Create().Show();
+							ts.SetResult(0);
 							return;
 						}
 					}, UIScheduler);
 				};
 
 				var intent = auth.GetUI(Forms.Context);
-
 				Forms.Context.StartActivity(intent);
+				await ts.Task;
 			}
 			catch (Exception ex)
 			{
-				return false;
 			}
 
-			return true;
+			return user;
 		}
 
 		#endregion

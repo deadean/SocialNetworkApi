@@ -126,6 +126,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\VkData.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -148,9 +149,17 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Data\XamarinSocialApp.Data\XamarinSocialApp.Data.csproj">
+      <Project>{9bdd15ef-cedc-4e9f-98f2-659bb6d07768}</Project>
+      <Name>XamarinSocialApp.Data</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Services\XamarinSocialApp.Services.UI\XamarinSocialApp.Services.UI.csproj">
       <Project>{1c2fd418-3d6d-475f-a352-c6a4f54818aa}</Project>
       <Name>XamarinSocialApp.Services.UI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\UI\Data\XamarinSocialApp.UI.Data\XamarinSocialApp.UI.Data\XamarinSocialApp.UI.Data.csproj">
+      <Project>{d5dba5f2-1aaf-4bec-a149-f2efc1d83dc1}</Project>
+      <Name>XamarinSocialApp.UI.Data</Name>
     </ProjectReference>
     <ProjectReference Include="..\XamarinSocialApp\XamarinSocialApp.csproj">
       <Name>XamarinSocialApp</Name>

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using XamarinSocialApp.Data.Interfaces.Entities.OAuth;
 using XamarinSocialApp.Services.UI.Interfaces.Web.OAuth;
 using XamarinSocialApp.UI.Common.Implementations.Bases;
 using XamarinSocialApp.UI.Common.Interfaces.ViewModels;
@@ -72,7 +73,8 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 		{
 			try
 			{
-				await modOAuthService.Login();
+				IUser user = await modOAuthService.Login();
+				await modNavigationService.Navigate<PageUserDialogsVm>(user);
 			}
 			catch (Exception ex)
 			{

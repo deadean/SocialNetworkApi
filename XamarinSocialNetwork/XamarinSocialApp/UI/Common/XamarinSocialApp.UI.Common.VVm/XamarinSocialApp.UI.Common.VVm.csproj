@@ -38,12 +38,17 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Implementations\ViewModels\MainPageVm.cs" />
+    <Compile Include="Implementations\ViewModels\PageUserDialogsVm.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Common\Common.MVVM.Library\Common.MVVM.Library.csproj">
       <Project>{67f9d3a8-f71e-4428-913f-c37ae82cdb24}</Project>
       <Name>Common.MVVM.Library</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Data\XamarinSocialApp.Data\XamarinSocialApp.Data.csproj">
+      <Project>{9bdd15ef-cedc-4e9f-98f2-659bb6d07768}</Project>
+      <Name>XamarinSocialApp.Data</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Services\XamarinSocialApp.Services.UI\XamarinSocialApp.Services.UI.csproj">
       <Project>{1c2fd418-3d6d-475f-a352-c6a4f54818aa}</Project>

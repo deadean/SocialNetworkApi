@@ -40,6 +40,7 @@
     <Compile Include="Implementations\Bases\AdvancedPageViewModelBase.cs" />
     <Compile Include="Implementations\Bases\NavigableViewModelBase.cs" />
     <Compile Include="Interfaces\ViewModels\IMainPageVm.cs" />
+    <Compile Include="Interfaces\ViewModels\IPageUserDialogsVm.cs" />
     <Compile Include="Interfaces\Views\Bases\IBasePage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
