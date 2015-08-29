@@ -51,6 +51,7 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 		{
 			modOAuthService = oAuthService;
 			LoginCommand = new AsyncCommand(OnLoginCommand);
+			LoadMessagesCommand = new AsyncCommand(OnLoadMessagesCommad);
 		}
 
 		#endregion
@@ -81,7 +82,19 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 				//this.GetLog().Write(ex);
 			}
 		}
-		
+
+		private async Task OnLoadMessagesCommad()
+		{
+			try
+			{
+				await modOAuthService.GetDialogs();
+			}
+			catch (Exception ex)
+			{
+
+			}
+		}
+
 		#endregion
 
 	}
