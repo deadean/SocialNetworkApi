@@ -49,7 +49,7 @@ namespace XamarinSocialApp.UI.Services.Implementations.NavigationService
 
 		#region Public Methods
 
-		public async Task NavigateTo<T>(
+		private async Task NavigateTo<T>(
 			object parameter = null,
 			bool animated = true,
 			bool isRemoveCurrentPage = false,
@@ -173,8 +173,8 @@ namespace XamarinSocialApp.UI.Services.Implementations.NavigationService
 			{
 				ViewFactory.EnableCache = false;
 			}
-
-			//_navigationService.NavigateTo<T>(parameter, animated);
+			
+			_navigationService.NavigateTo<T>(animated, parameter);
 
 			if (!isFromCache)
 			{
