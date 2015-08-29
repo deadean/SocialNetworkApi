@@ -7,6 +7,9 @@ using Android.OS;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using System.Net;
+using System.Collections.Generic;
+using System.Linq;
+
 
 namespace Xamarin.Auth.Sample.Android
 {
@@ -16,11 +19,41 @@ namespace Xamarin.Auth.Sample.Android
 		public User[] response { get; set; }
 	}
 
+	public class VkMessagesResponse
+	{
+		[JsonProperty("response")]
+		public VkMessagesItems Response { get; set; }
+	}
+
+	public class VkMessagesItems
+	{
+		[JsonProperty("count")]
+		public int Count { get; set; }
+
+		[JsonProperty("items")]
+		public IEnumerable<MessageItem> Messages { get; set; }
+	}
+
 	public class User
 	{
 		public string uid { get; set; }
 		public string first_name { get; set; }
 		public string last_name { get; set; }
+	}
+
+	public class Message
+	{
+		[JsonProperty("user_id")]
+		public string UserId { get; set; }
+
+		[JsonProperty("body")]
+		public string Body { get; set; }
+	}
+
+	public class MessageItem
+	{
+		[JsonProperty("message")]
+		public Message Message { get; set; }
 	}
 
 
@@ -100,40 +133,19 @@ namespace Xamarin.Auth.Sample.Android
 			StartActivity (intent);
 		}
 
-
-		OAuth2Request GetDialogs()
+		async Task<OAuth2Request> GetDialogs()
 		{
-			//var parameters = new ParamArrayAttribute
-			//			{ 
-			//				{ "access_token", result.AccessTokenUrl },
-			//				{ "count", "10" }
-			//};
+			var request = new OAuth2Request("GET", new Uri("https://api.vk.com/method/messages.getDialogs"), null, Account);
+			request.Parameters.Add("count", "1");
+			request.Parameters.Add("access_token", Token);
+			request.Parameters.Add("v", "5.37");
 
-			//var request = WebRequest.Create("https://api.vk.com/method/groups.isMember.json?count=10&access_token=" + Token);
-			//var response = request.GetResponse();
+			var res = await request.GetResponseAsync();
+			var responseText =  res.GetResponseText();
 
+			var msg = JsonConvert.DeserializeObject<VkMessagesResponse>(responseText);
+			string message = msg.Response.Messages.First().Message.Body;
 
-			var request = new OAuth2Request("GET", new Uri("https://api.vk.com/method/messages.getDialogs?count=10&access_token=" + Token), null, Account);
-			request.GetResponseAsync().ContinueWith (t => 
-				{
-					if (t.IsCompleted)
-					{
-						new AlertDialog.Builder(this).SetPositiveButton("Ok", (o, e) => { })
-																				 .SetMessage("You logged in succesfully!")
-																				 .SetTitle("TalkManager")
-																				 .Show();
-					}
-					else
-					{
-						var builder = new AlertDialog.Builder(this);
-						builder.SetMessage("Not Authenticated");
-						builder.SetPositiveButton("Ok", (o, e) => { });
-						builder.Create().Show();
-						return;
-					}
-				});
-
-			
 			return null;
 		}
 
