@@ -9,5 +9,6 @@ namespace XamarinSocialApp.UI.Common.Interfaces.ViewModels
 	public interface IPageUserDialogsVm
 	{
 		string UserName { get; }
+		IList<string> Items { get; }
 	}
 }

@@ -3,6 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="XamarinSocialApp.UI.Common.Views.Implementations.Views.PageUserDialogs">
 
-	<Label Text="{Binding UserName}" FontSize="20"/>
+	<StackLayout>
+		<Label Text="{Binding UserName}" XAlign="Center" FontSize="24" TextColor="Purple"/>
+		<ListView ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedItem}" />
+	</StackLayout>
+	
 	
 </ContentPage>

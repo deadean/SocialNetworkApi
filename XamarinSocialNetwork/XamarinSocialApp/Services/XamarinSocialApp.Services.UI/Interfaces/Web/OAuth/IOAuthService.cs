@@ -10,6 +10,7 @@ namespace XamarinSocialApp.Services.UI.Interfaces.Web.OAuth
 	public interface IOAuthService
 	{
 		Task<IUser> Login();
-		Task<bool> GetDialogs();
+		Task<IList<string>> GetDialogs();
+		Task<string> GetUserInfoRequest(string uid);
 	}
 }
