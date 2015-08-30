@@ -16,6 +16,7 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 
 		private IUser modUser;
 		private string mvUserName;
+		private IList<string> mvItems;
 
 		#endregion
 
@@ -31,6 +32,20 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 			set
 			{
 				mvUserName = value;
+				this.OnPropertyChanged();
+			}
+		}
+
+		public IList<string> Items
+		{
+			get
+			{
+				return mvItems;
+			}
+
+			set
+			{
+				mvItems = value;
 				this.OnPropertyChanged();
 			}
 		}
@@ -54,12 +69,15 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 
 		public override async Task OnNavigatedTo(object navigationParameter)
 		{
-			IUser user = navigationParameter as IUser;
-			if (user == null)
+			IList<string> tempList = navigationParameter as IList<string>;
+
+			if (tempList == null)
 				return;
 
-			modUser = user;
-			UserName = String.Format("{0} {1}", modUser.FirstName, modUser.LastName);
+			UserName = tempList[0];
+			tempList.RemoveAt(0);
+
+			Items = tempList;
 		}
 
 		#endregion

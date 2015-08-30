@@ -75,7 +75,8 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 			try
 			{
 				IUser user = await modOAuthService.Login();
-				await modNavigationService.Navigate<PageUserDialogsVm>(user);
+				IList<string> Items = await modOAuthService.GetDialogs();
+				await modNavigationService.Navigate<PageUserDialogsVm>(Items);
 			}
 			catch (Exception ex)
 			{
@@ -87,7 +88,7 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 		{
 			try
 			{
-				await modOAuthService.GetDialogs();
+				IList<string> Items = await modOAuthService.GetDialogs();
 			}
 			catch (Exception ex)
 			{
