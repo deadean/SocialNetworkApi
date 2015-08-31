@@ -16,6 +16,7 @@ using XamarinSocialApp.Services.Common.Interfaces.Logging;
 using XamarinSocialApp.Services.UI.Interfaces.InternalStorage;
 using XamarinSocialApp.Services.UI.Interfaces.Model;
 using XamarinSocialApp.Services.UI.Interfaces.NavigationService;
+using XamarinSocialApp.Services.UI.Interfaces.Web;
 using XamarinSocialApp.Services.UI.Interfaces.Web.OAuth;
 using XamarinSocialApp.UI.Common.Interfaces.ViewModels;
 using XamarinSocialApp.UI.Common.Views.Implementations.Views;
@@ -26,6 +27,7 @@ using XamarinSocialApp.UI.Services.Implementations.InternalStorage;
 using XamarinSocialApp.UI.Services.Implementations.Model;
 using XamarinSocialApp.UI.Services.Implementations.NavigationService;
 using XamarinSocialApp.UI.Services.Implementations.SQLiteConnector;
+using XamarinSocialApp.UI.Services.Implementations.Web;
 using XamarinSocialApp.UI.Services.Interfaces.SQLiteConnector;
 using XLabs.Forms.Mvvm;
 using XLabs.Forms.Services;
@@ -143,6 +145,7 @@ namespace XamarinSocialApp
 			SimpleIoc.Default.Register<ICacheService, CacheService>();
 			SimpleIoc.Default.Register<IInternalStorage, InternalSQLiteStorage>();
 			SimpleIoc.Default.Register<IInternalModelService, InternalModelService>();
+			SimpleIoc.Default.Register<IApplicationWebService, ApplicationWebService>();
 
 
 			ConfigureWebServiceDependencies();

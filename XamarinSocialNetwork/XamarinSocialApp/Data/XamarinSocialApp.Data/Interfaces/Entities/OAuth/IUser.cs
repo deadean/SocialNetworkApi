@@ -11,5 +11,6 @@ namespace XamarinSocialApp.Data.Interfaces.Entities.OAuth
 		string Uid { get; }
 		string FirstName { get; }
 		string LastName { get; }
+		string SerializeInfo { get; }
 	}
 }

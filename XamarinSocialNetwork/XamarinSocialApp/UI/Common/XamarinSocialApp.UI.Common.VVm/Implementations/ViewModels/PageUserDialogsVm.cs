@@ -3,10 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using XamarinSocialApp.Data.Interfaces.Entities.OAuth;
 using XamarinSocialApp.UI.Common.Implementations.Bases;
 using XamarinSocialApp.UI.Common.Interfaces.ViewModels;
 using Common.MVVM.Library;
+using XamarinSocialApp.Data.Interfaces.Entities.Database;
+using System.Collections.ObjectModel;
+using XamarinSocialApp.Services.UI.Interfaces.Web;
+using Common.MVVM.Library;
+using GalaSoft.MvvmLight.Ioc;
+using Microsoft.Practices.ServiceLocation;
+
 
 namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 {
@@ -17,9 +23,14 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 		private IUser modUser;
 		private string mvUserName;
 
+		private readonly IApplicationWebService modIWebService;
+
+
 		#endregion
 
 		#region Properties
+
+		public ObservableCollection<IDialog> Dialogs { get; set; }
 
 		public string UserName
 		{
@@ -34,11 +45,22 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 				this.OnPropertyChanged();
 			}
 		}
-		
 
 		#endregion
 
 		#region Ctor
+
+		public PageUserDialogsVm()
+			:this(ServiceLocator.Current.GetInstance<IApplicationWebService>())
+		{
+			Dialogs = new ObservableCollection<IDialog>();
+		}
+
+		[PreferredConstructor]
+		public PageUserDialogsVm(IApplicationWebService iWebService)
+		{
+			modIWebService = iWebService;
+		}
 
 		#endregion
 
@@ -47,7 +69,7 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 		#endregion
 
 		#region Private Methods
-
+		
 		#endregion
 
 		#region Protected Methods
@@ -60,6 +82,10 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 
 			modUser = user;
 			UserName = String.Format("{0} {1}", modUser.FirstName, modUser.LastName);
+
+			//IEnumerable<IDialog> dialogs = await modIWebService.GetDialogs(user);
+
+			//this.OnPropertyChanged(this.Dialogs);
 		}
 
 		#endregion

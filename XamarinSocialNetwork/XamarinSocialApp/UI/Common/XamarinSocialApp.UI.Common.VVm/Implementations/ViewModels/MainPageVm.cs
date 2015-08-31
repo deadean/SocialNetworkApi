@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using XamarinSocialApp.Data.Interfaces.Entities.OAuth;
+using XamarinSocialApp.Data.Interfaces.Entities.Database;
 using XamarinSocialApp.Services.UI.Interfaces.Model;
-using XamarinSocialApp.Services.UI.Interfaces.Web.OAuth;
+using XamarinSocialApp.Services.UI.Interfaces.Web;
 using XamarinSocialApp.UI.Common.Implementations.Bases;
 using XamarinSocialApp.UI.Common.Interfaces.ViewModels;
 using XamarinSocialApp.UI.Data.Implementations.Entities.Databases;
@@ -24,7 +24,8 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 
 		#region Services
 
-		private readonly IOAuthService modOAuthService;
+		private readonly IApplicationWebService modIWebService;
+		private readonly IInternalModelService modIInternalService;
 
 		#endregion
 
@@ -50,11 +51,12 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 
 		#region Ctor
 
-		public MainPageVm(IOAuthService oAuthService)
+		public MainPageVm(IApplicationWebService iWebService, IInternalModelService iService)
 		{
-			modOAuthService = oAuthService;
+			modIWebService = iWebService;
+			modIInternalService = iService;
 			LoginCommand = new AsyncCommand(OnLoginCommand);
-			LoadMessagesCommand = new AsyncCommand(OnLoadMessagesCommad);
+			//LoadMessagesCommand = new AsyncCommand(OnLoadMessagesCommad);
 		}
 
 		#endregion
@@ -97,7 +99,19 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 		{
 			try
 			{
-				await modNavigationService.Navigate<PageUserDialogsVm>(user);
+				var users = await modIInternalService.Items<User>();
+				IUser user = users == null ? null : users.FirstOrDefault();
+
+				if (user == null)
+				{
+					user = await modIWebService.Login();
+
+					if (user == null)
+						return;
+
+					await modIInternalService.SaveEntity<User>(user as User);
+				}
+				await modNavigationService.Navigate<PageUserDialogsVm>(user, isFromCache: false);
 			}
 			catch (Exception ex)
 			{
@@ -105,17 +119,17 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 			}
 		}
 
-		private async Task OnLoadMessagesCommad()
-		{
-			try
-			{
-				await modOAuthService.GetDialogs();
-			}
-			catch (Exception ex)
-			{
+		//private async Task OnLoadMessagesCommad()
+		//{
+		//	try
+		//	{
+		//		await modIWebService.GetDialogs();
+		//	}
+		//	catch (Exception ex)
+		//	{
 
-			}
-		}
+		//	}
+		//}
 
 		#endregion
 

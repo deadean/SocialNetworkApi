@@ -28,6 +28,8 @@ namespace XamarinSocialApp.UI.Data.Implementations.Entities.Databases
 
 		public string FirstName { get; set; }
 		public string LastName { get; set; }
+		public string SerializeInfo { get; set; }
+
 
 		#endregion
 
@@ -69,6 +71,5 @@ namespace XamarinSocialApp.UI.Data.Implementations.Entities.Databases
 		}
 
 		#endregion
-
 	}
 }

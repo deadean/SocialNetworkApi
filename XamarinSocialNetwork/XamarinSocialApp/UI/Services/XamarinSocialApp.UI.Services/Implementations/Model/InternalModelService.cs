@@ -8,6 +8,7 @@ using XamarinSocialApp.Data.Interfaces.Entities;
 using XamarinSocialApp.Services.Common.Interfaces.Cache;
 using XamarinSocialApp.Services.UI.Interfaces.InternalStorage;
 using XamarinSocialApp.Services.UI.Interfaces.Model;
+using XamarinSocialApp.UI.Data.Implementations.Entities.Databases;
 
 namespace XamarinSocialApp.UI.Services.Implementations.Model
 {
@@ -113,42 +114,8 @@ namespace XamarinSocialApp.UI.Services.Implementations.Model
 		{
 			try
 			{
-//				var albums = await modStorage.Items<Album>();
-//				await modCacheService.Add<Album>(albums);
-//				List<Photo> photos = new List<Photo>();
-//				foreach (var item in albums)
-//				{
-//					photos.AddRange(item.Photos.OfType<Photo>());
-//				}
-
-//				await modCacheService.Add<Photo>(photos);
-//				await modCacheService.Add<Preference>(await modStorage.Items<Preference>());
-
-//				if ((await modCacheService.Items<Album>()).Any(x => x.Name == PhotoTransfer.UI.Common.Constants.Configuration.csDefaultAlbum))
-//					return;
-
-//				var defaultAlbum = new Album(PhotoTransfer.UI.Common.Constants.Configuration.csDefaultAlbum);
-//				await modStorage.Save<Album>(defaultAlbum);
-//				await modCacheService.Add<Album>(defaultAlbum);
-
-//#if DEBUG
-//				var defaultAlbumWithDestinationSource = new Album("WinMobileTest1");
-
-//				DestinationSource destinationSource = new DestinationSource("150611154618OPER305860");
-//				destinationSource.Name = "WinMobileTest1";
-//				destinationSource.AddAlbum(defaultAlbumWithDestinationSource);
-
-//				await modStorage.Save<DestinationSource>(destinationSource);
-
-//				defaultAlbumWithDestinationSource.AddDestinationSource(destinationSource);
-//				await modStorage.Save<Album>(defaultAlbumWithDestinationSource);
-//				await modCacheService.Add<Album>(defaultAlbumWithDestinationSource);
-
-//				await modStorage.Update<DestinationSource>(destinationSource);
-
-//				var destinations = await modStorage.Items<DestinationSource>();
-
-//#endif
+				var users = await modStorage.Items<User>();
+				users.With(async x => await modCacheService.Add<User>(users));
 			}
 			catch (Exception ex)
 			{

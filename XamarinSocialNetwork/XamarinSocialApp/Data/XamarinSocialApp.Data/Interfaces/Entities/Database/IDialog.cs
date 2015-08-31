@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace XamarinSocialApp.Data.Interfaces.Entities.Database
 {
-	public interface IUser : IEntity
+	public interface IDialog
 	{
-		string FirstName { get; set; }
-		string LastName { get; set; }
-		string SerializeInfo { get; set; }
+		string Name { get; set; }
 	}
 }

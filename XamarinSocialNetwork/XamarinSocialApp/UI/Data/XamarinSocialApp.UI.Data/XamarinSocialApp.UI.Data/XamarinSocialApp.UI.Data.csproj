@@ -37,6 +37,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Implementations\Bases\AbstractEntityBase.cs" />
+    <Compile Include="Implementations\Entities\Databases\Dialog.cs" />
+    <Compile Include="Implementations\Entities\Databases\Message.cs" />
     <Compile Include="Implementations\Entities\Databases\User.cs" />
     <Compile Include="Implementations\Entities\OAuth\User.cs" />
     <Compile Include="Implementations\Entities\OAuth\Vk\VkUsers.cs" />

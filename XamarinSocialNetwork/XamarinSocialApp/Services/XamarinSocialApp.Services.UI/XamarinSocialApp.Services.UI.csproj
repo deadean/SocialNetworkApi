@@ -40,6 +40,7 @@
     <Compile Include="Interfaces\InternalStorage\IInternalStorage.cs" />
     <Compile Include="Interfaces\Model\IInternalModelService.cs" />
     <Compile Include="Interfaces\NavigationService\INavigationServiceCommon.cs" />
+    <Compile Include="Interfaces\Web\IApplicationWebService.cs" />
     <Compile Include="Interfaces\Web\OAuth\IOAuthService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

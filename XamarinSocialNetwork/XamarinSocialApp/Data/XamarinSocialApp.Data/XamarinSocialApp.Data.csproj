@@ -37,6 +37,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Constants\Constants.Entitites.cs" />
+    <Compile Include="Interfaces\Entities\Database\IDialog.cs" />
+    <Compile Include="Interfaces\Entities\Database\IMessage.cs" />
     <Compile Include="Interfaces\Entities\Database\IUser.cs" />
     <Compile Include="Interfaces\Entities\IEntity.cs" />
     <Compile Include="Interfaces\Entities\OAuth\IUser.cs" />

@@ -43,6 +43,7 @@
     <Compile Include="Implementations\NavigationService\NavigationServiceXLabs.cs" />
     <Compile Include="Implementations\SQLiteConnector\ConnectionInfo.cs" />
     <Compile Include="Implementations\SQLiteConnector\SQLiteDataAccessService.cs" />
+    <Compile Include="Implementations\Web\ApplicationWebService.cs" />
     <Compile Include="Interfaces\SQLiteConnector\ISQLiteConnection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

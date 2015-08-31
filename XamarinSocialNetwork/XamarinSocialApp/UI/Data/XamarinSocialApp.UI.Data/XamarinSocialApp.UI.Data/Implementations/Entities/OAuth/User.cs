@@ -33,15 +33,22 @@ namespace XamarinSocialApp.UI.Data.Implementations.Entities.OAuth
 			private set;
 		}
 
+		public string SerializeInfo
+		{
+			get;
+			private set;
+		}
+
 		#endregion
 
 		#region Ctor
 
-		public User(string uid, string firstName, string lastName)
+		public User(string uid, string firstName, string lastName, string serializeInfo)
 		{
 			Uid = uid;
 			FirstName = firstName;
 			LastName = lastName;
+			SerializeInfo = serializeInfo;
 		}
 
 		#endregion
