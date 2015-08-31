@@ -38,6 +38,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Implementations\Logging\LogService.cs" />
+    <Compile Include="Interfaces\Cache\ICacheService.cs" />
+    <Compile Include="Interfaces\DataBases\ISQLiteDataAccessService.cs" />
     <Compile Include="Interfaces\FileSystem\IFileWorkerService.cs" />
     <Compile Include="Interfaces\Logging\ILogService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -60,6 +62,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Data\XamarinSocialApp.Data\XamarinSocialApp.Data.csproj">
+      <Project>{9bdd15ef-cedc-4e9f-98f2-659bb6d07768}</Project>
+      <Name>XamarinSocialApp.Data</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\XamarinSocialApp.Data.Common\XamarinSocialApp.Data.Common.csproj">
       <Project>{6d00a28b-72df-43e7-ae15-4cd00ad62621}</Project>
       <Name>XamarinSocialApp.Data.Common</Name>

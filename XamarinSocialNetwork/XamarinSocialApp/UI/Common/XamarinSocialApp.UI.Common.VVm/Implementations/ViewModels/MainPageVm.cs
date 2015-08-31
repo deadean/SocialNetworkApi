@@ -1,4 +1,5 @@
 ﻿using Common.MVVM.Library;
+using Microsoft.Practices.ServiceLocation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,9 +7,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using XamarinSocialApp.Data.Interfaces.Entities.OAuth;
+using XamarinSocialApp.Services.UI.Interfaces.Model;
 using XamarinSocialApp.Services.UI.Interfaces.Web.OAuth;
 using XamarinSocialApp.UI.Common.Implementations.Bases;
 using XamarinSocialApp.UI.Common.Interfaces.ViewModels;
+using XamarinSocialApp.UI.Data.Implementations.Entities.Databases;
 
 namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 {
@@ -66,6 +69,26 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 
 		#region Protected Methods
 
+		protected override async Task RefreshPrivateAsync()
+		{
+			if (!IsInitialized)
+			{
+				await ServiceLocator.Current.GetInstance<IInternalModelService>().Initialize();
+			}
+		}
+
+		public async override Task OnNavigatedBack()
+		{
+			if (IsInitialized)
+				return;
+
+			await Task.Run(async () =>
+			{
+				await RefreshAsync();
+				await SetInitialized();
+			});
+		}
+
 		#endregion
 
 		#region Command Execute Handlers
@@ -74,7 +97,6 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 		{
 			try
 			{
-				IUser user = await modOAuthService.Login();
 				await modNavigationService.Navigate<PageUserDialogsVm>(user);
 			}
 			catch (Exception ex)

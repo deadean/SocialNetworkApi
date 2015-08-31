@@ -39,6 +39,7 @@
     <Compile Include="Implementations\Extensions\CommonExtensions.cs" />
     <Compile Include="Implementations\Extensions\EnumerableExtensions.cs" />
     <Compile Include="Implementations\Factories\AutoMapper.cs" />
+    <Compile Include="Implementations\Factories\KeyGenerator.cs" />
     <Compile Include="Implementations\Factories\ObjectsByTypeFactory.cs" />
     <Compile Include="Interfaces\Factories\IAutoMapper.cs" />
     <Compile Include="Interfaces\Factories\IObjectsByTypeFactory.cs" />

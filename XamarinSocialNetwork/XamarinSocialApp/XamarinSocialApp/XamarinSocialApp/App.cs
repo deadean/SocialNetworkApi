@@ -13,7 +13,6 @@ using XamarinSocialApp.Services.Common.Interfaces.Cache;
 using XamarinSocialApp.Services.Common.Interfaces.DataBases;
 using XamarinSocialApp.Services.Common.Interfaces.FileSystem;
 using XamarinSocialApp.Services.Common.Interfaces.Logging;
-using XamarinSocialApp.Services.Common.Interfaces.Model;
 using XamarinSocialApp.Services.UI.Interfaces.InternalStorage;
 using XamarinSocialApp.Services.UI.Interfaces.Model;
 using XamarinSocialApp.Services.UI.Interfaces.NavigationService;
@@ -21,8 +20,13 @@ using XamarinSocialApp.Services.UI.Interfaces.Web.OAuth;
 using XamarinSocialApp.UI.Common.Interfaces.ViewModels;
 using XamarinSocialApp.UI.Common.Views.Implementations.Views;
 using XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels;
+using XamarinSocialApp.UI.Data.Implementations.Entities.Databases;
+using XamarinSocialApp.UI.Services.Implementations.Cache;
+using XamarinSocialApp.UI.Services.Implementations.InternalStorage;
+using XamarinSocialApp.UI.Services.Implementations.Model;
 using XamarinSocialApp.UI.Services.Implementations.NavigationService;
 using XamarinSocialApp.UI.Services.Implementations.SQLiteConnector;
+using XamarinSocialApp.UI.Services.Interfaces.SQLiteConnector;
 using XLabs.Forms.Mvvm;
 using XLabs.Forms.Services;
 using XLabs.Ioc;
@@ -72,7 +76,7 @@ namespace XamarinSocialApp
 
 		#region Private Methods
 
-		private void Initialize(object extraContent = null)
+		private async void Initialize(object extraContent = null)
 		{
 			Page mainPage = null;
 			if (MainPage == null)
@@ -97,6 +101,8 @@ namespace XamarinSocialApp
 			}
 
 			mainPage.BindingContext = vm;
+
+			
 
 			MainPage = new NavigationPage(mainPage);
 		}
@@ -167,6 +173,7 @@ namespace XamarinSocialApp
 			{
 				SimpleIoc.Default.Register(() => DependencyService.Get<IFileWorkerService>());
 				SimpleIoc.Default.Register(() => DependencyService.Get<IOAuthService>());
+				SimpleIoc.Default.Register(() => DependencyService.Get<ISQLiteConnection>());
 			}
 			catch (Exception ex)
 			{

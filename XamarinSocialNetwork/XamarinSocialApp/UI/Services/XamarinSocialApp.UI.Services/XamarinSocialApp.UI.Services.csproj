@@ -37,13 +37,34 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Implementations\Cache\CacheService.cs" />
+    <Compile Include="Implementations\InternalStorage\InternalSQLiteStorage.cs" />
+    <Compile Include="Implementations\Model\InternalModelService.cs" />
     <Compile Include="Implementations\NavigationService\NavigationServiceXLabs.cs" />
+    <Compile Include="Implementations\SQLiteConnector\ConnectionInfo.cs" />
+    <Compile Include="Implementations\SQLiteConnector\SQLiteDataAccessService.cs" />
+    <Compile Include="Interfaces\SQLiteConnector\ISQLiteConnection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="ExifLib, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\ExifLib.PCL.1.0.1\lib\portable-net45+sl50+win+WindowsPhoneApp81+wp80+Xamarin.iOS10+MonoAndroid10+MonoTouch10\ExifLib.dll</HintPath>
       <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\..\packages\Newtonsoft.Json.6.0.8\lib\portable-net45+wp80+win8+wpa81+aspnetcore50\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="SQLite.Net">
+      <HintPath>..\..\..\packages\SQLite.Net-PCL.3.0.5\lib\portable-win8+net45+wp8+wpa81+MonoAndroid1+MonoTouch1\SQLite.Net.dll</HintPath>
+    </Reference>
+    <Reference Include="SQLite.Net.Async">
+      <HintPath>..\..\..\packages\SQLite.Net.Async-PCL.3.0.5\lib\portable-win8+net45+wp8+wpa81+MonoAndroid1+MonoTouch1\SQLite.Net.Async.dll</HintPath>
+    </Reference>
+    <Reference Include="SQLiteNetExtensions">
+      <HintPath>..\..\..\packages\SQLiteNetExtensions.1.3.0\lib\portable-net45+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1\SQLiteNetExtensions.dll</HintPath>
+    </Reference>
+    <Reference Include="SQLiteNetExtensionsAsync">
+      <HintPath>..\..\..\packages\SQLiteNetExtensions.Async.1.3.0\lib\portable-net45+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1\SQLiteNetExtensionsAsync.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Forms.Core, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\Xamarin.Forms.1.4.3.6376\lib\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.Core.dll</HintPath>
@@ -86,17 +107,33 @@
       <Project>{67f9d3a8-f71e-4428-913f-c37ae82cdb24}</Project>
       <Name>Common.MVVM.Library</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Common\XamarinSocialApp.Common\XamarinSocialApp.Common.csproj">
+      <Project>{71982e0d-cba7-4a1c-bff5-12b2cb52a8d2}</Project>
+      <Name>XamarinSocialApp.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Data\XamarinSocialApp.Data\XamarinSocialApp.Data.csproj">
       <Project>{9bdd15ef-cedc-4e9f-98f2-659bb6d07768}</Project>
       <Name>XamarinSocialApp.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Services\XamarinSocialApp.Services.Common\XamarinSocialApp.Services.Common.csproj">
+      <Project>{deb06b6b-9d2c-4cd1-a479-df65ecafa962}</Project>
+      <Name>XamarinSocialApp.Services.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Services\XamarinSocialApp.Services.UI\XamarinSocialApp.Services.UI.csproj">
       <Project>{1c2fd418-3d6d-475f-a352-c6a4f54818aa}</Project>
       <Name>XamarinSocialApp.Services.UI</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\XamarinSocialApp.Data.Common\XamarinSocialApp.Data.Common.csproj">
+      <Project>{6d00a28b-72df-43e7-ae15-4cd00ad62621}</Project>
+      <Name>XamarinSocialApp.Data.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Common\XamarinSocialApp.UI.Common\XamarinSocialApp.UI.Common.csproj">
       <Project>{cd22c543-b51f-493e-be9d-14bb117dfbac}</Project>
       <Name>XamarinSocialApp.UI.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Data\XamarinSocialApp.UI.Data\XamarinSocialApp.UI.Data\XamarinSocialApp.UI.Data.csproj">
+      <Project>{d5dba5f2-1aaf-4bec-a149-f2efc1d83dc1}</Project>
+      <Name>XamarinSocialApp.UI.Data</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />

@@ -37,6 +37,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Interfaces\InternalStorage\IInternalStorage.cs" />
+    <Compile Include="Interfaces\Model\IInternalModelService.cs" />
     <Compile Include="Interfaces\NavigationService\INavigationServiceCommon.cs" />
     <Compile Include="Interfaces\Web\OAuth\IOAuthService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

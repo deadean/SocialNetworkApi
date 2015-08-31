@@ -9,11 +9,11 @@ namespace XamarinSocialApp.Services.UI.Interfaces.Model
 {
 	public interface IInternalModelService
 	{
-		Task SaveEntity<T>(T item) where T : IEntity, new();
-		Task UpdateEntityAsync<T>(T item) where T : IEntity, new();
-		Task DeleteEntityAsync<T>(T item) where T : IEntity, new();
-		Task<T> ItemById<T>(string id) where T : IEntity, new();
-		Task<IEnumerable<T>> Items<T>() where T : IEntity, new();
+		Task SaveEntity<T>(T item) where T : class, IEntity;
+		Task UpdateEntityAsync<T>(T item) where T : class, IEntity;
+		Task DeleteEntityAsync<T>(T item) where T : class, IEntity;
+		Task<T> ItemById<T>(string id) where T : class, IEntity;
+		Task<IEnumerable<T>> Items<T>() where T : class, IEntity;
 		Task<T> CreateEntity<T>() where T : IEntity;
 		Task Initialize();
 	}

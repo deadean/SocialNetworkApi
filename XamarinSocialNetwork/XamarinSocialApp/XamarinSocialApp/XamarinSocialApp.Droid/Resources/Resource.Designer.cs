@@ -26,6 +26,8 @@ namespace XamarinSocialApp.Droid
 		
 		public static void UpdateIdValues()
 		{
+			global::SQLite.Net.Platform.XamarinAndroid.Resource.String.ApplicationName = global::XamarinSocialApp.Droid.Resource.String.ApplicationName;
+			global::SQLite.Net.Platform.XamarinAndroid.Resource.String.Hello = global::XamarinSocialApp.Droid.Resource.String.Hello;
 			global::Xamarin.Forms.Platform.Resource.String.ApplicationName = global::XamarinSocialApp.Droid.Resource.String.ApplicationName;
 			global::Xamarin.Forms.Platform.Resource.String.Hello = global::XamarinSocialApp.Droid.Resource.String.Hello;
 			global::XLabs.Forms.Resource.Color.calendar_active_month_bg = global::XamarinSocialApp.Droid.Resource.Color.calendar_active_month_bg;
@@ -88,41 +90,41 @@ namespace XamarinSocialApp.Droid
 		public partial class Color
 		{
 			
-			// aapt resource value: 0x7f050000
-			public const int calendar_active_month_bg = 2131034112;
+			// aapt resource value: 0x7f060000
+			public const int calendar_active_month_bg = 2131099648;
 			
-			// aapt resource value: 0x7f050001
-			public const int calendar_bg = 2131034113;
+			// aapt resource value: 0x7f060001
+			public const int calendar_bg = 2131099649;
 			
-			// aapt resource value: 0x7f050002
-			public const int calendar_divider = 2131034114;
+			// aapt resource value: 0x7f060002
+			public const int calendar_divider = 2131099650;
 			
-			// aapt resource value: 0x7f050005
-			public const int calendar_highlighted_day_bg = 2131034117;
+			// aapt resource value: 0x7f060005
+			public const int calendar_highlighted_day_bg = 2131099653;
 			
-			// aapt resource value: 0x7f050003
-			public const int calendar_inactive_month_bg = 2131034115;
+			// aapt resource value: 0x7f060003
+			public const int calendar_inactive_month_bg = 2131099651;
 			
-			// aapt resource value: 0x7f050004
-			public const int calendar_selected_day_bg = 2131034116;
+			// aapt resource value: 0x7f060004
+			public const int calendar_selected_day_bg = 2131099652;
 			
-			// aapt resource value: 0x7f050006
-			public const int calendar_selected_range_bg = 2131034118;
+			// aapt resource value: 0x7f060006
+			public const int calendar_selected_range_bg = 2131099654;
 			
-			// aapt resource value: 0x7f050008
-			public const int calendar_text_active = 2131034120;
+			// aapt resource value: 0x7f060008
+			public const int calendar_text_active = 2131099656;
 			
-			// aapt resource value: 0x7f050007
-			public const int calendar_text_inactive = 2131034119;
+			// aapt resource value: 0x7f060007
+			public const int calendar_text_inactive = 2131099655;
 			
-			// aapt resource value: 0x7f050009
-			public const int calendar_text_selected = 2131034121;
+			// aapt resource value: 0x7f060009
+			public const int calendar_text_selected = 2131099657;
 			
-			// aapt resource value: 0x7f05000b
-			public const int calendar_text_selector = 2131034123;
+			// aapt resource value: 0x7f06000b
+			public const int calendar_text_selector = 2131099659;
 			
-			// aapt resource value: 0x7f05000a
-			public const int calendar_text_unselectable = 2131034122;
+			// aapt resource value: 0x7f06000a
+			public const int calendar_text_unselectable = 2131099658;
 			
 			static Color()
 			{
@@ -137,20 +139,20 @@ namespace XamarinSocialApp.Droid
 		public partial class Dimension
 		{
 			
-			// aapt resource value: 0x7f060000
-			public const int calendar_day_headers_paddingbottom = 2131099648;
+			// aapt resource value: 0x7f070000
+			public const int calendar_day_headers_paddingbottom = 2131165184;
 			
-			// aapt resource value: 0x7f060002
-			public const int calendar_month_title_bottommargin = 2131099650;
+			// aapt resource value: 0x7f070002
+			public const int calendar_month_title_bottommargin = 2131165186;
 			
-			// aapt resource value: 0x7f060001
-			public const int calendar_month_topmargin = 2131099649;
+			// aapt resource value: 0x7f070001
+			public const int calendar_month_topmargin = 2131165185;
 			
-			// aapt resource value: 0x7f060003
-			public const int calendar_text_medium = 2131099651;
+			// aapt resource value: 0x7f070003
+			public const int calendar_text_medium = 2131165187;
 			
-			// aapt resource value: 0x7f060004
-			public const int calendar_text_small = 2131099652;
+			// aapt resource value: 0x7f070004
+			public const int calendar_text_small = 2131165188;
 			
 			static Dimension()
 			{
@@ -190,20 +192,20 @@ namespace XamarinSocialApp.Droid
 		public partial class Id
 		{
 			
-			// aapt resource value: 0x7f080004
-			public const int calendar_grid = 2131230724;
+			// aapt resource value: 0x7f090004
+			public const int calendar_grid = 2131296260;
 			
-			// aapt resource value: 0x7f080001
-			public const int calendar_view = 2131230721;
+			// aapt resource value: 0x7f090001
+			public const int calendar_view = 2131296257;
 			
-			// aapt resource value: 0x7f080003
-			public const int left_arrow = 2131230723;
+			// aapt resource value: 0x7f090003
+			public const int left_arrow = 2131296259;
 			
-			// aapt resource value: 0x7f080002
-			public const int right_arrow = 2131230722;
+			// aapt resource value: 0x7f090002
+			public const int right_arrow = 2131296258;
 			
-			// aapt resource value: 0x7f080000
-			public const int title = 2131230720;
+			// aapt resource value: 0x7f090000
+			public const int title = 2131296256;
 			
 			static Id()
 			{
@@ -243,29 +245,45 @@ namespace XamarinSocialApp.Droid
 			}
 		}
 		
+		public partial class Raw
+		{
+			
+			// aapt resource value: 0x7f040000
+			public const int talkmanager1 = 2130968576;
+			
+			static Raw()
+			{
+				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
+			}
+			
+			private Raw()
+			{
+			}
+		}
+		
 		public partial class String
 		{
 			
-			// aapt resource value: 0x7f040001
-			public const int ApplicationName = 2130968577;
+			// aapt resource value: 0x7f050001
+			public const int ApplicationName = 2131034113;
 			
-			// aapt resource value: 0x7f040000
-			public const int Hello = 2130968576;
+			// aapt resource value: 0x7f050000
+			public const int Hello = 2131034112;
 			
-			// aapt resource value: 0x7f040003
-			public const int day_name_format = 2130968579;
+			// aapt resource value: 0x7f050003
+			public const int day_name_format = 2131034115;
 			
-			// aapt resource value: 0x7f040006
-			public const int full_date_format = 2130968582;
+			// aapt resource value: 0x7f050006
+			public const int full_date_format = 2131034118;
 			
-			// aapt resource value: 0x7f040004
-			public const int invalid_date = 2130968580;
+			// aapt resource value: 0x7f050004
+			public const int invalid_date = 2131034116;
 			
-			// aapt resource value: 0x7f040002
-			public const int library_name = 2130968578;
+			// aapt resource value: 0x7f050002
+			public const int library_name = 2131034114;
 			
-			// aapt resource value: 0x7f040005
-			public const int month_name_format = 2130968581;
+			// aapt resource value: 0x7f050005
+			public const int month_name_format = 2131034117;
 			
 			static String()
 			{
@@ -280,20 +298,20 @@ namespace XamarinSocialApp.Droid
 		public partial class Style
 		{
 			
-			// aapt resource value: 0x7f070001
-			public const int CalendarCell = 2131165185;
+			// aapt resource value: 0x7f080001
+			public const int CalendarCell = 2131230721;
 			
-			// aapt resource value: 0x7f070003
-			public const int CalendarCell_CalendarDate = 2131165187;
+			// aapt resource value: 0x7f080003
+			public const int CalendarCell_CalendarDate = 2131230723;
 			
-			// aapt resource value: 0x7f070002
-			public const int CalendarCell_DayHeader = 2131165186;
+			// aapt resource value: 0x7f080002
+			public const int CalendarCell_DayHeader = 2131230722;
 			
-			// aapt resource value: 0x7f070000
-			public const int CalendarTitle = 2131165184;
+			// aapt resource value: 0x7f080000
+			public const int CalendarTitle = 2131230720;
 			
-			// aapt resource value: 0x7f070004
-			public const int Mono_Android_Theme_Splash = 2131165188;
+			// aapt resource value: 0x7f080004
+			public const int Mono_Android_Theme_Splash = 2131230724;
 			
 			static Style()
 			{

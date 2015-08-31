@@ -10,22 +10,22 @@ namespace XamarinSocialApp.Services.Common.Interfaces.DataBases
 	public interface ISQLiteDataAccessService
 	{
 		Task Save<T>(T item)
-			where T : IEntity, new();
+			where T : class, IEntity;
 
 		Task Update<T>(T item)
-			where T : IEntity, new();
+			where T : class, IEntity;
 
 		Task DeleteAsync<T>(T item)
-			where T : IEntity, new();
+			where T : class, IEntity;
 
 		Task<List<T>> Items<T>()
-			where T : IEntity, new();
+			where T : class, IEntity;
 
 		Task<T> ItemById<T>(string id)
-			where T : IEntity, new();
+			where T : class, IEntity;
 
 		Task ResetItems<T>()
-			where T : IEntity, new();
+			where T : class, IEntity;
 
 		Task Initialize();
 
