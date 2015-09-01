@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using XamarinSocialApp.Data.Interfaces.Entities;
+using XamarinSocialApp.Data.Common.Interfaces.Entities;
 using XamarinSocialApp.Services.Common.Interfaces.Cache;
 using XamarinSocialApp.Services.UI.Interfaces.Model;
 

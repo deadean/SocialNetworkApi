@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using XamarinSocialApp.Data.Common.Enums;
 
 namespace XamarinSocialApp.Data.Interfaces.Entities.OAuth
 {
@@ -12,5 +13,6 @@ namespace XamarinSocialApp.Data.Interfaces.Entities.OAuth
 		string FirstName { get; }
 		string LastName { get; }
 		string SerializeInfo { get; }
+		enSocialNetwork SocialNetwork { get; }
 	}
 }

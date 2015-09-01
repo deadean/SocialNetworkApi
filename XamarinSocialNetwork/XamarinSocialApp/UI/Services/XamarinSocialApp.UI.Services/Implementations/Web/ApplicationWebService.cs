@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using XamarinSocialApp.Data.Common.Enums;
 using XamarinSocialApp.Data.Interfaces.Entities.Database;
 using XamarinSocialApp.Services.UI.Interfaces.Web;
 using XamarinSocialApp.Services.UI.Interfaces.Web.OAuth;
@@ -46,15 +47,21 @@ namespace XamarinSocialApp.UI.Services.Implementations.Web
 
 		#region Public Methods
 
-		public async Task<IUser> Login()
+		public async Task<IUser> Login(enSocialNetwork socialNetwork)
 		{
-			XamarinSocialApp.Data.Interfaces.Entities.OAuth.IUser user = await modService.Login();
-			return new User() { FirstName = user.FirstName, LastName = user.LastName, SerializeInfo = user.SerializeInfo };
+			XamarinSocialApp.Data.Interfaces.Entities.OAuth.IUser user = await modService.Login(socialNetwork);
+			return new User() 
+			{ 
+				FirstName = user.FirstName, 
+				LastName = user.LastName, 
+				SerializeInfo = user.SerializeInfo, 
+				SocialNetwork = user.SocialNetwork 
+			};
 		}
 
 		public Task<IEnumerable<IDialog>> GetDialogs(IUser user)
 		{
-			return modService.GetDialogs(user);
+			return modService.GetDialogs(user, user.SocialNetwork);
 		}
 
 		#endregion

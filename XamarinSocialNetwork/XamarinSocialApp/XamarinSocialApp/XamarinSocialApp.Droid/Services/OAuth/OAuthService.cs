@@ -18,6 +18,12 @@ using System.Threading.Tasks;
 using XamarinSocialApp.Data.Interfaces.Entities.OAuth;
 using XamarinSocialApp.UI.Data.Implementations.Entities.OAuth;
 using XamarinSocialApp.Data.Interfaces.Entities.Database;
+using XamarinSocialApp.Data.Common.Enums;
+using DataDialogs = XamarinSocialApp.UI.Data.Implementations.Entities.Databases.Dialog;
+using DataIOAuthUser = XamarinSocialApp.Data.Interfaces.Entities.OAuth.IUser;
+using DataIUser = XamarinSocialApp.Data.Interfaces.Entities.Database.IUser;
+using DataUser = XamarinSocialApp.UI.Data.Implementations.Entities.Databases.User;
+using DataMessage = XamarinSocialApp.UI.Data.Implementations.Entities.Databases.Message;
 
 [assembly: Dependency(typeof(OAuthService))]
 
@@ -63,7 +69,7 @@ namespace XamarinSocialApp.Droid.Services.OAuth
 
 		#region Public Methods
 
-		public async Task<XamarinSocialApp.Data.Interfaces.Entities.OAuth.IUser> Login()
+		public async Task<DataIOAuthUser> Login(enSocialNetwork socialNetwork)
 		{
 			XamarinSocialApp.Data.Interfaces.Entities.OAuth.IUser user = null;
 			try
@@ -72,7 +78,7 @@ namespace XamarinSocialApp.Droid.Services.OAuth
 
 				var auth = new OAuth2Authenticator(
 				clientId: "5042701",
-				scope: "999999, messages",
+				scope: "offline,messages",
 				authorizeUrl: new Uri("https://oauth.vk.com/authorize"),
 				redirectUrl: new Uri("https://oauth.vk.com/blank.html"));
 
@@ -104,7 +110,7 @@ namespace XamarinSocialApp.Droid.Services.OAuth
 							string firstName = users.response[0].first_name;
 							string lastName = users.response[0].last_name;
 
-							user = new User(uid, firstName, lastName, Account.Serialize());
+							user = new User(uid, firstName, lastName, Account.Serialize(), enSocialNetwork.VK);
 
 							ts.SetResult(0);
 						}
@@ -126,39 +132,56 @@ namespace XamarinSocialApp.Droid.Services.OAuth
 
 			return user;
 		}
-
-	//	public async Task<string> GetUserInfoRequest(string uid)
-	//	{
-	//		if (uid == String.Empty)
-	//			return null;
-
-	//		Account acc = Account;
-	//		var request = new OAuth2Request("GET", new Uri("https://api.vk.com/method/users.get"), null, acc);
-
-	//		request.Parameters.Add("uids", uid);
-	//}
-
-
-		public async Task<IEnumerable<IDialog>> GetDialogs(XamarinSocialApp.Data.Interfaces.Entities.Database.IUser user)
+		
+		public async Task<IEnumerable<IDialog>> GetDialogs(DataIUser user, enSocialNetwork socialNetwork)
 		{
 			Account acc = Account.Deserialize(user.SerializeInfo);
 			var request = new OAuth2Request("GET", new Uri("https://api.vk.com/method/messages.getDialogs"), null, acc);
 
-			request.Parameters.Add("count", "1");
+			//request.Parameters.Add("count", "");
 			request.Parameters.Add("v", "5.37");
 
 			var res = await request.GetResponseAsync();
 			var responseText = res.GetResponseText();
 
 			var msg = JsonConvert.DeserializeObject<XamarinSocialApp.Droid.Data.VkData.VkMessagesResponse>(responseText);
-			string message = msg.Response.Messages.First().Message.Body;
 
-			return null;
+			IList<IDialog> dialogs = new List<IDialog>();
+
+			foreach (var item in msg.Response.Messages)
+			{
+				var userDialog = await GetUserInfoRequest(item.Message.UserId, acc);
+				dialogs.Add(new DataDialogs(userDialog, new List<IMessage>() 
+				{ 
+					new DataMessage() { Content = item.Message.Body } 
+				}));
+
+				await Task.Delay(400);
+			}
+
+			return dialogs;
 		}
 
 		#endregion
 
 		#region Private Methods
+
+		private async Task<DataIUser> GetUserInfoRequest(string uid, Account acc)
+		{
+			if (String.IsNullOrWhiteSpace(uid))
+				return null;
+
+			var request = new OAuth2Request("GET", new Uri("https://api.vk.com/method/users.get"), null, acc);
+			request.Parameters.Add("uids", uid);
+
+			var res = await request.GetResponseAsync();
+			var responseText = res.GetResponseText();
+
+			var users = JsonConvert.DeserializeObject<XamarinSocialApp.Droid.Data.VkData.VkUsers>(responseText);
+
+			var jsonUser = users.response.First();
+			return new DataUser() { FirstName = jsonUser.first_name, LastName = jsonUser.last_name, ID = jsonUser.uid };
+		}
 
 		#endregion
 

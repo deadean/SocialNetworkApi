@@ -9,7 +9,30 @@
 			<RowDefinition Height="*" />
 		</Grid.RowDefinitions>
 	</Grid>
-	
+
+	<ListView Grid.Row="1" ItemsSource="{Binding Dialogs}">
+		<ListView.ItemTemplate>
+			<DataTemplate>
+				<ViewCell>
+					<StackLayout Orientation="Horizontal">
+						<Label Text="{Binding Name}"/>
+						<Label Text="{Binding Content}"/>
+					</StackLayout>
+				</ViewCell>
+
+			</DataTemplate>
+		</ListView.ItemTemplate>
+	</ListView>
+
 	<Label Text="{Binding UserName}" FontSize="20" Grid.Row="0"/>
-	
+
+	<!--<ActivityIndicator Grid.Row="1"
+											 IsRunning="{Binding IsBusy}"
+											 IsVisible ="{Binding IsBusy}"
+											 WidthRequest="75"
+											 HeightRequest="75"
+											 VerticalOptions="Center"
+											 HorizontalOptions="Center"/>-->
+
+
 </ContentPage>

@@ -9,7 +9,6 @@ namespace XamarinSocialApp.UI.Common.Interfaces.ViewModels
 {
 	public interface IMainPageVm
 	{
-		ICommand LoginCommand { get; }
-		ICommand LoadMessagesCommand { get; }
+		ICommand LoginVkCommand { get; }
 	}
 }

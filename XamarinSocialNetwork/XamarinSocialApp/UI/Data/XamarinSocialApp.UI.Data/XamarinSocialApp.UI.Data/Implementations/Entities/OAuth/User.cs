@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using XamarinSocialApp.Data.Common.Enums;
 using XamarinSocialApp.Data.Interfaces.Entities.OAuth;
 
 namespace XamarinSocialApp.UI.Data.Implementations.Entities.OAuth
@@ -39,16 +40,23 @@ namespace XamarinSocialApp.UI.Data.Implementations.Entities.OAuth
 			private set;
 		}
 
+		public enSocialNetwork SocialNetwork
+		{
+			get;
+			private set;
+		}
+
 		#endregion
 
 		#region Ctor
 
-		public User(string uid, string firstName, string lastName, string serializeInfo)
+		public User(string uid, string firstName, string lastName, string serializeInfo, enSocialNetwork socialNetwork)
 		{
 			Uid = uid;
 			FirstName = firstName;
 			LastName = lastName;
 			SerializeInfo = serializeInfo;
+			SocialNetwork = socialNetwork;
 		}
 
 		#endregion

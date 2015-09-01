@@ -199,7 +199,8 @@ namespace XamarinSocialApp
 		{
 			ViewFactory.EnableCache = true;
 			ViewFactory.Register<MainPage, MainPageVm>();
-			ViewFactory.Register<PageUserDialogs, PageUserDialogsVm>();
+			//ViewFactory.Register<PageUserDialogs, PageUserDialogsVm>();
+			ViewFactory.Register<PageUserDialogsV1, PageUserDialogsVm>();
 			ConfigureNavigationServiceByPlatform();
 		}
 

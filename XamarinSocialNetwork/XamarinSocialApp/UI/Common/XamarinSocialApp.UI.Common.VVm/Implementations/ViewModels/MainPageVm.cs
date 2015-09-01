@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using XamarinSocialApp.Data.Common.Enums;
 using XamarinSocialApp.Data.Interfaces.Entities.Database;
 using XamarinSocialApp.Services.UI.Interfaces.Model;
 using XamarinSocialApp.Services.UI.Interfaces.Web;
@@ -35,18 +36,12 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 
 		#region Commands
 
-		public ICommand LoginCommand
+		public ICommand LoginVkCommand
 		{
 			get;
 			private set;
 		}
 
-		public ICommand LoadMessagesCommand
-		{
-			get;
-			private set;
-		}
-		
 		#endregion
 
 		#region Ctor
@@ -55,8 +50,7 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 		{
 			modIWebService = iWebService;
 			modIInternalService = iService;
-			LoginCommand = new AsyncCommand(OnLoginCommand);
-			//LoadMessagesCommand = new AsyncCommand(OnLoadMessagesCommad);
+			LoginVkCommand = new AsyncCommand(OnLoginVkCommand);
 		}
 
 		#endregion
@@ -95,7 +89,7 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 
 		#region Command Execute Handlers
 
-		private async Task OnLoginCommand()
+		private async Task OnLoginVkCommand()
 		{
 			try
 			{
@@ -104,7 +98,7 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 
 				if (user == null)
 				{
-					user = await modIWebService.Login();
+					user = await modIWebService.Login(enSocialNetwork.VK);
 
 					if (user == null)
 						return;
@@ -118,18 +112,6 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 				//this.GetLog().Write(ex);
 			}
 		}
-
-		//private async Task OnLoadMessagesCommad()
-		//{
-		//	try
-		//	{
-		//		await modIWebService.GetDialogs();
-		//	}
-		//	catch (Exception ex)
-		//	{
-
-		//	}
-		//}
 
 		#endregion
 
