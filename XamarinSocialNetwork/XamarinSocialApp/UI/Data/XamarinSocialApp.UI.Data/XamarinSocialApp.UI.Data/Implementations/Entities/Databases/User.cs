@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using XamarinSocialApp.Common.Implementations.Factories;
 using XamarinSocialApp.Data.Interfaces.Entities.Database;
+using XamarinSocialApp.Data.Common.Enums;
 using XamarinSocialApp.UI.Data.Implementations.Bases;
 
 namespace XamarinSocialApp.UI.Data.Implementations.Entities.Databases
@@ -29,7 +30,7 @@ namespace XamarinSocialApp.UI.Data.Implementations.Entities.Databases
 		public string FirstName { get; set; }
 		public string LastName { get; set; }
 		public string SerializeInfo { get; set; }
-
+		public enSocialNetwork SocialNetwork { get; set; }
 
 		#endregion
 

@@ -37,6 +37,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Implementations\ViewModels\DialogVm.cs" />
     <Compile Include="Implementations\ViewModels\MainPageVm.cs" />
     <Compile Include="Implementations\ViewModels\PageUserDialogsVm.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -53,6 +54,10 @@
     <ProjectReference Include="..\..\..\Services\XamarinSocialApp.Services.UI\XamarinSocialApp.Services.UI.csproj">
       <Project>{1c2fd418-3d6d-475f-a352-c6a4f54818aa}</Project>
       <Name>XamarinSocialApp.Services.UI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\XamarinSocialApp.Data.Common\XamarinSocialApp.Data.Common.csproj">
+      <Project>{6d00a28b-72df-43e7-ae15-4cd00ad62621}</Project>
+      <Name>XamarinSocialApp.Data.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Data\XamarinSocialApp.UI.Data\XamarinSocialApp.UI.Data\XamarinSocialApp.UI.Data.csproj">
       <Project>{d5dba5f2-1aaf-4bec-a149-f2efc1d83dc1}</Project>

@@ -191,6 +191,10 @@
       <Project>{b141c91c-d554-4ac7-84d6-0d03b7f2dd87}</Project>
       <Name>XamarinSocialApp.UI.Services</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\XamarinSocialApp.Data.Common\XamarinSocialApp.Data.Common.csproj">
+      <Project>{6d00a28b-72df-43e7-ae15-4cd00ad62621}</Project>
+      <Name>XamarinSocialApp.Data.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\XamarinSocialApp\XamarinSocialApp.csproj">
       <Name>XamarinSocialApp</Name>
     </ProjectReference>

@@ -20,11 +20,18 @@ namespace XamarinSocialApp.UI.Data.Implementations.Entities.Databases
 
 		#region Properties
 
-		public string Name { get; set; }
+		public IUser User { get; private set; }
+		public IEnumerable<IMessage> Messages { get; private set; }
 
 		#endregion
 
 		#region Ctor
+
+		public Dialog(IUser user, IEnumerable<IMessage> messages)
+		{
+			User = user;
+			Messages = messages;
+		}
 
 		#endregion
 

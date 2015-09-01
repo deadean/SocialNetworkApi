@@ -8,6 +8,7 @@ namespace XamarinSocialApp.Data.Interfaces.Entities.Database
 {
 	public interface IDialog
 	{
-		string Name { get; set; }
+		IUser User { get; }
+		IEnumerable<IMessage> Messages { get; }
 	}
 }

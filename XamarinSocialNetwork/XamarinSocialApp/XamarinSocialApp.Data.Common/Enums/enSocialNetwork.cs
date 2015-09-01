@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace XamarinSocialApp.Data.Interfaces.Entities
+namespace XamarinSocialApp.Data.Common.Enums
 {
-	public interface IEntity
+	public enum enSocialNetwork
 	{
-		string IdEntity { get; }
+		VK,
+		FaceBook
 	}
 }

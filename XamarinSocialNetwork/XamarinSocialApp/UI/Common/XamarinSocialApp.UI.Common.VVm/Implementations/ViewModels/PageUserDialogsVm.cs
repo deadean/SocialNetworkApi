@@ -12,6 +12,7 @@ using XamarinSocialApp.Services.UI.Interfaces.Web;
 using Common.MVVM.Library;
 using GalaSoft.MvvmLight.Ioc;
 using Microsoft.Practices.ServiceLocation;
+using XamarinSocialApp.UI.Data.Implementations.Entities.Databases;
 
 
 namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
@@ -30,8 +31,8 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 
 		#region Properties
 
-		public ObservableCollection<IDialog> Dialogs { get; set; }
-
+		public ObservableCollection<DialogVm> Dialogs { get; set; }
+		
 		public string UserName
 		{
 			get
@@ -53,7 +54,6 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 		public PageUserDialogsVm()
 			:this(ServiceLocator.Current.GetInstance<IApplicationWebService>())
 		{
-			Dialogs = new ObservableCollection<IDialog>();
 		}
 
 		[PreferredConstructor]
@@ -83,9 +83,13 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 			modUser = user;
 			UserName = String.Format("{0} {1}", modUser.FirstName, modUser.LastName);
 
-			//IEnumerable<IDialog> dialogs = await modIWebService.GetDialogs(user);
+			IsBusy = true;
 
-			//this.OnPropertyChanged(this.Dialogs);
+			IEnumerable<IDialog> dialogs = await modIWebService.GetDialogs(user);
+			this.Dialogs = new ObservableCollection<DialogVm>(dialogs.Select(x => new DialogVm(x)));
+			this.OnPropertyChanged(x => x.Dialogs);
+
+			IsBusy = false;
 		}
 
 		#endregion

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
-using XamarinSocialApp.Data.Interfaces.Entities;
+using XamarinSocialApp.Data.Common.Interfaces.Entities;
 using XamarinSocialApp.Services.Common.Interfaces.DataBases;
 using XamarinSocialApp.UI.Data.Implementations.Entities.Databases;
 using XamarinSocialApp.UI.Services.Interfaces.SQLiteConnector;
