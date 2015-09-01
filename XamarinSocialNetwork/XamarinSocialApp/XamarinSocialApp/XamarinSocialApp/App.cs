@@ -38,7 +38,6 @@ namespace XamarinSocialApp
 {
 	public class App : Application
 	{
-
 		#region Fields
 
 		#endregion
