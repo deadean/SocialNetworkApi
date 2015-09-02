@@ -39,6 +39,7 @@
   <ItemGroup>
     <Compile Include="Implementations\ViewModels\DialogVm.cs" />
     <Compile Include="Implementations\ViewModels\FriendsVm.cs" />
+    <Compile Include="Implementations\ViewModels\PageDialogWithFriendVm.cs" />
     <Compile Include="Implementations\ViewModels\PageUserFriendsVm.cs" />
     <Compile Include="Implementations\ViewModels\MainPageVm.cs" />
     <Compile Include="Implementations\ViewModels\PageUserDialogsVm.cs" />

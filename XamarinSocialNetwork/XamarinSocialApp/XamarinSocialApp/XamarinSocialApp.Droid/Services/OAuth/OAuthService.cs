@@ -213,6 +213,33 @@ namespace XamarinSocialApp.Droid.Services.OAuth
 			return new DataUser() { FirstName = jsonUser.first_name, LastName = jsonUser.last_name, ID = jsonUser.uid };
 		}
 
+		public async Task<IEnumerable<IDialog>> GetDialogWithFriend(DataIUser user, enSocialNetwork socialNetwork)
+		{
+			Account acc = Account.Deserialize(user.SerializeInfo);
+			var request = new OAuth2Request("GET", new Uri("https://api.vk.com/method/messages.getHistory"), null, acc);
+
+			request.Parameters.Add("user_id", user.IdEntity);
+
+			var res = await request.GetResponseAsync();
+			var responseText = res.GetResponseText();
+
+			var msg = JsonConvert.DeserializeObject<XamarinSocialApp.Droid.Data.VkData.VkMessagesResponse>(responseText);
+
+			IList<IDialog> dialogs = new List<IDialog>();
+
+			foreach (var item in msg.Response.Messages)
+			{
+				dialogs.Add(new DataDialogs(user, new List<IMessage>() 
+				{ 
+					new DataMessage() { Content = item.Message.Body } 
+				}));
+
+				await Task.Delay(400);
+			}
+
+			return dialogs;
+		}
+
 		#endregion
 
 		#region Private Methods
