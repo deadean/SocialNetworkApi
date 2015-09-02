@@ -29,8 +29,6 @@ using DataMessage = XamarinSocialApp.UI.Data.Implementations.Entities.Databases.
 
 namespace XamarinSocialApp.Droid.Services.OAuth
 {
-	
-
 	public class OAuthService : IOAuthService
 	{
 
@@ -78,7 +76,7 @@ namespace XamarinSocialApp.Droid.Services.OAuth
 
 				var auth = new OAuth2Authenticator(
 				clientId: "5042701",
-				scope: "offline,messages",
+				scope: "offline,messages,friends",
 				authorizeUrl: new Uri("https://oauth.vk.com/authorize"),
 				redirectUrl: new Uri("https://oauth.vk.com/blank.html"));
 
@@ -161,6 +159,32 @@ namespace XamarinSocialApp.Droid.Services.OAuth
 
 			return dialogs;
 		}
+
+
+		public async Task<IEnumerable<DataIUser>> ShowUserFriends(DataIUser user, enSocialNetwork enSocialNetwork)
+		{
+			Account acc = Account.Deserialize(user.SerializeInfo);
+			var request = new OAuth2Request("GET", new Uri("https://api.vk.com/method/friends.get"), null, acc);
+
+			request.Parameters.Add("fields", "nickname");
+			request.Parameters.Add("order", "hints");
+
+			var res = await request.GetResponseAsync();
+			var responseText = res.GetResponseText();
+
+			var listFriendsIds = JsonConvert.DeserializeObject<XamarinSocialApp.Droid.Data.VkData.VkUsers>(responseText);
+
+			IList<DataIUser> friends = new List<DataIUser>();
+
+			foreach (var friend in listFriendsIds.response)
+			{
+				friends.Add(new DataUser() { FirstName = friend.first_name, LastName = friend.last_name });
+			}
+
+			return friends;
+		}
+
+
 
 		#endregion
 

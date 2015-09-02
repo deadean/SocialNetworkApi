@@ -13,6 +13,7 @@ using Common.MVVM.Library;
 using GalaSoft.MvvmLight.Ioc;
 using Microsoft.Practices.ServiceLocation;
 using XamarinSocialApp.UI.Data.Implementations.Entities.Databases;
+using System.Windows.Input;
 
 
 namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
@@ -26,6 +27,15 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 
 		private readonly IApplicationWebService modIWebService;
 
+		#endregion
+
+		#region Commands
+
+		public ICommand ShowUserFriendsCommand
+		{
+			get;
+			private set;
+		}
 
 		#endregion
 
@@ -60,6 +70,7 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 		public PageUserDialogsVm(IApplicationWebService iWebService)
 		{
 			modIWebService = iWebService;
+			ShowUserFriendsCommand = new AsyncCommand(OnShowUserFriendsCommand);
 		}
 
 		#endregion
@@ -90,6 +101,24 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 			this.OnPropertyChanged(x => x.Dialogs);
 
 			IsBusy = false;
+		}
+
+		#endregion
+
+		#region Command Execute Handlers
+
+		private async Task OnShowUserFriendsCommand()
+		{
+			try
+			{
+				IEnumerable<IUser> friends = await modIWebService.ShowUserFriends(modUser);
+
+				await modNavigationService.Navigate<PageUserFriendsVm>(friends, isFromCache: false);
+			}
+			catch (Exception ex)
+			{
+
+			}
 		}
 
 		#endregion

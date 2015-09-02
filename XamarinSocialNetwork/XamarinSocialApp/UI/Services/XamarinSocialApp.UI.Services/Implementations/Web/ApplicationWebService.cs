@@ -64,6 +64,11 @@ namespace XamarinSocialApp.UI.Services.Implementations.Web
 			return modService.GetDialogs(user, user.SocialNetwork);
 		}
 
+		public Task<IEnumerable<IUser>> ShowUserFriends(IUser user)
+		{
+			return modService.ShowUserFriends(user, user.SocialNetwork);
+		}
+
 		#endregion
 
 		#region Private Methods
@@ -74,9 +79,5 @@ namespace XamarinSocialApp.UI.Services.Implementations.Web
 
 		#endregion
 
-
-
-
-		
 	}
 }
