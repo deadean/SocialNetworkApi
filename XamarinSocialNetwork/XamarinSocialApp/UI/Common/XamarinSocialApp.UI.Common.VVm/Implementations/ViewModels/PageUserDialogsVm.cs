@@ -25,6 +25,7 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 
 		private IUser modUser;
 		private string mvUserName;
+		private DialogVm mvSelectedDialog;
 
 		private readonly IApplicationWebService modIWebService;
 
@@ -43,6 +44,23 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 		#region Properties
 
 		public ObservableCollection<DialogVm> Dialogs { get; set; }
+
+		public DialogVm SelectedDialog
+		{
+			get
+			{
+				return mvSelectedDialog;
+			}
+
+			set
+			{
+				mvSelectedDialog = value;
+				this.OnPropertyChanged();
+
+				value.With(x => modNavigationService.Navigate<PageDialogWithFriendVm>(x.EntityModel.User, isFromCache: false));
+			}
+		}
+		
 		
 		public string UserName
 		{

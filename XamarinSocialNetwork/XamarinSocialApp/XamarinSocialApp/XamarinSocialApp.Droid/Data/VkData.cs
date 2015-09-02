@@ -20,19 +20,30 @@ namespace XamarinSocialApp.Droid.Data
 			public User[] response { get; set; }
 		}
 
+		public class VkDialogsResponse
+		{
+			[JsonProperty("response")]
+			public VkDialogsItems Response { get; set; }
+		}
+
 		public class VkMessagesResponse
 		{
 			[JsonProperty("response")]
-			public VkMessagesItems Response { get; set; }
+			public List<object> Response { get; set; }
 		}
 
-		public class VkMessagesItems
+		public class VkDialogsItems
 		{
 			[JsonProperty("count")]
 			public int Count { get; set; }
 
 			[JsonProperty("items")]
 			public IEnumerable<MessageItem> Messages { get; set; }
+		}
+
+		public class VkMessagesItem
+		{
+			public MessageInDialog Message { get; set; }
 		}
 
 		public class User
@@ -45,6 +56,15 @@ namespace XamarinSocialApp.Droid.Data
 		public class Message
 		{
 			[JsonProperty("user_id")]
+			public string UserId { get; set; }
+
+			[JsonProperty("body")]
+			public string Body { get; set; }
+		}
+
+		public class MessageInDialog
+		{
+			[JsonProperty("uid")]
 			public string UserId { get; set; }
 
 			[JsonProperty("body")]

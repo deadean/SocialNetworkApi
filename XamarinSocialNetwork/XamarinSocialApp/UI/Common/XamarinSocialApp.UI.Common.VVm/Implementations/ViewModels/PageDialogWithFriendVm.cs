@@ -21,10 +21,7 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 		#region Fields
 
 		private readonly IApplicationWebService modIWebService;
-
-		public ObservableCollection<DialogVm> Dialogs { get; set; }
-
-
+		private IUser modUser;
 
 		#endregion
 
@@ -35,7 +32,7 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 
 		#region Properties
 
-
+		public ObservableCollection<DialogVm> Dialogs { get; set; }
 
 		#endregion
 
@@ -66,38 +63,19 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 
 		public override async Task OnNavigatedTo(object navigationParameter)
 		{
-			FriendsVm friend = navigationParameter as FriendsVm;
-			if (friend == null)
+			modUser = navigationParameter as IUser;
+
+			if (modUser.HasNotValue())
 				return;
 
-			IUser user = new User() { FirstName = friend.FirstName, LastName = friend.LastName, SerializeInfo = friend.EntityModel.SerializeInfo };
- 
 			IsBusy = true;
 
-			IEnumerable<IDialog> dialogs = await modIWebService.GetDialogWithFriend(user);
+			IEnumerable<IDialog> dialogs = await modIWebService.GetDialogWithFriend(modUser);
 			this.Dialogs = new ObservableCollection<DialogVm>(dialogs.Select(x => new DialogVm(x)));
 			this.OnPropertyChanged(x => x.Dialogs);
 
 			IsBusy = false;
 		}
-
-		//public override async Task OnNavigatedTo(object navigationParameter)
-		//{
-		//	IUser user = navigationParameter as IUser;
-		//	if (user == null)
-		//		return;
-
-		//	modUser = user;
-		//	UserName = String.Format("{0} {1}", modUser.FirstName, modUser.LastName);
-
-		//	IsBusy = true;
-
-		//	IEnumerable<IDialog> dialogs = await modIWebService.GetDialogs(user);
-		//	this.Dialogs = new ObservableCollection<DialogVm>(dialogs.Select(x => new DialogVm(x)));
-		//	this.OnPropertyChanged(x => x.Dialogs);
-
-		//	IsBusy = false;
-		//}
 
 		#endregion
 

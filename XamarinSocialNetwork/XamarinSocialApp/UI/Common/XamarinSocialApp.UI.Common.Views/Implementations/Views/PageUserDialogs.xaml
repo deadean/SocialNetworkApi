@@ -17,7 +17,8 @@
 		
 	<Button Grid.Row="0" Grid.Column="1" Text="+" Command="{Binding ShowUserFriendsCommand}" />
 			
-	<ListView Grid.Row="1" Grid.ColumnSpan="2" ItemsSource="{Binding Dialogs}">
+	<ListView Grid.Row="1" Grid.ColumnSpan="2" ItemsSource="{Binding Dialogs}" 
+						SelectedItem="{Binding SelectedDialog}">
 		<ListView.ItemTemplate>
 			<DataTemplate>
 				<ViewCell>

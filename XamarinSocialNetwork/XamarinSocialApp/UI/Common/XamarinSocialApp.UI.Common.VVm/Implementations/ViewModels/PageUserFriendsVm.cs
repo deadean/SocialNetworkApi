@@ -45,9 +45,8 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 			set
 			{
 				mvSelectedFriend = value;
-				modNavigationService.Navigate<PageDialogWithFriendVm>(mvSelectedFriend, isFromCache: false);
-
 				this.OnPropertyChanged();
+				modNavigationService.Navigate<PageDialogWithFriendVm>(mvSelectedFriend.EntityModel, isFromCache: false);
 			}
 		}
 

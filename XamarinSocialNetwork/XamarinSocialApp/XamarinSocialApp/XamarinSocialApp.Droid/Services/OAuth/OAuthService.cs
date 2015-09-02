@@ -149,7 +149,7 @@ namespace XamarinSocialApp.Droid.Services.OAuth
 			var res = await request.GetResponseAsync();
 			var responseText = res.GetResponseText();
 
-			var msg = JsonConvert.DeserializeObject<XamarinSocialApp.Droid.Data.VkData.VkMessagesResponse>(responseText);
+			var msg = JsonConvert.DeserializeObject<XamarinSocialApp.Droid.Data.VkData.VkDialogsResponse>(responseText);
 
 			IList<IDialog> dialogs = new List<IDialog>();
 
@@ -210,31 +210,44 @@ namespace XamarinSocialApp.Droid.Services.OAuth
 			var users = JsonConvert.DeserializeObject<XamarinSocialApp.Droid.Data.VkData.VkUsers>(responseText);
 
 			var jsonUser = users.response.First();
-			return new DataUser() { FirstName = jsonUser.first_name, LastName = jsonUser.last_name, ID = jsonUser.uid };
+			return new DataUser() { FirstName = jsonUser.first_name, LastName = jsonUser.last_name, ID = jsonUser.uid, Uid = jsonUser.uid };
 		}
 
 		public async Task<IEnumerable<IDialog>> GetDialogWithFriend(DataIUser user, enSocialNetwork socialNetwork)
 		{
-			Account acc = Account.Deserialize(user.SerializeInfo);
-			var request = new OAuth2Request("GET", new Uri("https://api.vk.com/method/messages.getHistory"), null, acc);
-
-			request.Parameters.Add("user_id", user.IdEntity);
-
-			var res = await request.GetResponseAsync();
-			var responseText = res.GetResponseText();
-
-			var msg = JsonConvert.DeserializeObject<XamarinSocialApp.Droid.Data.VkData.VkMessagesResponse>(responseText);
-
 			IList<IDialog> dialogs = new List<IDialog>();
 
-			foreach (var item in msg.Response.Messages)
+			try
 			{
-				dialogs.Add(new DataDialogs(user, new List<IMessage>() 
-				{ 
-					new DataMessage() { Content = item.Message.Body } 
-				}));
+				Account acc = Account.Deserialize(user.SerializeInfo);
+				var request = new OAuth2Request("GET", new Uri("https://api.vk.com/method/messages.getHistory"), null, acc);
 
-				await Task.Delay(400);
+				request.Parameters.Add("user_id", user.Uid);
+
+				var res = await request.GetResponseAsync();
+				var responseText = res.GetResponseText();
+
+				var msg = JsonConvert.DeserializeObject<XamarinSocialApp.Droid.Data.VkData.VkMessagesResponse>(responseText);
+				msg.Response.RemoveAt(0);
+
+				IList<XamarinSocialApp.Droid.Data.VkData.MessageInDialog> msg1
+					= new List<XamarinSocialApp.Droid.Data.VkData.MessageInDialog>();
+				foreach (var item in msg.Response)
+				{
+					msg1.Add(JsonConvert.DeserializeObject<XamarinSocialApp.Droid.Data.VkData.MessageInDialog>(item.ToString()));
+				}
+
+				foreach (var item in msg1)
+				{
+					dialogs.Add(new DataDialogs(user, new List<IMessage>() 
+				{ 
+					new DataMessage() { Content = item.Body } 
+				}));
+				}
+			}
+			catch (Exception ex)
+			{
+
 			}
 
 			return dialogs;
