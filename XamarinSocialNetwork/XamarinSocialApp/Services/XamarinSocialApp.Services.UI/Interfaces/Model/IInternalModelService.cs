@@ -9,6 +9,7 @@ namespace XamarinSocialApp.Services.UI.Interfaces.Model
 {
 	public interface IInternalModelService
 	{
+
 		Task SaveEntity<T>(T item) where T : class, IEntity;
 		Task UpdateEntityAsync<T>(T item) where T : class, IEntity;
 		Task DeleteEntityAsync<T>(T item) where T : class, IEntity;
