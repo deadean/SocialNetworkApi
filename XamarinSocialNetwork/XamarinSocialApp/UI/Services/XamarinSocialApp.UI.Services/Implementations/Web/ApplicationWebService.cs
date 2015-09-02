@@ -47,16 +47,9 @@ namespace XamarinSocialApp.UI.Services.Implementations.Web
 
 		#region Public Methods
 
-		public async Task<IUser> Login(enSocialNetwork socialNetwork)
+		public Task<IUser> Login(enSocialNetwork socialNetwork)
 		{
-			XamarinSocialApp.Data.Interfaces.Entities.OAuth.IUser user = await modService.Login(socialNetwork);
-			return new User() 
-			{ 
-				FirstName = user.FirstName, 
-				LastName = user.LastName, 
-				SerializeInfo = user.SerializeInfo, 
-				SocialNetwork = user.SocialNetwork 
-			};
+			return modService.Login(socialNetwork);
 		}
 
 		public Task<IEnumerable<IDialog>> GetDialogs(IUser user)

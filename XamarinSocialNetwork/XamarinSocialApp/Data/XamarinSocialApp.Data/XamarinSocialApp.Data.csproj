@@ -40,7 +40,6 @@
     <Compile Include="Interfaces\Entities\Database\IDialog.cs" />
     <Compile Include="Interfaces\Entities\Database\IMessage.cs" />
     <Compile Include="Interfaces\Entities\Database\IUser.cs" />
-    <Compile Include="Interfaces\Entities\OAuth\IUser.cs" />
     <Compile Include="Interfaces\Entities\OAuth\Vk\IVkUsers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -20,10 +20,10 @@ using XamarinSocialApp.UI.Data.Implementations.Entities.OAuth;
 using XamarinSocialApp.Data.Interfaces.Entities.Database;
 using XamarinSocialApp.Data.Common.Enums;
 using DataDialogs = XamarinSocialApp.UI.Data.Implementations.Entities.Databases.Dialog;
-using DataIOAuthUser = XamarinSocialApp.Data.Interfaces.Entities.OAuth.IUser;
 using DataIUser = XamarinSocialApp.Data.Interfaces.Entities.Database.IUser;
 using DataUser = XamarinSocialApp.UI.Data.Implementations.Entities.Databases.User;
 using DataMessage = XamarinSocialApp.UI.Data.Implementations.Entities.Databases.Message;
+using XamarinSocialApp.UI.Data.Implementations.Entities.Databases;
 
 [assembly: Dependency(typeof(OAuthService))]
 
@@ -67,9 +67,9 @@ namespace XamarinSocialApp.Droid.Services.OAuth
 
 		#region Public Methods
 
-		public async Task<DataIOAuthUser> Login(enSocialNetwork socialNetwork)
+		public async Task<IUser> Login(enSocialNetwork socialNetwork)
 		{
-			XamarinSocialApp.Data.Interfaces.Entities.OAuth.IUser user = null;
+			IUser user = null;
 			try
 			{
 				TaskCompletionSource<int> ts = new TaskCompletionSource<int>();
@@ -108,7 +108,14 @@ namespace XamarinSocialApp.Droid.Services.OAuth
 							string firstName = users.response[0].first_name;
 							string lastName = users.response[0].last_name;
 
-							user = new User(uid, firstName, lastName, Account.Serialize(), enSocialNetwork.VK);
+							user = new User()
+							{
+								FirstName = firstName,
+								LastName = lastName,
+								Uid = uid,
+								SerializeInfo = Account.Serialize(),
+								SocialNetwork = enSocialNetwork.VK
+							};
 
 							ts.SetResult(0);
 						}
