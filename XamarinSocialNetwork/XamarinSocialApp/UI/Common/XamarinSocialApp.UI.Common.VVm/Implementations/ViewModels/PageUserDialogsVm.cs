@@ -20,6 +20,7 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 {
 	public sealed class PageUserDialogsVm : AdvancedPageViewModelBase, IPageUserDialogsVm
 	{
+
 		#region Fields
 
 		private IUser modUser;
