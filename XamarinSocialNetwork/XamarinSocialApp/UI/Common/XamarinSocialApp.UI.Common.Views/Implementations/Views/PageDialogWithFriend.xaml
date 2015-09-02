@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="XamarinSocialApp.UI.Common.Views.Implementations.Views.PageUserFriends">
+             x:Class="XamarinSocialApp.UI.Common.Views.Implementations.Views.PageDialogWithFriend">
 
 	<Grid>
 
@@ -10,16 +10,15 @@
 			<RowDefinition Height="*" />
 		</Grid.RowDefinitions>
 
-		<Label Text="Friends" FontSize="20" Grid.Row="0" XAlign="Center" TextColor="Purple"/>
+		<Label Text="Dialog" FontSize="20" Grid.Row="0" XAlign="Center" TextColor="Purple"/>
 
-
-		<ListView Grid.Row="1" ItemsSource="{Binding Friends}" SelectedItem="{Binding SelectedFriend, Mode=TwoWay}" >
+		<ListView Grid.Row="1" ItemsSource="{Binding Dialogs}">
 			<ListView.ItemTemplate>
 				<DataTemplate>
 					<ViewCell>
 						<StackLayout Orientation="Horizontal">
-							<Label Text="{Binding FirstName}"/>
-							<Label Text="{Binding LastName}" />
+							<Label Text="{Binding Name}"/>
+							<Label Text="{Binding Content}"/>
 						</StackLayout>
 					</ViewCell>
 				</DataTemplate>
@@ -36,7 +35,6 @@
 
 
 	</Grid>
-	
 	
 	
 </ContentPage>

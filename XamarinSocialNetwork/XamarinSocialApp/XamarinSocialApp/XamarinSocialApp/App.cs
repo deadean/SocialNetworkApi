@@ -200,6 +200,9 @@ namespace XamarinSocialApp
 			ViewFactory.Register<MainPage, MainPageVm>();
 			ViewFactory.Register<PageUserDialogs, PageUserDialogsVm>();
 			ViewFactory.Register<PageUserFriends, PageUserFriendsVm>(); 
+
+			ViewFactory.Register<PageDialogWithFriend, PageDialogWithFriendVm>();
+
 			ConfigureNavigationServiceByPlatform();
 		}
 

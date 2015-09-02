@@ -29,11 +29,27 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 		private readonly IApplicationWebService modIWebService;
 
 		public ObservableCollection<FriendsVm> Friends { get; set; }
+		
+		private FriendsVm mvSelectedFriend;
 
 		#endregion
 
 		#region Properties
 
+		public FriendsVm SelectedFriend
+		{
+			get
+			{
+				return mvSelectedFriend;
+			}
+			set
+			{
+				mvSelectedFriend = value;
+				modNavigationService.Navigate<PageDialogWithFriendVm>(mvSelectedFriend, isFromCache: false);
+
+				this.OnPropertyChanged();
+			}
+		}
 
 		#endregion
 
