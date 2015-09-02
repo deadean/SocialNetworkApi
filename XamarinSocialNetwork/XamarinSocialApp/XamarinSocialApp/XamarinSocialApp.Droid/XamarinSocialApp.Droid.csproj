@@ -39,7 +39,7 @@
     <AndroidUseSharedRuntime>True</AndroidUseSharedRuntime>
     <AndroidLinkMode>None</AndroidLinkMode>
     <AndroidLinkSkip />
-    <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
+    <EmbedAssembliesIntoApk>False</EmbedAssembliesIntoApk>
     <BundleAssemblies>False</BundleAssemblies>
     <AndroidCreatePackagePerAbi>False</AndroidCreatePackagePerAbi>
     <AndroidSupportedAbis>armeabi,armeabi-v7a,x86</AndroidSupportedAbis>
@@ -171,6 +171,10 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Common\XamarinSocialApp.Common\XamarinSocialApp.Common.csproj">
+      <Project>{71982e0d-cba7-4a1c-bff5-12b2cb52a8d2}</Project>
+      <Name>XamarinSocialApp.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Data\XamarinSocialApp.Data\XamarinSocialApp.Data.csproj">
       <Project>{9bdd15ef-cedc-4e9f-98f2-659bb6d07768}</Project>
       <Name>XamarinSocialApp.Data</Name>

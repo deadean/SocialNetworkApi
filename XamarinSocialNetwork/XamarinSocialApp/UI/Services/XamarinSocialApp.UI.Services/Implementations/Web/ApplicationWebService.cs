@@ -47,16 +47,9 @@ namespace XamarinSocialApp.UI.Services.Implementations.Web
 
 		#region Public Methods
 
-		public async Task<IUser> Login(enSocialNetwork socialNetwork)
+		public Task<IUser> Login(enSocialNetwork socialNetwork)
 		{
-			XamarinSocialApp.Data.Interfaces.Entities.OAuth.IUser user = await modService.Login(socialNetwork);
-			return new User() 
-			{ 
-				FirstName = user.FirstName, 
-				LastName = user.LastName, 
-				SerializeInfo = user.SerializeInfo, 
-				SocialNetwork = user.SocialNetwork 
-			};
+			return modService.Login(socialNetwork);
 		}
 
 		public Task<IEnumerable<IDialog>> GetDialogs(IUser user)
@@ -74,6 +67,11 @@ namespace XamarinSocialApp.UI.Services.Implementations.Web
 			return modService.ShowUserFriends(user, user.SocialNetwork);
 		}
 
+		public Task<IUser> GetUserInfoRequest(IUser user)
+		{
+			return modService.GetUserInfoRequest(user, user.SocialNetwork);
+		}
+
 		#endregion
 
 		#region Private Methods
@@ -83,6 +81,9 @@ namespace XamarinSocialApp.UI.Services.Implementations.Web
 		#region Protected Methods
 
 		#endregion
+
+
+
 
 	}
 }

@@ -16,6 +16,8 @@ namespace XamarinSocialApp.Services.UI.Interfaces.Web
 
 		Task<IEnumerable<IDialog>> GetDialogWithFriend(IUser user);
 
+		Task<IUser> GetUserInfoRequest(IUser user);
+
 		Task<IEnumerable<IUser>> ShowUserFriends(IUser user);
 
 	}

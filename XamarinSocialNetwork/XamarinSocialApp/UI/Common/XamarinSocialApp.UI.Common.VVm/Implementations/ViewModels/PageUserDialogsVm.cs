@@ -80,6 +80,34 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 		#endregion
 
 		#region Private Methods
+
+		private async Task LoadUserDialogInfo()
+		{
+			try
+			{
+				int groupLength = 3;
+				System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+				TimeSpan ts = new TimeSpan(0,0,0,1000);
+
+				for (int i = 0; i < this.Dialogs.Count; i += groupLength)
+				{
+					sw.Start();
+
+					this.Dialogs[i].UpdateUserInfo(await this.modIWebService.GetUserInfoRequest(this.Dialogs[i].EntityModel.User));
+					this.Dialogs[i+1].UpdateUserInfo(await this.modIWebService.GetUserInfoRequest(this.Dialogs[i+1].EntityModel.User));
+					this.Dialogs[i+2].UpdateUserInfo(await this.modIWebService.GetUserInfoRequest(this.Dialogs[i+2].EntityModel.User));
+					this.Dialogs[i].IsBusy = false;
+					this.Dialogs[i+1].IsBusy = false;
+					this.Dialogs[i+2].IsBusy = false;
+
+					await Task.Delay(800);
+				}
+			}
+			catch (Exception ex)
+			{
+
+			}
+		}
 		
 		#endregion
 
@@ -101,6 +129,8 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 			this.OnPropertyChanged(x => x.Dialogs);
 
 			IsBusy = false;
+
+			this.LoadUserDialogInfo();
 		}
 
 		#endregion

@@ -20,10 +20,10 @@ using XamarinSocialApp.UI.Data.Implementations.Entities.OAuth;
 using XamarinSocialApp.Data.Interfaces.Entities.Database;
 using XamarinSocialApp.Data.Common.Enums;
 using DataDialogs = XamarinSocialApp.UI.Data.Implementations.Entities.Databases.Dialog;
-using DataIOAuthUser = XamarinSocialApp.Data.Interfaces.Entities.OAuth.IUser;
 using DataIUser = XamarinSocialApp.Data.Interfaces.Entities.Database.IUser;
 using DataUser = XamarinSocialApp.UI.Data.Implementations.Entities.Databases.User;
 using DataMessage = XamarinSocialApp.UI.Data.Implementations.Entities.Databases.Message;
+using XamarinSocialApp.UI.Data.Implementations.Entities.Databases;
 
 [assembly: Dependency(typeof(OAuthService))]
 
@@ -67,9 +67,9 @@ namespace XamarinSocialApp.Droid.Services.OAuth
 
 		#region Public Methods
 
-		public async Task<DataIOAuthUser> Login(enSocialNetwork socialNetwork)
+		public async Task<IUser> Login(enSocialNetwork socialNetwork)
 		{
-			XamarinSocialApp.Data.Interfaces.Entities.OAuth.IUser user = null;
+			IUser user = null;
 			try
 			{
 				TaskCompletionSource<int> ts = new TaskCompletionSource<int>();
@@ -108,7 +108,14 @@ namespace XamarinSocialApp.Droid.Services.OAuth
 							string firstName = users.response[0].first_name;
 							string lastName = users.response[0].last_name;
 
-							user = new User(uid, firstName, lastName, Account.Serialize(), enSocialNetwork.VK);
+							user = new User()
+							{
+								FirstName = firstName,
+								LastName = lastName,
+								Uid = uid,
+								SerializeInfo = Account.Serialize(),
+								SocialNetwork = enSocialNetwork.VK
+							};
 
 							ts.SetResult(0);
 						}
@@ -136,7 +143,7 @@ namespace XamarinSocialApp.Droid.Services.OAuth
 			Account acc = Account.Deserialize(user.SerializeInfo);
 			var request = new OAuth2Request("GET", new Uri("https://api.vk.com/method/messages.getDialogs"), null, acc);
 
-			//request.Parameters.Add("count", "");
+			request.Parameters.Add("count", "200");
 			request.Parameters.Add("v", "5.37");
 
 			var res = await request.GetResponseAsync();
@@ -148,46 +155,16 @@ namespace XamarinSocialApp.Droid.Services.OAuth
 
 			foreach (var item in msg.Response.Messages)
 			{
-				var userDialog = await GetUserInfoRequest(item.Message.UserId, acc);
+				IUser userDialog = new User() { Uid = item.Message.UserId, SerializeInfo = user.SerializeInfo };
+				//var userDialog = await GetUserInfoRequest(item.Message.UserId, acc, socialNetwork);
 				dialogs.Add(new DataDialogs(userDialog, new List<IMessage>() 
 				{ 
 					new DataMessage() { Content = item.Message.Body } 
 				}));
-
-				await Task.Delay(400);
 			}
 
 			return dialogs;
 		}
-
-		public async Task<IEnumerable<IDialog>> GetDialogWithFriend(DataIUser user, enSocialNetwork socialNetwork)
-		{
-			Account acc = Account.Deserialize(user.SerializeInfo);
-			var request = new OAuth2Request("GET", new Uri("https://api.vk.com/method/messages.getHistory"), null, acc);
-
-			request.Parameters.Add("user_id", user.IdEntity);
-
-			var res = await request.GetResponseAsync();
-			var responseText = res.GetResponseText();
-
-			var msg = JsonConvert.DeserializeObject<XamarinSocialApp.Droid.Data.VkData.VkMessagesResponse>(responseText);
-
-			IList<IDialog> dialogs = new List<IDialog>();
-
-			foreach (var item in msg.Response.Messages)
-			{
-				var userDialog = await GetUserInfoRequest(item.Message.UserId, acc);
-				dialogs.Add(new DataDialogs(userDialog, new List<IMessage>() 
-				{ 
-					new DataMessage() { Content = item.Message.Body } 
-				}));
-
-				await Task.Delay(400);
-			}
-
-			return dialogs;
-		}
-
 
 		public async Task<IEnumerable<DataIUser>> ShowUserFriends(DataIUser user, enSocialNetwork enSocialNetwork)
 		{
@@ -212,19 +189,20 @@ namespace XamarinSocialApp.Droid.Services.OAuth
 			return friends;
 		}
 
-
-
-		#endregion
-
-		#region Private Methods
-
-		private async Task<DataIUser> GetUserInfoRequest(string uid, Account acc)
+		public async Task<IUser> GetUserInfoRequest(IUser user, enSocialNetwork socialNetwork)
 		{
-			if (String.IsNullOrWhiteSpace(uid))
+			if (user.HasNotValue())
 				return null;
 
-			var request = new OAuth2Request("GET", new Uri("https://api.vk.com/method/users.get"), null, acc);
-			request.Parameters.Add("uids", uid);
+			Account accCurrent = Account.Deserialize(user.SerializeInfo);
+			if (accCurrent.HasNotValue())
+				return null;
+
+			if (String.IsNullOrWhiteSpace(user.Uid))
+				return null;
+
+			var request = new OAuth2Request("GET", new Uri("https://api.vk.com/method/users.get"), null, accCurrent);
+			request.Parameters.Add("uids", user.Uid);
 
 			var res = await request.GetResponseAsync();
 			var responseText = res.GetResponseText();
@@ -234,6 +212,37 @@ namespace XamarinSocialApp.Droid.Services.OAuth
 			var jsonUser = users.response.First();
 			return new DataUser() { FirstName = jsonUser.first_name, LastName = jsonUser.last_name, ID = jsonUser.uid };
 		}
+
+		public async Task<IEnumerable<IDialog>> GetDialogWithFriend(DataIUser user, enSocialNetwork socialNetwork)
+		{
+			Account acc = Account.Deserialize(user.SerializeInfo);
+			var request = new OAuth2Request("GET", new Uri("https://api.vk.com/method/messages.getHistory"), null, acc);
+
+			request.Parameters.Add("user_id", user.IdEntity);
+
+			var res = await request.GetResponseAsync();
+			var responseText = res.GetResponseText();
+
+			var msg = JsonConvert.DeserializeObject<XamarinSocialApp.Droid.Data.VkData.VkMessagesResponse>(responseText);
+
+			IList<IDialog> dialogs = new List<IDialog>();
+
+			foreach (var item in msg.Response.Messages)
+			{
+				dialogs.Add(new DataDialogs(user, new List<IMessage>() 
+				{ 
+					new DataMessage() { Content = item.Message.Body } 
+				}));
+
+				await Task.Delay(400);
+			}
+
+			return dialogs;
+		}
+
+		#endregion
+
+		#region Private Methods
 
 		#endregion
 

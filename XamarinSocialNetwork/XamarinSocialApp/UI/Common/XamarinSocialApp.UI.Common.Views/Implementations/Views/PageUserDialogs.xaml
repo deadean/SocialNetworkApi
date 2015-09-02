@@ -21,15 +21,27 @@
 		<ListView.ItemTemplate>
 			<DataTemplate>
 				<ViewCell>
-					<StackLayout Orientation="Horizontal">
-						<Label Text="{Binding Name}"/>
-						<Label Text="{Binding Content}"/>
-					</StackLayout>
+					<Grid>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="70"/>
+							<ColumnDefinition Width="20"/>
+							<ColumnDefinition Width="*"/>
+						</Grid.ColumnDefinitions>
+						<Label Text="{Binding Name}" Grid.Column="0" LineBreakMode="NoWrap" HorizontalOptions="Center" />
+						<ActivityIndicator Grid.Row="0"
+											 IsRunning="{Binding IsBusy}"
+											 IsVisible ="{Binding IsBusy}"
+											 WidthRequest="70"
+											 HeightRequest="70"
+											 VerticalOptions="Center"
+											 HorizontalOptions="Center"/>
+
+						<Label Text="{Binding Content}" Grid.Column="2" LineBreakMode="NoWrap" />
+					</Grid>
 				</ViewCell>
 			</DataTemplate>
 		</ListView.ItemTemplate>
 	</ListView>
-
 
 	<ActivityIndicator Grid.Row="1" Grid.ColumnSpan="2"
 											 IsRunning="{Binding IsBusy}"

@@ -66,6 +66,7 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 			EntityModel = dialog;
 			Name = EntityModel.User.FirstName;
 			Content = EntityModel.Messages.First().Content;
+			IsBusy = true;
 		}
 
 		#endregion
@@ -79,6 +80,17 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 		#endregion
 
 		#region Public Methods
+
+		public void UpdateUserInfo(IUser user)
+		{
+			if (user.HasNotValue())
+				return;
+
+			EntityModel.User.FirstName = user.FirstName;
+			EntityModel.User.LastName = user.LastName;
+			EntityModel.User.Uid = user.Uid;
+			Name = EntityModel.User.FirstName;
+		}
 
 		#endregion
 
