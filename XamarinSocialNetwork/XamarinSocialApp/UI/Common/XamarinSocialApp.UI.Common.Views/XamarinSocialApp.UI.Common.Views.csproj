@@ -43,8 +43,8 @@
     <Compile Include="Implementations\Views\PageUserDialogs.xaml.cs">
       <DependentUpon>PageUserDialogs.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Implementations\Views\PageUserDialogsV1.xaml.cs">
-      <DependentUpon>PageUserDialogsV1.xaml</DependentUpon>
+    <Compile Include="Implementations\Views\PageUserFriends.xaml.cs">
+      <DependentUpon>PageUserFriends.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -80,7 +80,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Implementations\Views\PageUserDialogsV1.xaml">
+    <EmbeddedResource Include="Implementations\Views\PageUserFriends.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>

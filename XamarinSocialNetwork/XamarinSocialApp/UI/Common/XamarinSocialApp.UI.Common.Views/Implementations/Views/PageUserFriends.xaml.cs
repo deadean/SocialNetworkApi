@@ -7,23 +7,49 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using XamarinSocialApp.UI.Common.Interfaces.Views.Bases;
 
+
 namespace XamarinSocialApp.UI.Common.Views.Implementations.Views
 {
-	public partial class PageUserDialogsV1 : ContentPage, IBasePage
+	public partial class PageUserFriends : ContentPage, IBasePage
 	{
-		public PageUserDialogsV1()
+		
+		#region Fields
+
+		#endregion
+
+		#region Properties
+
+		#endregion
+
+		#region Ctor
+
+		public PageUserFriends()
 		{
 			InitializeComponent();
 		}
 
-		public PageUserDialogsV1(object p)
+		public PageUserFriends(object p)
 			: this()
 		{
 
 		}
 
+		#endregion
+
+		#region Public Methods
+
+		#endregion
+
+		#region Private Methods
+
+		#endregion
+
+		#region Protected Methods
+
 		public async Task PostInitizlization()
 		{
 		}
+
+		#endregion
 	}
 }
