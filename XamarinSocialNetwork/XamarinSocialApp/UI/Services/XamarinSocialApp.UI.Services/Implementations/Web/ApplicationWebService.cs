@@ -62,6 +62,11 @@ namespace XamarinSocialApp.UI.Services.Implementations.Web
 			return modService.ShowUserFriends(user, user.SocialNetwork);
 		}
 
+		public Task<IUser> GetUserInfoRequest(IUser user)
+		{
+			return modService.GetUserInfoRequest(user, user.SocialNetwork);
+		}
+
 		#endregion
 
 		#region Private Methods
@@ -71,6 +76,9 @@ namespace XamarinSocialApp.UI.Services.Implementations.Web
 		#region Protected Methods
 
 		#endregion
+
+
+
 
 	}
 }

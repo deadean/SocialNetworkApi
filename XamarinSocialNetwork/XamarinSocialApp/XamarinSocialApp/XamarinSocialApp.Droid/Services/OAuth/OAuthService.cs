@@ -143,7 +143,7 @@ namespace XamarinSocialApp.Droid.Services.OAuth
 			Account acc = Account.Deserialize(user.SerializeInfo);
 			var request = new OAuth2Request("GET", new Uri("https://api.vk.com/method/messages.getDialogs"), null, acc);
 
-			//request.Parameters.Add("count", "");
+			request.Parameters.Add("count", "200");
 			request.Parameters.Add("v", "5.37");
 
 			var res = await request.GetResponseAsync();
@@ -155,18 +155,16 @@ namespace XamarinSocialApp.Droid.Services.OAuth
 
 			foreach (var item in msg.Response.Messages)
 			{
-				var userDialog = await GetUserInfoRequest(item.Message.UserId, acc);
+				IUser userDialog = new User() { Uid = item.Message.UserId, SerializeInfo = user.SerializeInfo };
+				//var userDialog = await GetUserInfoRequest(item.Message.UserId, acc, socialNetwork);
 				dialogs.Add(new DataDialogs(userDialog, new List<IMessage>() 
 				{ 
 					new DataMessage() { Content = item.Message.Body } 
 				}));
-
-				await Task.Delay(400);
 			}
 
 			return dialogs;
 		}
-
 
 		public async Task<IEnumerable<DataIUser>> ShowUserFriends(DataIUser user, enSocialNetwork enSocialNetwork)
 		{
@@ -191,19 +189,20 @@ namespace XamarinSocialApp.Droid.Services.OAuth
 			return friends;
 		}
 
-
-
-		#endregion
-
-		#region Private Methods
-
-		private async Task<DataIUser> GetUserInfoRequest(string uid, Account acc)
+		public async Task<IUser> GetUserInfoRequest(IUser user, enSocialNetwork socialNetwork)
 		{
-			if (String.IsNullOrWhiteSpace(uid))
+			if (user.HasNotValue())
 				return null;
 
-			var request = new OAuth2Request("GET", new Uri("https://api.vk.com/method/users.get"), null, acc);
-			request.Parameters.Add("uids", uid);
+			Account accCurrent = Account.Deserialize(user.SerializeInfo);
+			if (accCurrent.HasNotValue())
+				return null;
+
+			if (String.IsNullOrWhiteSpace(user.Uid))
+				return null;
+
+			var request = new OAuth2Request("GET", new Uri("https://api.vk.com/method/users.get"), null, accCurrent);
+			request.Parameters.Add("uids", user.Uid);
 
 			var res = await request.GetResponseAsync();
 			var responseText = res.GetResponseText();
@@ -213,6 +212,10 @@ namespace XamarinSocialApp.Droid.Services.OAuth
 			var jsonUser = users.response.First();
 			return new DataUser() { FirstName = jsonUser.first_name, LastName = jsonUser.last_name, ID = jsonUser.uid };
 		}
+
+		#endregion
+
+		#region Private Methods
 
 		#endregion
 

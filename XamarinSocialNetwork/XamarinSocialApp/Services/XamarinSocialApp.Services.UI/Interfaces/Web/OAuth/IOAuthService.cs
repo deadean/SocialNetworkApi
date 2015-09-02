@@ -13,7 +13,7 @@ namespace XamarinSocialApp.Services.UI.Interfaces.Web.OAuth
 	{
 		Task<IUser> Login(enSocialNetwork socialNetwork);
 		Task<IEnumerable<IDialog>> GetDialogs(IUser user, enSocialNetwork socialNetwork);
-
 		Task<IEnumerable<IUser>> ShowUserFriends(IUser user, enSocialNetwork enSocialNetwork);
+		Task<IUser> GetUserInfoRequest(IUser user, enSocialNetwork enSocialNetwork);
 	}
 }

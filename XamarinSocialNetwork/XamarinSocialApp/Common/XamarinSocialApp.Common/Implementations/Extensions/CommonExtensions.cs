@@ -12,6 +12,16 @@ namespace System
 {
 	public static class CommonExtensions
 	{
+		public static bool HasValue(this object obj)
+		{
+			return obj != null;
+		}
+
+		public static bool HasNotValue(this object obj)
+		{
+			return obj == null;
+		}
+
 		/// <summary>
 		/// Adds element to linked list before first entry that satisfy predicate
 		/// </summary>
