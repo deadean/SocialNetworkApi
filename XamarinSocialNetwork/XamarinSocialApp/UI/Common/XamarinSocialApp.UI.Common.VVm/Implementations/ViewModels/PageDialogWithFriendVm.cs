@@ -12,6 +12,7 @@ using XamarinSocialApp.Services.UI.Interfaces.Web;
 using XamarinSocialApp.UI.Common.Implementations.Bases;
 using XamarinSocialApp.UI.Common.Interfaces.ViewModels;
 using XamarinSocialApp.UI.Data.Implementations.Entities.Databases;
+using XamarinSocialApp.UI.Data.Implementations.Navigation;
 
 namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 {
@@ -32,7 +33,7 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 
 		#region Properties
 
-		public ObservableCollection<DialogVm> Dialogs { get; set; }
+		public ObservableCollection<MessageVm> Messages { get; set; }
 
 		#endregion
 
@@ -63,16 +64,20 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 
 		public override async Task OnNavigatedTo(object navigationParameter)
 		{
-			modUser = navigationParameter as IUser;
+			PageDialogWithFriendNavParams param = navigationParameter as PageDialogWithFriendNavParams;
+			if (param.HasNotValue())
+				return;
+
+			modUser = param.User;
 
 			if (modUser.HasNotValue())
 				return;
 
 			IsBusy = true;
 
-			IEnumerable<IDialog> dialogs = await modIWebService.GetDialogWithFriend(modUser);
-			this.Dialogs = new ObservableCollection<DialogVm>(dialogs.Select(x => new DialogVm(x)));
-			this.OnPropertyChanged(x => x.Dialogs);
+			IDialog dialog = await modIWebService.GetDialogWithFriend(modUser, param.Friend);
+			this.Messages = new ObservableCollection<MessageVm>(dialog.Messages.Select(x => new MessageVm(x)));
+			this.OnPropertyChanged(x => x.Messages);
 
 			IsBusy = false;
 		}

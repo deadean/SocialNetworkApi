@@ -34,6 +34,8 @@ namespace XamarinSocialApp.Droid.Services.OAuth
 
 		#region Fields
 
+		private int currentCountQueue;
+
 		#endregion
 
 		#region Properties
@@ -60,7 +62,7 @@ namespace XamarinSocialApp.Droid.Services.OAuth
 
 		public OAuthService()
 		{
-			
+			currentCountQueue = 0;
 		}
 
 		#endregion
@@ -166,7 +168,7 @@ namespace XamarinSocialApp.Droid.Services.OAuth
 			return dialogs;
 		}
 
-		public async Task<IEnumerable<DataIUser>> ShowUserFriends(DataIUser user, enSocialNetwork enSocialNetwork)
+		public async Task<IEnumerable<DataIUser>> GetUserFriends(DataIUser user, enSocialNetwork enSocialNetwork)
 		{
 			Account acc = Account.Deserialize(user.SerializeInfo);
 			var request = new OAuth2Request("GET", new Uri("https://api.vk.com/method/friends.get"), null, acc);
@@ -183,7 +185,13 @@ namespace XamarinSocialApp.Droid.Services.OAuth
 
 			foreach (var friend in listFriendsIds.response)
 			{
-				friends.Add(new DataUser() { FirstName = friend.first_name, LastName = friend.last_name });
+				friends.Add(new DataUser() 
+				{ 
+					FirstName = friend.first_name, 
+					LastName = friend.last_name, 
+					SerializeInfo = user.SerializeInfo,
+					Uid = friend.uid
+				});
 			}
 
 			return friends;
@@ -201,6 +209,8 @@ namespace XamarinSocialApp.Droid.Services.OAuth
 			if (String.IsNullOrWhiteSpace(user.Uid))
 				return null;
 
+			this.TryToStart();
+
 			var request = new OAuth2Request("GET", new Uri("https://api.vk.com/method/users.get"), null, accCurrent);
 			request.Parameters.Add("uids", user.Uid);
 
@@ -209,20 +219,25 @@ namespace XamarinSocialApp.Droid.Services.OAuth
 
 			var users = JsonConvert.DeserializeObject<XamarinSocialApp.Droid.Data.VkData.VkUsers>(responseText);
 
+			this.StopRequest();
+
 			var jsonUser = users.response.First();
 			return new DataUser() { FirstName = jsonUser.first_name, LastName = jsonUser.last_name, ID = jsonUser.uid, Uid = jsonUser.uid };
 		}
 
-		public async Task<IEnumerable<IDialog>> GetDialogWithFriend(DataIUser user, enSocialNetwork socialNetwork)
+		public async Task<IDialog> GetDialogWithFriend(DataIUser user, enSocialNetwork socialNetwork, IUser friend)
 		{
-			IList<IDialog> dialogs = new List<IDialog>();
+			IDialog dialog = null;
 
 			try
 			{
 				Account acc = Account.Deserialize(user.SerializeInfo);
+
+				this.TryToStart();
+
 				var request = new OAuth2Request("GET", new Uri("https://api.vk.com/method/messages.getHistory"), null, acc);
 
-				request.Parameters.Add("user_id", user.Uid);
+				request.Parameters.Add("user_id", friend.Uid);
 
 				var res = await request.GetResponseAsync();
 				var responseText = res.GetResponseText();
@@ -237,25 +252,45 @@ namespace XamarinSocialApp.Droid.Services.OAuth
 					msg1.Add(JsonConvert.DeserializeObject<XamarinSocialApp.Droid.Data.VkData.MessageInDialog>(item.ToString()));
 				}
 
+				IList<IMessage> messages = new List<IMessage>();
+
 				foreach (var item in msg1)
 				{
-					dialogs.Add(new DataDialogs(user, new List<IMessage>() 
-				{ 
-					new DataMessage() { Content = item.Body } 
-				}));
+					messages.Add(new DataMessage() { Content = item.Body, User = item.UserId == user.Uid ? user : friend });
 				}
+
+				this.StopRequest();
+
+				dialog = new XamarinSocialApp.UI.Data.Implementations.Entities.Databases.Dialog(user, messages);
 			}
 			catch (Exception ex)
 			{
 
 			}
 
-			return dialogs;
+			return dialog;
 		}
 
 		#endregion
 
 		#region Private Methods
+
+		private void TryToStart()
+		{
+			while (true)
+			{
+				if(currentCountQueue<2)
+				{
+					currentCountQueue++;
+					return;
+				}
+			}
+		}
+
+		private void StopRequest()
+		{
+			currentCountQueue--;
+		}
 
 		#endregion
 

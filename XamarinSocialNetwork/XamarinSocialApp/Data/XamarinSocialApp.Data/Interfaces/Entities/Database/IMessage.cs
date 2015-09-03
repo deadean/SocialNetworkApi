@@ -9,5 +9,6 @@ namespace XamarinSocialApp.Data.Interfaces.Entities.Database
 	public interface IMessage
 	{
 		string Content { get; set; }
+		IUser User { get; }
 	}
 }

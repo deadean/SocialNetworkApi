@@ -12,14 +12,19 @@
 
 		<Label Text="Dialog" FontSize="20" Grid.Row="0" XAlign="Center" TextColor="Purple"/>
 
-		<ListView Grid.Row="1" ItemsSource="{Binding Dialogs}">
+		<ListView Grid.Row="1" ItemsSource="{Binding Messages}">
 			<ListView.ItemTemplate>
 				<DataTemplate>
 					<ViewCell>
-						<StackLayout Orientation="Horizontal">
-							<Label Text="{Binding Name}"/>
-							<Label Text="{Binding Content}"/>
-						</StackLayout>
+						<Grid>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="70"/>
+								<ColumnDefinition Width="20"/>
+								<ColumnDefinition Width="*"/>
+							</Grid.ColumnDefinitions>
+							<Label Text="{Binding Name}" Grid.Column="0" LineBreakMode="NoWrap" HorizontalOptions="Center" />
+							<Label Text="{Binding Content}" Grid.Column="2" LineBreakMode="NoWrap" />
+						</Grid>
 					</ViewCell>
 				</DataTemplate>
 			</ListView.ItemTemplate>

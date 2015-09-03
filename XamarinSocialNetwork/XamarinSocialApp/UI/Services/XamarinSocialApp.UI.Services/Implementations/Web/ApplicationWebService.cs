@@ -57,14 +57,14 @@ namespace XamarinSocialApp.UI.Services.Implementations.Web
 			return modService.GetDialogs(user, user.SocialNetwork);
 		}
 
-		public Task<IEnumerable<IDialog>> GetDialogWithFriend(IUser user)
+		public Task<IDialog> GetDialogWithFriend(IUser user, IUser friend)
 		{
-			return modService.GetDialogWithFriend(user, user.SocialNetwork);
+			return modService.GetDialogWithFriend(user, user.SocialNetwork, friend);
 		}
 
-		public Task<IEnumerable<IUser>> ShowUserFriends(IUser user)
+		public Task<IEnumerable<IUser>> GetUserFriends(IUser user)
 		{
-			return modService.ShowUserFriends(user, user.SocialNetwork);
+			return modService.GetUserFriends(user, user.SocialNetwork);
 		}
 
 		public Task<IUser> GetUserInfoRequest(IUser user)

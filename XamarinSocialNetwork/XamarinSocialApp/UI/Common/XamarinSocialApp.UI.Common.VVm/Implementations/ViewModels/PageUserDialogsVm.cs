@@ -14,6 +14,7 @@ using GalaSoft.MvvmLight.Ioc;
 using Microsoft.Practices.ServiceLocation;
 using XamarinSocialApp.UI.Data.Implementations.Entities.Databases;
 using System.Windows.Input;
+using XamarinSocialApp.UI.Data.Implementations.Navigation;
 
 
 namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
@@ -45,7 +46,7 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 
 		public ObservableCollection<DialogVm> Dialogs { get; set; }
 
-		public DialogVm SelectedDialog
+		public DialogVm SelectedDialogVm
 		{
 			get
 			{
@@ -54,13 +55,20 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 
 			set
 			{
+				if (mvSelectedDialog == value)
+					return;
+
 				mvSelectedDialog = value;
 				this.OnPropertyChanged();
+				if (mvSelectedDialog.HasNotValue())
+					return;
 
-				value.With(x => modNavigationService.Navigate<PageDialogWithFriendVm>(x.EntityModel.User, isFromCache: false));
+				IDialog selectedDialog = value.EntityModel;
+				SelectedDialogVm = null;
+				var navParam = new PageDialogWithFriendNavParams(modUser, selectedDialog.User);
+				modNavigationService.Navigate<PageDialogWithFriendVm>(navParam, isFromCache: false);
 			}
 		}
-		
 		
 		public string UserName
 		{
@@ -74,6 +82,11 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 				mvUserName = value;
 				this.OnPropertyChanged();
 			}
+		}
+
+		public IUser User
+		{
+			get { return modUser; }
 		}
 
 		#endregion
@@ -108,13 +121,18 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 				System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
 				TimeSpan ts = new TimeSpan(0,0,0,1000);
 
-				for (int i = 0; i < this.Dialogs.Count; i += groupLength)
+				for (int i = 0; i < this.Dialogs.Count-groupLength; i += groupLength)
 				{
 					sw.Start();
 
-					this.Dialogs[i].UpdateUserInfo(await this.modIWebService.GetUserInfoRequest(this.Dialogs[i].EntityModel.User));
-					this.Dialogs[i+1].UpdateUserInfo(await this.modIWebService.GetUserInfoRequest(this.Dialogs[i+1].EntityModel.User));
-					this.Dialogs[i+2].UpdateUserInfo(await this.modIWebService.GetUserInfoRequest(this.Dialogs[i+2].EntityModel.User));
+					IUser user1 = await GetUserInfo(i);
+					IUser user2 = await GetUserInfo(i+1);
+					IUser user3 = await GetUserInfo(i+2);
+
+					this.Dialogs[i].UpdateUserInfo(user1);
+					this.Dialogs[i+1].UpdateUserInfo(user2);
+					this.Dialogs[i+2].UpdateUserInfo(user3);
+
 					this.Dialogs[i].IsBusy = false;
 					this.Dialogs[i+1].IsBusy = false;
 					this.Dialogs[i+2].IsBusy = false;
@@ -126,6 +144,26 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 			{
 
 			}
+		}
+
+		private async Task<IUser> GetUserInfo(int i)
+		{
+			IUser user = null;
+			while (true)
+			{
+				try
+				{
+					user = await this.modIWebService.GetUserInfoRequest(this.Dialogs[i].EntityModel.User);
+				}
+				catch (Exception ex)
+				{
+
+				}
+
+				if (user.HasValue())
+					break;
+			}
+			return user;
 		}
 		
 		#endregion
@@ -160,9 +198,7 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 		{
 			try
 			{
-				IEnumerable<IUser> friends = await modIWebService.ShowUserFriends(modUser);
-
-				await modNavigationService.Navigate<PageUserFriendsVm>(friends, isFromCache: false);
+				await modNavigationService.Navigate<PageUserFriendsVm>(modUser, isFromCache: false);
 			}
 			catch (Exception ex)
 			{

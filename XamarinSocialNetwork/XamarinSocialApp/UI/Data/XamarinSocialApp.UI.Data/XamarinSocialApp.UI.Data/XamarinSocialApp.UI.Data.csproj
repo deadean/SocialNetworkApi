@@ -41,6 +41,7 @@
     <Compile Include="Implementations\Entities\Databases\Message.cs" />
     <Compile Include="Implementations\Entities\Databases\User.cs" />
     <Compile Include="Implementations\Entities\OAuth\Vk\VkUsers.cs" />
+    <Compile Include="Implementations\Navigation\PageDialogWithFriendNavParams.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

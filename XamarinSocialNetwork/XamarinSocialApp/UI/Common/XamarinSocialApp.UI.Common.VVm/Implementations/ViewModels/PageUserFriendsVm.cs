@@ -14,6 +14,7 @@ using GalaSoft.MvvmLight.Ioc;
 using Microsoft.Practices.ServiceLocation;
 using XamarinSocialApp.UI.Data.Implementations.Entities.Databases;
 using System.Windows.Input;
+using XamarinSocialApp.UI.Data.Implementations.Navigation;
 
 
 namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
@@ -32,6 +33,8 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 		
 		private FriendsVm mvSelectedFriend;
 
+		private IUser modUser;
+
 		#endregion
 
 		#region Properties
@@ -46,7 +49,12 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 			{
 				mvSelectedFriend = value;
 				this.OnPropertyChanged();
-				modNavigationService.Navigate<PageDialogWithFriendVm>(mvSelectedFriend.EntityModel, isFromCache: false);
+
+				if (mvSelectedFriend == null)
+					return;
+
+				var navParam = new PageDialogWithFriendNavParams(modUser, mvSelectedFriend.EntityModel);
+				modNavigationService.Navigate<PageDialogWithFriendVm>(navParam, isFromCache: false);
 			}
 		}
 
@@ -88,7 +96,11 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 
 		public override async Task OnNavigatedTo(object navigationParameter)
 		{
-			IList<IUser> friends = navigationParameter as IList<IUser>;
+			modUser = navigationParameter as IUser;
+			if (modUser.HasNotValue())
+				return;
+
+			IEnumerable<IUser> friends = await modIWebService.GetUserFriends(modUser);
 			if (friends == null)
 				return;
 

@@ -14,11 +14,11 @@ namespace XamarinSocialApp.Services.UI.Interfaces.Web
 
 		Task<IEnumerable<IDialog>> GetDialogs(IUser user);
 
-		Task<IEnumerable<IDialog>> GetDialogWithFriend(IUser user);
+		Task<IDialog> GetDialogWithFriend(IUser user, IUser friend);
 
 		Task<IUser> GetUserInfoRequest(IUser user);
 
-		Task<IEnumerable<IUser>> ShowUserFriends(IUser user);
+		Task<IEnumerable<IUser>> GetUserFriends(IUser user);
 
 	}
 }

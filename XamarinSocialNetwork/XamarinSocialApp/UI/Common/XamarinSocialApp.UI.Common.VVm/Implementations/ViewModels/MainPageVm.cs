@@ -105,7 +105,7 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 
 					await modIInternalService.SaveEntity<User>(user as User);
 				}
-				await modNavigationService.Navigate<PageUserDialogsVm>(user, isFromCache: false);
+				await modNavigationService.Navigate<PageUserDialogsVm>(user, isFromCache: true);
 			}
 			catch (Exception ex)
 			{
