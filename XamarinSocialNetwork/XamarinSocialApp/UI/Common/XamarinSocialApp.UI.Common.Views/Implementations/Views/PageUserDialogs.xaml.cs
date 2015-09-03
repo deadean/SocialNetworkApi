@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
 using Xamarin.Forms;
+using XamarinSocialApp.UI.Common.Implementations.Bases;
+using XamarinSocialApp.UI.Common.Interfaces.ViewModels;
 using XamarinSocialApp.UI.Common.Interfaces.Views.Bases;
 
 namespace XamarinSocialApp.UI.Common.Views.Implementations.Views
@@ -36,6 +37,11 @@ namespace XamarinSocialApp.UI.Common.Views.Implementations.Views
 		#endregion
 
 		#region Public Methods
+
+		public void OnToolbarNewClicked(object sender, EventArgs args)
+		{
+			this.BindingContext.WithType<IPageUserDialogsVm>(x=>x.ShowUserFriendsCommand.Execute(null));
+		}
 
 		#endregion
 

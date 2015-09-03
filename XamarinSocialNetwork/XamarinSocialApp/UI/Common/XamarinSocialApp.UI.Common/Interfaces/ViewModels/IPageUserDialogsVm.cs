@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using XamarinSocialApp.Data.Interfaces.Entities.Database;
 
 namespace XamarinSocialApp.UI.Common.Interfaces.ViewModels
@@ -11,5 +12,6 @@ namespace XamarinSocialApp.UI.Common.Interfaces.ViewModels
 	{
 		string UserName { get; }
 		IUser User { get; }
+		ICommand ShowUserFriendsCommand { get; }
 	}
 }

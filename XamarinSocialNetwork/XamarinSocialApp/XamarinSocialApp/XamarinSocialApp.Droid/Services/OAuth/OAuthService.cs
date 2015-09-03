@@ -69,6 +69,30 @@ namespace XamarinSocialApp.Droid.Services.OAuth
 
 		#region Public Methods
 
+		public async Task<bool> SendMessage(DataIUser user, DataIUser friend, string Message, enSocialNetwork enSocialNetwork)
+		{
+			try
+			{
+				this.StartRequest();
+				Account acc = Account.Deserialize(user.SerializeInfo);
+				var request = new OAuth2Request("GET", new Uri("https://api.vk.com/method/messages.send"), null, acc);
+
+				request.Parameters.Add("user_id", friend.Uid);
+				request.Parameters.Add("message", Message);
+
+				var res1 = await request.GetResponseAsync();
+				var responseText = res1.GetResponseText();
+
+				this.StopRequest();
+			}
+			catch (Exception ex)
+			{
+				return false;
+			}
+			
+			return true;
+		}
+
 		public async Task<IUser> Login(enSocialNetwork socialNetwork)
 		{
 			IUser user = null;
@@ -209,7 +233,7 @@ namespace XamarinSocialApp.Droid.Services.OAuth
 			if (String.IsNullOrWhiteSpace(user.Uid))
 				return null;
 
-			this.TryToStart();
+			this.StartRequest();
 
 			var request = new OAuth2Request("GET", new Uri("https://api.vk.com/method/users.get"), null, accCurrent);
 			request.Parameters.Add("uids", user.Uid);
@@ -233,7 +257,7 @@ namespace XamarinSocialApp.Droid.Services.OAuth
 			{
 				Account acc = Account.Deserialize(user.SerializeInfo);
 
-				this.TryToStart();
+				this.StartRequest();
 
 				var request = new OAuth2Request("GET", new Uri("https://api.vk.com/method/messages.getHistory"), null, acc);
 
@@ -256,7 +280,7 @@ namespace XamarinSocialApp.Droid.Services.OAuth
 
 				foreach (var item in msg1)
 				{
-					messages.Add(new DataMessage() { Content = item.Body, User = item.UserId == user.Uid ? user : friend });
+					messages.Add(new DataMessage() { Content = item.Body, Sender = item.UserId == user.Uid ? user : friend });
 				}
 
 				this.StopRequest();
@@ -275,7 +299,7 @@ namespace XamarinSocialApp.Droid.Services.OAuth
 
 		#region Private Methods
 
-		private void TryToStart()
+		private void StartRequest()
 		{
 			while (true)
 			{

@@ -118,6 +118,13 @@
       <Project>{6d00a28b-72df-43e7-ae15-4cd00ad62621}</Project>
       <Name>XamarinSocialApp.Data.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Data\XamarinSocialApp.UI.Data\XamarinSocialApp.UI.Data\XamarinSocialApp.UI.Data.csproj">
+      <Project>{d5dba5f2-1aaf-4bec-a149-f2efc1d83dc1}</Project>
+      <Name>XamarinSocialApp.UI.Data</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Interfaces\Messages\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\..\..\packages\Xamarin.Forms.1.4.3.6376\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets" Condition="Exists('..\..\..\packages\Xamarin.Forms.1.4.3.6376\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets')" />

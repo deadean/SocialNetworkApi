@@ -60,7 +60,7 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 		public MessageVm(IMessage message)
 		{
 			EntityModel = message;
-			Name = message.User.FirstName;
+			Name = message.Sender.FirstName;
 			Content = message.Content;
 		}
 

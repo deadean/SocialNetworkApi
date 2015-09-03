@@ -77,6 +77,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Common\XamarinSocialApp.Common\XamarinSocialApp.Common.csproj">
+      <Project>{71982e0d-cba7-4a1c-bff5-12b2cb52a8d2}</Project>
+      <Name>XamarinSocialApp.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\XamarinSocialApp.UI.Common\XamarinSocialApp.UI.Common.csproj">
       <Project>{cd22c543-b51f-493e-be9d-14bb117dfbac}</Project>
       <Name>XamarinSocialApp.UI.Common</Name>

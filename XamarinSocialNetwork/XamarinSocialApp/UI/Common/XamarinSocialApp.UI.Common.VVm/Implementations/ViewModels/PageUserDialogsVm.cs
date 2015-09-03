@@ -15,7 +15,9 @@ using Microsoft.Practices.ServiceLocation;
 using XamarinSocialApp.UI.Data.Implementations.Entities.Databases;
 using System.Windows.Input;
 using XamarinSocialApp.UI.Data.Implementations.Navigation;
-
+using GalaSoft.MvvmLight.Messaging;
+using XamarinSocialApp.Data.Interfaces.Messages;
+using MessagesUI = XamarinSocialApp.UI.Data.Implementations.Messages.Messages;
 
 namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 {
@@ -165,6 +167,22 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 			}
 			return user;
 		}
+
+		private void OnNewMessageWasSent(MessagesUI.MessageNewMessageWasSent message)
+		{
+			try
+			{
+				var dialogRecipient = this.Dialogs.First(x => x.EntityModel.User.Uid == message.Sender.Recipient.Uid);
+				if (dialogRecipient.HasNotValue())
+					return;
+
+				dialogRecipient.Content = message.Sender.Content;
+			}
+			catch (Exception ex)
+			{
+
+			}
+		}
 		
 		#endregion
 
@@ -172,22 +190,31 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 
 		public override async Task OnNavigatedTo(object navigationParameter)
 		{
-			IUser user = navigationParameter as IUser;
-			if (user == null)
-				return;
+			try
+			{
+				IUser user = navigationParameter as IUser;
+				if (user == null)
+					return;
 
-			modUser = user;
-			UserName = String.Format("{0} {1}", modUser.FirstName, modUser.LastName);
+				modUser = user;
+				UserName = String.Format("{0} {1}", modUser.FirstName, modUser.LastName);
 
-			IsBusy = true;
+				IsBusy = true;
 
-			IEnumerable<IDialog> dialogs = await modIWebService.GetDialogs(user);
-			this.Dialogs = new ObservableCollection<DialogVm>(dialogs.Select(x => new DialogVm(x)));
-			this.OnPropertyChanged(x => x.Dialogs);
+				IEnumerable<IDialog> dialogs = await modIWebService.GetDialogs(user);
+				this.Dialogs = new ObservableCollection<DialogVm>(dialogs.Select(x => new DialogVm(x)));
+				this.OnPropertyChanged(x => x.Dialogs);
 
-			IsBusy = false;
+				IsBusy = false;
 
-			this.LoadUserDialogInfo();
+				this.LoadUserDialogInfo();
+
+				Messenger.Default.Register<MessagesUI.MessageNewMessageWasSent>(this, OnNewMessageWasSent);
+			}
+			catch (Exception ex)
+			{
+
+			}
 		}
 
 		#endregion

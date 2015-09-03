@@ -21,7 +21,8 @@ namespace XamarinSocialApp.UI.Data.Implementations.Entities.Databases
 		#region Properties
 
 		public string Content { get; set; }
-		public IUser User { get; set; }
+		public IUser Sender { get; set; }
+		public IUser Recipient { get; set; }
 
 		#endregion
 

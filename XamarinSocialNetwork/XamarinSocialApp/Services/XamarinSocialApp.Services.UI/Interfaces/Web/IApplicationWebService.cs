@@ -20,5 +20,6 @@ namespace XamarinSocialApp.Services.UI.Interfaces.Web
 
 		Task<IEnumerable<IUser>> GetUserFriends(IUser user);
 
+		Task<bool> SendMessage(IUser user, IUser friend, string Message);
 	}
 }

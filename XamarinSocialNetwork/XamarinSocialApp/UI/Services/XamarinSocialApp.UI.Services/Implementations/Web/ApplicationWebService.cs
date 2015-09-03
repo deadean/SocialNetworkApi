@@ -47,6 +47,11 @@ namespace XamarinSocialApp.UI.Services.Implementations.Web
 
 		#region Public Methods
 
+		public Task<bool> SendMessage(IUser user, IUser friend, string Message)
+		{
+			return modService.SendMessage(user, friend, Message, user.SocialNetwork);
+		}
+
 		public Task<IUser> Login(enSocialNetwork socialNetwork)
 		{
 			return modService.Login(socialNetwork);
@@ -85,5 +90,8 @@ namespace XamarinSocialApp.UI.Services.Implementations.Web
 
 
 
+
+
+		
 	}
 }

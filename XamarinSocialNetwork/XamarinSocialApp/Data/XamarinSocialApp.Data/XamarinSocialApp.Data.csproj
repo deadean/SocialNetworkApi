@@ -41,6 +41,7 @@
     <Compile Include="Interfaces\Entities\Database\IMessage.cs" />
     <Compile Include="Interfaces\Entities\Database\IUser.cs" />
     <Compile Include="Interfaces\Entities\OAuth\Vk\IVkUsers.cs" />
+    <Compile Include="Interfaces\Messages\Messages.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
