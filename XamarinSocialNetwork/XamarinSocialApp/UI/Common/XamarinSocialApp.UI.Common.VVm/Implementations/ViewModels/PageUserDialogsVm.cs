@@ -119,7 +119,7 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 		{
 			try
 			{
-				int groupLength = 3;
+				int groupLength = 2;
 				System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
 				TimeSpan ts = new TimeSpan(0,0,0,1000);
 
@@ -128,16 +128,13 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 					sw.Start();
 
 					IUser user1 = await GetUserInfo(i);
-					IUser user2 = await GetUserInfo(i+1);
-					IUser user3 = await GetUserInfo(i+2);
+					IUser user2 = await GetUserInfo(i + 1);
 
 					this.Dialogs[i].UpdateUserInfo(user1);
-					this.Dialogs[i+1].UpdateUserInfo(user2);
-					this.Dialogs[i+2].UpdateUserInfo(user3);
+					this.Dialogs[i + 1].UpdateUserInfo(user2);
 
 					this.Dialogs[i].IsBusy = false;
-					this.Dialogs[i+1].IsBusy = false;
-					this.Dialogs[i+2].IsBusy = false;
+					this.Dialogs[i + 1].IsBusy = false;
 
 					await Task.Delay(800);
 				}
@@ -168,11 +165,27 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 			return user;
 		}
 
-		private void OnNewMessageWasSent(MessagesUI.MessageNewMessageWasSent message)
+		private void OnNewMessageWasSent(MessagesUI.MessageNewMyMessageWasSent message)
 		{
 			try
 			{
 				var dialogRecipient = this.Dialogs.First(x => x.EntityModel.User.Uid == message.Sender.Recipient.Uid);
+				if (dialogRecipient.HasNotValue())
+					return;
+
+				dialogRecipient.Content = message.Sender.Content;
+			}
+			catch (Exception ex)
+			{
+
+			}
+		}
+
+		private void OnNewMessageWasSentToMe(MessagesUI.MessageNewMessageWasSentToMe message)
+		{
+			try
+			{
+				var dialogRecipient = this.Dialogs.First(x => x.EntityModel.User.Uid == message.Sender.Sender.Uid);
 				if (dialogRecipient.HasNotValue())
 					return;
 
@@ -207,9 +220,11 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 
 				IsBusy = false;
 
-				this.LoadUserDialogInfo();
+				Messenger.Default.Register<MessagesUI.MessageNewMyMessageWasSent>(this, OnNewMessageWasSent);
+				Messenger.Default.Register<MessagesUI.MessageNewMessageWasSentToMe>(this, OnNewMessageWasSentToMe);
 
-				Messenger.Default.Register<MessagesUI.MessageNewMessageWasSent>(this, OnNewMessageWasSent);
+				modIWebService.RegisterInLongPoolServer(modUser);
+				this.LoadUserDialogInfo();
 			}
 			catch (Exception ex)
 			{

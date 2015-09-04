@@ -17,5 +17,6 @@ namespace XamarinSocialApp.Services.UI.Interfaces.Web.OAuth
 		Task<IDialog> GetDialogWithFriend(IUser user, enSocialNetwork socialNetwork, IUser friend);
 		Task<IUser> GetUserInfoRequest(IUser user, enSocialNetwork enSocialNetwork);
 		Task<bool> SendMessage(IUser user, IUser friend, string Message, enSocialNetwork enSocialNetwork);
+		Task RegisterInLongPoolServer(IUser user);
 	}
 }

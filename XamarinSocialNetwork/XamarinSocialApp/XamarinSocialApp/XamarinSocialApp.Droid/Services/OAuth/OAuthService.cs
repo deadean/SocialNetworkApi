@@ -23,7 +23,9 @@ using DataDialogs = XamarinSocialApp.UI.Data.Implementations.Entities.Databases.
 using DataIUser = XamarinSocialApp.Data.Interfaces.Entities.Database.IUser;
 using DataUser = XamarinSocialApp.UI.Data.Implementations.Entities.Databases.User;
 using DataMessage = XamarinSocialApp.UI.Data.Implementations.Entities.Databases.Message;
+using MessagesUI = XamarinSocialApp.UI.Data.Implementations.Messages.Messages;
 using XamarinSocialApp.UI.Data.Implementations.Entities.Databases;
+using Newtonsoft.Json.Linq;
 
 [assembly: Dependency(typeof(OAuthService))]
 
@@ -69,6 +71,129 @@ namespace XamarinSocialApp.Droid.Services.OAuth
 
 		#region Public Methods
 
+		public async Task RegisterInLongPoolServer(IUser user)
+		{
+			try
+			{
+				this.StartRequest();
+
+				Account acc = Account.Deserialize(user.SerializeInfo);
+
+				var request = 
+					new OAuth2Request("GET", 
+						new Uri("https://api.vk.com/method/messages.getLongPollServer?access_token="+Token), 
+				null, acc);
+
+				request.Parameters.Add("use_ssl", "1");
+				request.Parameters.Add("need_pts", "0");
+
+				var res1 = await request.GetResponseAsync();
+				var responseText = res1.GetResponseText();
+
+				var settings = JsonConvert.DeserializeObject<XamarinSocialApp.Droid.Data.VkData.VkLongPoolServerResponse>(responseText);
+
+				this.StopRequest();
+
+				this.StartRequest();
+
+				while (true)
+				{
+					request = new OAuth2Request("GET",
+							new Uri(String.Format("http://{0}?act=a_check&key={1}&ts={2}&wait=25&mode=2",
+							settings.Response.ServerUrl, settings.Response.Key, settings.Response.Ts
+					)), null, acc);
+					res1 = await request.GetResponseAsync();
+					responseText = res1.GetResponseText();
+					var updates =
+						JsonConvert.DeserializeObject<XamarinSocialApp.Droid.Data.VkData.VkLongPoolServerUpdates>
+						(responseText);
+					settings.Response.Ts = updates.Ts;
+
+					foreach (var updateArray in updates.Updates)
+					{
+						JToken token0 = updateArray[0];
+						int operation = (int)token0;
+						if (operation != 4)
+							continue;
+
+						int uidSender = (int)updateArray[3];
+						int messageId = (int)updateArray[1];
+						int dialogParticipientId = (int)updateArray[2];
+						string messageString = (string)updateArray[6];
+
+						await SendRecievedMessage(user, acc, uidSender, messageId, dialogParticipientId, messageString);
+					}
+				}
+
+				this.StopRequest();
+
+			}
+			catch (Exception ex)
+			{
+				RegisterInLongPoolServer(user);
+			}
+		}
+
+		private async Task SendRecievedMessage(IUser user, Account acc, int uidSender, int messageId, int dialogParticipientId, string messageString)
+		{
+			string messageType = await GetMessageSenderMessageType(messageId, acc);
+			var sender = new DataUser() { Uid = uidSender.ToString() };
+
+			IMessage message = new DataMessage()
+			{
+				Content = messageString,
+				Recipient = messageType == "1" ? sender : user,
+				Sender = messageType == "1" ? user : sender,
+				ParticipientId = dialogParticipientId.ToString()
+			};
+
+			if (messageType == "1")
+			{
+				GalaSoft.MvvmLight.Messaging.Messenger.Default.Send<MessagesUI.MessageNewMyMessageWasSent>
+				(new MessagesUI.MessageNewMyMessageWasSent(message));
+			}
+			else
+			{
+				GalaSoft.MvvmLight.Messaging.Messenger.Default.Send<MessagesUI.MessageNewMessageWasSentToMe>
+				(new MessagesUI.MessageNewMessageWasSentToMe(message));
+			}
+		}
+
+		private async Task<string> GetMessageSenderMessageType(int messageId, Account acc)
+		{
+			try
+			{
+				this.StartRequest();
+
+				var request =
+					new OAuth2Request("GET",
+						new Uri("https://api.vk.com/method/messages.getById"),
+				null, acc);
+
+				request.Parameters.Add("message_ids", messageId.ToString());
+				request.Parameters.Add("preview_length", "0");
+				request.Parameters.Add("v", "5.37");
+
+				var res1 = await request.GetResponseAsync();
+				var responseText = res1.GetResponseText();
+
+				var response = 
+					JsonConvert.DeserializeObject<XamarinSocialApp.Droid.Data.VkData.VkMessageByIdResponse>(responseText);
+
+				return response.Response.Messages.First().Out;
+			}
+			catch (Exception ex)
+			{
+
+			}
+			finally
+			{
+				this.StopRequest();
+			}
+
+			return String.Empty;
+		}
+
 		public async Task<bool> SendMessage(DataIUser user, DataIUser friend, string Message, enSocialNetwork enSocialNetwork)
 		{
 			try
@@ -83,13 +208,16 @@ namespace XamarinSocialApp.Droid.Services.OAuth
 				var res1 = await request.GetResponseAsync();
 				var responseText = res1.GetResponseText();
 
-				this.StopRequest();
 			}
 			catch (Exception ex)
 			{
 				return false;
 			}
-			
+			finally
+			{
+				this.StopRequest();
+			}
+
 			return true;
 		}
 
@@ -235,18 +363,29 @@ namespace XamarinSocialApp.Droid.Services.OAuth
 
 			this.StartRequest();
 
-			var request = new OAuth2Request("GET", new Uri("https://api.vk.com/method/users.get"), null, accCurrent);
-			request.Parameters.Add("uids", user.Uid);
+			try
+			{
+				var request = new OAuth2Request("GET", new Uri("https://api.vk.com/method/users.get"), null, accCurrent);
+				request.Parameters.Add("uids", user.Uid);
 
-			var res = await request.GetResponseAsync();
-			var responseText = res.GetResponseText();
+				var res = await request.GetResponseAsync();
+				var responseText = res.GetResponseText();
 
-			var users = JsonConvert.DeserializeObject<XamarinSocialApp.Droid.Data.VkData.VkUsers>(responseText);
+				var users = JsonConvert.DeserializeObject<XamarinSocialApp.Droid.Data.VkData.VkUsers>(responseText);
 
-			this.StopRequest();
+				var jsonUser = users.response.First();
+				return new DataUser() { FirstName = jsonUser.first_name, LastName = jsonUser.last_name, ID = jsonUser.uid, Uid = jsonUser.uid };
+			}
+			catch (Exception ex)
+			{
 
-			var jsonUser = users.response.First();
-			return new DataUser() { FirstName = jsonUser.first_name, LastName = jsonUser.last_name, ID = jsonUser.uid, Uid = jsonUser.uid };
+			}
+			finally
+			{
+				this.StopRequest();
+			}
+
+			return null;
 		}
 
 		public async Task<IDialog> GetDialogWithFriend(DataIUser user, enSocialNetwork socialNetwork, IUser friend)
@@ -283,7 +422,6 @@ namespace XamarinSocialApp.Droid.Services.OAuth
 					messages.Add(new DataMessage() { Content = item.Body, Sender = item.UserId == user.Uid ? user : friend });
 				}
 
-				this.StopRequest();
 
 				dialog = new XamarinSocialApp.UI.Data.Implementations.Entities.Databases.Dialog(user, messages);
 			}
@@ -291,6 +429,8 @@ namespace XamarinSocialApp.Droid.Services.OAuth
 			{
 
 			}
+
+			this.StopRequest();
 
 			return dialog;
 		}
@@ -322,5 +462,8 @@ namespace XamarinSocialApp.Droid.Services.OAuth
 
 		#endregion
 
+
+
+		
 	}
 }

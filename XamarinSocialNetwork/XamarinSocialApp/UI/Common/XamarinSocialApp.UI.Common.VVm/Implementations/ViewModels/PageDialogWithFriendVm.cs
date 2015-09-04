@@ -84,6 +84,44 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 		#endregion
 
 		#region Private Methods
+
+		private void OnNewMessageWasSentToMe(MessagesUI.MessageNewMessageWasSentToMe msg)
+		{
+			try
+			{
+				var message = new Message() 
+				{ 
+					Sender = msg.Sender.Sender, 
+					Content = msg.Sender.Content, 
+					Recipient = msg.Sender.Recipient 
+				};
+
+				this.Messages.Insert(0, new MessageVm(message) { Name = msg.Sender.Sender.Uid == modUser.Uid ? modUser.FirstName : modFriend.FirstName });
+			}
+			catch (Exception ex)
+			{
+
+			}
+		}
+
+		private void OnMessageNewMyMessageWasSent(MessagesUI.MessageNewMyMessageWasSent msg)
+		{
+			try
+			{
+				var message = new Message()
+				{
+					Sender = msg.Sender.Sender,
+					Content = msg.Sender.Content,
+					Recipient = msg.Sender.Recipient
+				};
+
+				this.Messages.Insert(0, new MessageVm(message) { Name = msg.Sender.Sender.Uid == modUser.Uid ? modUser.FirstName : modFriend.FirstName });
+			}
+			catch (Exception ex)
+			{
+
+			}
+		}
 		
 		#endregion
 
@@ -108,6 +146,9 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 			this.Messages = new ObservableCollection<MessageVm>(dialog.Messages.Select(x => new MessageVm(x)));
 			this.OnPropertyChanged(x => x.Messages);
 
+			Messenger.Default.Register<MessagesUI.MessageNewMessageWasSentToMe>(this, OnNewMessageWasSentToMe);
+			Messenger.Default.Register<MessagesUI.MessageNewMyMessageWasSent>(this, OnMessageNewMyMessageWasSent);
+
 			IsBusy = false;
 		}
 
@@ -126,8 +167,7 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 			{
 				bool isSent = await modIWebService.SendMessage(modUser, modFriend, Message);
 				var message = new Message() { Sender = modUser, Content = Message, Recipient = modFriend };
-				this.Messages.Insert(0, new MessageVm(message));
-				Messenger.Default.Send<MessagesUI.MessageNewMessageWasSent>(new MessagesUI.MessageNewMessageWasSent(message));
+				//Messenger.Default.Send<MessagesUI.MessageNewMyMessageWasSent>(new MessagesUI.MessageNewMyMessageWasSent(message));
 			}
 			catch (Exception ex)
 			{

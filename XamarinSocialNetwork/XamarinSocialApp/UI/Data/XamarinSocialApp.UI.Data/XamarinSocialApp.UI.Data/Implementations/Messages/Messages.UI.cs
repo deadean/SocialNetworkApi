@@ -10,9 +10,17 @@ namespace XamarinSocialApp.UI.Data.Implementations.Messages
 {
 	public static class Messages
 	{
-		public class MessageNewMessageWasSent : BaseSenderMessage<IMessage>
+		public class MessageNewMyMessageWasSent : BaseSenderMessage<IMessage>
 		{
-			public MessageNewMessageWasSent(IMessage message)
+			public MessageNewMyMessageWasSent(IMessage message)
+				: base(message)
+			{
+			}
+		}
+
+		public class MessageNewMessageWasSentToMe : BaseSenderMessage<IMessage>
+		{
+			public MessageNewMessageWasSentToMe(IMessage message)
 				: base(message)
 			{
 			}

@@ -77,6 +77,11 @@ namespace XamarinSocialApp.UI.Services.Implementations.Web
 			return modService.GetUserInfoRequest(user, user.SocialNetwork);
 		}
 
+		public async Task RegisterInLongPoolServer(IUser user)
+		{
+			await modService.RegisterInLongPoolServer(user);
+		}
+
 		#endregion
 
 		#region Private Methods
@@ -86,12 +91,6 @@ namespace XamarinSocialApp.UI.Services.Implementations.Web
 		#region Protected Methods
 
 		#endregion
-
-
-
-
-
-
 		
 	}
 }
