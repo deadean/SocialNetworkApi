@@ -24,18 +24,21 @@
 
 	<Label Text="{Binding UserName}" FontSize="20" Grid.Row="0" XAlign="Center" TextColor="Purple"/>
 		
-	<ListView Grid.Row="1" ItemsSource="{Binding Dialogs}" 
+	<ListView Grid.Row="1" ItemsSource="{Binding Dialogs}"
 						SelectedItem="{Binding SelectedDialogVm, Mode=TwoWay}">
 		<ListView.ItemTemplate>
 			<DataTemplate>
 				<ViewCell>
-					<Grid>
+					<Grid HeightRequest="40">
 						<Grid.ColumnDefinitions>
 							<ColumnDefinition Width="70"/>
 							<ColumnDefinition Width="20"/>
 							<ColumnDefinition Width="*"/>
 						</Grid.ColumnDefinitions>
-						<Label Text="{Binding Name}" Grid.Column="0" LineBreakMode="NoWrap" HorizontalOptions="Center" />
+						<Label Text="{Binding Name}"
+									 TextColor="White" Grid.Column="0" 
+									 LineBreakMode="NoWrap" 
+									 HorizontalOptions="Center" VerticalOptions="Center" />
 						<ActivityIndicator Grid.Row="0"
 											 IsRunning="{Binding IsBusy}"
 											 IsVisible ="{Binding IsBusy}"
@@ -44,7 +47,7 @@
 											 VerticalOptions="Center"
 											 HorizontalOptions="Center"/>
 
-						<Label Text="{Binding Content}" Grid.Column="2" LineBreakMode="NoWrap" />
+						<Label Text="{Binding Content}" Grid.Column="2" LineBreakMode="NoWrap" VerticalOptions="Center" />
 					</Grid>
 				</ViewCell>
 			</DataTemplate>
