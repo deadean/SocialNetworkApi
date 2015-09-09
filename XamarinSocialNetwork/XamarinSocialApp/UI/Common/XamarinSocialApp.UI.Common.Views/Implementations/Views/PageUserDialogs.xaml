@@ -2,36 +2,49 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
 						 xmlns:pages="clr-namespace:XamarinSocialApp.UI.Common.Implementations.Bases"
-             x:Class="XamarinSocialApp.UI.Common.Views.Implementations.Views.PageUserDialogs">
-	<ContentPage.ToolbarItems>
+             x:Class="XamarinSocialApp.UI.Common.Views.Implementations.Views.PageUserDialogs" BackgroundImage="addFriend.png" BackgroundColor="Silver" >
+	<!--<ContentPage.ToolbarItems>
 		<ToolbarItem Text="New" x:Name="toolbarNew"
                  Order="Primary"
                  Clicked="OnToolbarNewClicked">
 			<ToolbarItem.Icon>
 				<OnPlatform x:TypeArguments="FileImageSource"
                     iOS="add.png"
-                    Android="add.png"
+                    Android="addFriend.png"
                     WinPhone="Images/add.png" />
 			</ToolbarItem.Icon>
 		</ToolbarItem>
-	</ContentPage.ToolbarItems>
+	</ContentPage.ToolbarItems>-->
 
 	<Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="2*" />
+			<ColumnDefinition Width="*" />
+		</Grid.ColumnDefinitions>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="70" />
 			<RowDefinition Height="*" />
 		</Grid.RowDefinitions>
 
-	<Label Text="{Binding UserName}" FontSize="20" Grid.Row="0" XAlign="Center" TextColor="Purple"/>
+	<Label Text="{Binding UserName}" FontSize="20" Grid.Row="0" Grid.Column="0" XAlign="Center" TextColor="Purple"/>
+
+	<Button Grid.Row="0" Grid.Column="1" Clicked="OnToolbarNewClicked" >
+		<Button.Image>
+			<OnPlatform x:TypeArguments="FileImageSource"
+                    iOS="add.png"
+                    Android="addFriend.png"
+                    WinPhone="Images/add.png" />
+		</Button.Image>
+	</Button>
 		
-	<ListView Grid.Row="1" ItemsSource="{Binding Dialogs}"
-						SelectedItem="{Binding SelectedDialogVm, Mode=TwoWay}">
+	<ListView Grid.Row="1" Grid.ColumnSpan="2" ItemsSource="{Binding Dialogs}"
+						SelectedItem="{Binding SelectedDialogVm, Mode=TwoWay}" HasUnevenRows="True" >
 		<ListView.ItemTemplate>
 			<DataTemplate>
 				<ViewCell>
 					<Grid HeightRequest="40">
 						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="70"/>
+							<ColumnDefinition Width="80"/>
 							<ColumnDefinition Width="20"/>
 							<ColumnDefinition Width="*"/>
 						</Grid.ColumnDefinitions>
@@ -47,7 +60,7 @@
 											 VerticalOptions="Center"
 											 HorizontalOptions="Center"/>
 
-						<Label Text="{Binding Content}" Grid.Column="2" LineBreakMode="NoWrap" VerticalOptions="Center" />
+						<Label Text="{Binding Content}" Grid.Column="2" LineBreakMode="TailTruncation" VerticalOptions="Center" />
 					</Grid>
 				</ViewCell>
 			</DataTemplate>

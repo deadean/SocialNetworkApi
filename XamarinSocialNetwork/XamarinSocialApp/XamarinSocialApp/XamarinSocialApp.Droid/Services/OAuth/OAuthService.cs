@@ -401,6 +401,7 @@ namespace XamarinSocialApp.Droid.Services.OAuth
 				var request = new OAuth2Request("GET", new Uri("https://api.vk.com/method/messages.getHistory"), null, acc);
 
 				request.Parameters.Add("user_id", friend.Uid);
+				request.Parameters.Add("count", "200");
 
 				var res = await request.GetResponseAsync();
 				var responseText = res.GetResponseText();

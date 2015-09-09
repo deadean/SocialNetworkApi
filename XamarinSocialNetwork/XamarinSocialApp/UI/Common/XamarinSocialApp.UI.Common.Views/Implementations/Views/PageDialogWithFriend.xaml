@@ -17,22 +17,22 @@
 				<ColumnDefinition Width="100" />
 			</Grid.ColumnDefinitions>
 			
-			<Entry Placeholder="Type message.." HorizontalOptions="Fill" Grid.Column="0" Text="{Binding Message}"/>
+			<Entry Placeholder="Введите сообщение.." HorizontalOptions="Fill" Grid.Column="0" Text="{Binding Message}"/>
 			<Button Text="Send" Command="{Binding SendMessageCommand}" Grid.Column="1"/>
 		</Grid>
 
-		<ListView Grid.Row="1" ItemsSource="{Binding Messages}">
+		<ListView Grid.Row="1" ItemsSource="{Binding Messages}" HasUnevenRows="True" >
 			<ListView.ItemTemplate>
 				<DataTemplate>
 					<ViewCell>
 						<Grid>
 							<Grid.ColumnDefinitions>
-								<ColumnDefinition Width="70"/>
-								<ColumnDefinition Width="20"/>
-								<ColumnDefinition Width="*"/>
+								<ColumnDefinition Width="80" />
+								<ColumnDefinition Width="20" />
+								<ColumnDefinition Width="*" />
 							</Grid.ColumnDefinitions>
 							<Label Text="{Binding Name}" Grid.Column="0" LineBreakMode="NoWrap" HorizontalOptions="Center" />
-							<Label Text="{Binding Content}" Grid.Column="2" LineBreakMode="NoWrap" />
+							<Label Text="{Binding Content}" Grid.Column="2" LineBreakMode="WordWrap" VerticalOptions="Center"  />
 						</Grid>
 					</ViewCell>
 				</DataTemplate>
