@@ -2,7 +2,8 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
 						 xmlns:pages="clr-namespace:XamarinSocialApp.UI.Common.Implementations.Bases"
-             x:Class="XamarinSocialApp.UI.Common.Views.Implementations.Views.PageUserDialogs" BackgroundImage="addFriend.png" BackgroundColor="Silver" >
+             x:Class="XamarinSocialApp.UI.Common.Views.Implementations.Views.PageUserDialogs"  
+						 BackgroundImage="background2.png" >
 	<!--<ContentPage.ToolbarItems>
 		<ToolbarItem Text="New" x:Name="toolbarNew"
                  Order="Primary"
@@ -16,23 +17,24 @@
 		</ToolbarItem>
 	</ContentPage.ToolbarItems>-->
 
-	<Grid>
+	<Grid Padding="10">
 		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="2*" />
 			<ColumnDefinition Width="*" />
+			<ColumnDefinition Width="60" />
 		</Grid.ColumnDefinitions>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="70" />
 			<RowDefinition Height="*" />
 		</Grid.RowDefinitions>
 
-	<Label Text="{Binding UserName}" FontSize="20" Grid.Row="0" Grid.Column="0" XAlign="Center" TextColor="Purple"/>
+	<Label Grid.Row="0" Grid.Column="0" Text="{Binding UserName}"
+				 FontSize="22" FontAttributes="Bold" XAlign="Center" />
 
-	<Button Grid.Row="0" Grid.Column="1" Clicked="OnToolbarNewClicked" >
+	<Button Grid.Row="0" Grid.Column="1" Clicked="OnToolbarNewClicked" HorizontalOptions="Start" >
 		<Button.Image>
 			<OnPlatform x:TypeArguments="FileImageSource"
                     iOS="add.png"
-                    Android="addFriend.png"
+                    Android="addDialog.png"
                     WinPhone="Images/add.png" />
 		</Button.Image>
 	</Button>
@@ -42,25 +44,26 @@
 		<ListView.ItemTemplate>
 			<DataTemplate>
 				<ViewCell>
-					<Grid HeightRequest="40">
+					<Grid ColumnSpacing="15" Padding="3" >
 						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="80"/>
-							<ColumnDefinition Width="20"/>
+							<ColumnDefinition Width="50"/>
+							<ColumnDefinition Width="100"/>
 							<ColumnDefinition Width="*"/>
 						</Grid.ColumnDefinitions>
-						<Label Text="{Binding Name}"
-									 TextColor="White" Grid.Column="0" 
-									 LineBreakMode="NoWrap" 
-									 HorizontalOptions="Center" VerticalOptions="Center" />
+						<Image Source="{Binding UserPhoto}" Grid.Column="0" />
+						<Label Text="{Binding Name}" FontSize="16" FontAttributes="Bold"
+									 Grid.Column="1" LineBreakMode="WordWrap" 
+									 XAlign="Center" YAlign="Center" />
 						<ActivityIndicator Grid.Row="0"
 											 IsRunning="{Binding IsBusy}"
 											 IsVisible ="{Binding IsBusy}"
-											 WidthRequest="70"
-											 HeightRequest="70"
+											 WidthRequest="45"
+											 HeightRequest="45"
 											 VerticalOptions="Center"
 											 HorizontalOptions="Center"/>
 
-						<Label Text="{Binding Content}" Grid.Column="2" LineBreakMode="TailTruncation" VerticalOptions="Center" />
+						<Label Text="{Binding Content}" FontSize="16" Grid.Column="2"
+									 LineBreakMode="TailTruncation" VerticalOptions="Center" />
 					</Grid>
 				</ViewCell>
 			</DataTemplate>
@@ -70,8 +73,8 @@
 	<ActivityIndicator Grid.Row="1"
 											 IsRunning="{Binding IsBusy}"
 											 IsVisible ="{Binding IsBusy}"
-											 WidthRequest="75"
-											 HeightRequest="75"
+											 WidthRequest="50"
+											 HeightRequest="50"
 											 VerticalOptions="Center"
 											 HorizontalOptions="Center"/>
 

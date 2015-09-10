@@ -10,6 +10,7 @@ namespace XamarinSocialApp.Data.Interfaces.Entities.Database
 {
 	public interface IUser : IEntity
 	{
+		string UserPhoto { get; set; }
 		string FirstName { get; set; }
 		string LastName { get; set; }
 		string SerializeInfo { get; set; }

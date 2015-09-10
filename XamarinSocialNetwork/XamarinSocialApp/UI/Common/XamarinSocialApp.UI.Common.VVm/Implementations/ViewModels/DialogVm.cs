@@ -19,12 +19,27 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 
 		#region Fields
 
+		private string mvUserPhoto;
 		private string mvName;
 		private string mvContent;
 
 		#endregion
 
 		#region Properties
+
+		public string UserPhoto
+		{
+			get
+			{
+				return mvUserPhoto;
+			}
+
+			set
+			{
+				mvUserPhoto = value;
+				this.OnPropertyChanged();
+			}
+		}
 
 		public string Name
 		{
@@ -64,7 +79,9 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 		public DialogVm(IDialog dialog)
 		{
 			EntityModel = dialog;
-			Name = EntityModel.User.FirstName;
+			UserPhoto = EntityModel.User.UserPhoto;
+			UserPhoto = dialog.User.UserPhoto;
+			Name = String.Format("{0} {1}", dialog.User.FirstName, dialog.User.LastName);
 			Content = EntityModel.Messages.First().Content;
 			IsBusy = true;
 		}
@@ -89,7 +106,7 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 			EntityModel.User.FirstName = user.FirstName;
 			EntityModel.User.LastName = user.LastName;
 			EntityModel.User.Uid = user.Uid;
-			Name = EntityModel.User.FirstName;
+			Name = String.Format("{0} {1}", EntityModel.User.FirstName, EntityModel.User.LastName);
 		}
 
 		#endregion

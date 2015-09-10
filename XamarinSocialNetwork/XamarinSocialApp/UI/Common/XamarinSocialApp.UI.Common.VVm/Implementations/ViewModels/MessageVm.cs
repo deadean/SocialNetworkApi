@@ -18,12 +18,27 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 
 		#region Fields
 
+		private string mvUserPhoto;
 		private string mvContent;
 		private string mvName;
 		
 		#endregion
 
 		#region Properties
+
+		public string UserPhoto
+		{
+			get
+			{
+				return mvUserPhoto;
+			}
+
+			set
+			{
+				mvUserPhoto = value;
+				this.OnPropertyChanged();
+			}
+		}
 
 		public string Content
 		{
@@ -60,7 +75,8 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 		public MessageVm(IMessage message)
 		{
 			EntityModel = message;
-			Name = message.Sender.FirstName;
+			UserPhoto = message.Sender.UserPhoto;
+			Name = String.Format("{0} {1}", message.Sender.FirstName, message.Sender.LastName);
 			Content = message.Content;
 		}
 

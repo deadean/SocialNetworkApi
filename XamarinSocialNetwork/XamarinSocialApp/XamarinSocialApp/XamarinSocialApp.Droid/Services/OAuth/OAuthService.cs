@@ -259,11 +259,13 @@ namespace XamarinSocialApp.Droid.Services.OAuth
 							var users = JsonConvert.DeserializeObject<XamarinSocialApp.Droid.Data.VkData.VkUsers>(response);
 
 							string uid = users.response[0].uid;
+							string userPhoto = users.response[0].photo_50;
 							string firstName = users.response[0].first_name;
 							string lastName = users.response[0].last_name;
 
 							user = new User()
 							{
+								UserPhoto = userPhoto,
 								FirstName = firstName,
 								LastName = lastName,
 								Uid = uid,
@@ -309,7 +311,12 @@ namespace XamarinSocialApp.Droid.Services.OAuth
 
 			foreach (var item in msg.Response.Messages)
 			{
-				IUser userDialog = new User() { Uid = item.Message.UserId, SerializeInfo = user.SerializeInfo };
+				IUser userDialog = new User() 
+				{
+					UserPhoto = user.UserPhoto,
+					Uid = item.Message.UserId,
+					SerializeInfo = user.SerializeInfo
+				};
 				//var userDialog = await GetUserInfoRequest(item.Message.UserId, acc, socialNetwork);
 				dialogs.Add(new DataDialogs(userDialog, new List<IMessage>() 
 				{ 
@@ -325,7 +332,7 @@ namespace XamarinSocialApp.Droid.Services.OAuth
 			Account acc = Account.Deserialize(user.SerializeInfo);
 			var request = new OAuth2Request("GET", new Uri("https://api.vk.com/method/friends.get"), null, acc);
 
-			request.Parameters.Add("fields", "nickname");
+			request.Parameters.Add("fields", "nickname,photo_50");
 			request.Parameters.Add("order", "hints");
 
 			var res = await request.GetResponseAsync();
@@ -339,6 +346,7 @@ namespace XamarinSocialApp.Droid.Services.OAuth
 			{
 				friends.Add(new DataUser() 
 				{ 
+					UserPhoto = friend.photo_50,
 					FirstName = friend.first_name, 
 					LastName = friend.last_name, 
 					SerializeInfo = user.SerializeInfo,
@@ -367,6 +375,7 @@ namespace XamarinSocialApp.Droid.Services.OAuth
 			{
 				var request = new OAuth2Request("GET", new Uri("https://api.vk.com/method/users.get"), null, accCurrent);
 				request.Parameters.Add("uids", user.Uid);
+				request.Parameters.Add("fields", "photo_50");
 
 				var res = await request.GetResponseAsync();
 				var responseText = res.GetResponseText();
@@ -374,7 +383,14 @@ namespace XamarinSocialApp.Droid.Services.OAuth
 				var users = JsonConvert.DeserializeObject<XamarinSocialApp.Droid.Data.VkData.VkUsers>(responseText);
 
 				var jsonUser = users.response.First();
-				return new DataUser() { FirstName = jsonUser.first_name, LastName = jsonUser.last_name, ID = jsonUser.uid, Uid = jsonUser.uid };
+				return new DataUser() 
+				{
+					UserPhoto = jsonUser.photo_50,
+					FirstName = jsonUser.first_name,
+					LastName = jsonUser.last_name,
+					ID = jsonUser.uid,
+					Uid = jsonUser.uid
+				};
 			}
 			catch (Exception ex)
 			{

@@ -2,9 +2,10 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
 						 Title="Dialog"
-             x:Class="XamarinSocialApp.UI.Common.Views.Implementations.Views.PageDialogWithFriend">
+             x:Class="XamarinSocialApp.UI.Common.Views.Implementations.Views.PageDialogWithFriend"
+						 BackgroundImage="background2.png" >
 
-	<Grid>
+	<Grid Padding="10" >
 
 		<Grid.RowDefinitions>
 			<RowDefinition Height="50" />
@@ -25,14 +26,17 @@
 			<ListView.ItemTemplate>
 				<DataTemplate>
 					<ViewCell>
-						<Grid>
+						<Grid ColumnSpacing="15" Padding="3">
 							<Grid.ColumnDefinitions>
-								<ColumnDefinition Width="80" />
-								<ColumnDefinition Width="20" />
+								<ColumnDefinition Width="50" />
+								<ColumnDefinition Width="100" />
 								<ColumnDefinition Width="*" />
 							</Grid.ColumnDefinitions>
-							<Label Text="{Binding Name}" Grid.Column="0" LineBreakMode="NoWrap" HorizontalOptions="Center" />
-							<Label Text="{Binding Content}" Grid.Column="2" LineBreakMode="WordWrap" VerticalOptions="Center"  />
+							<Image Source="{Binding UserPhoto}" Grid.Column="0" />
+							<Label Text="{Binding Name}" Grid.Column="1" LineBreakMode="WordWrap" XAlign="Center"
+										 FontSize="16" FontAttributes="Bold" VerticalOptions="Center" />
+							<Label Text="{Binding Content}" FontSize="16"
+										 Grid.Column="2" LineBreakMode="WordWrap" VerticalOptions="Center"  />
 						</Grid>
 					</ViewCell>
 				</DataTemplate>
@@ -42,8 +46,8 @@
 		<ActivityIndicator Grid.Row="1"
 												 IsRunning="{Binding IsBusy}"
 												 IsVisible ="{Binding IsBusy}"
-												 WidthRequest="75"
-												 HeightRequest="75"
+												 WidthRequest="50"
+												 HeightRequest="50"
 												 VerticalOptions="Center"
 												 HorizontalOptions="Center"/>
 

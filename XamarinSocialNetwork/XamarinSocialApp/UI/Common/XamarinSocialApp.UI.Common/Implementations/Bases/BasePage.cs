@@ -115,13 +115,12 @@ namespace XamarinSocialApp.UI.Common.Implementations.Bases
 		public BasePage()
 		{
 			//InitContent();
-			BackgroundColor = Color.Red;
 			NavigationPage.SetHasNavigationBar(this, false);
 		}
 
 		void InitContent()
 		{
-			BackgroundColor = Color.Red;
+			//BackgroundColor = Color.Red;
 			Padding = 0;
 
 			#region Content grid

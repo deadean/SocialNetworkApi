@@ -81,6 +81,7 @@ namespace XamarinSocialApp.Droid.Data
 		public class User
 		{
 			public string uid { get; set; }
+			public string photo_50 { get; set; }
 			public string first_name { get; set; }
 			public string last_name { get; set; }
 		}

@@ -39,7 +39,7 @@
     <AndroidUseSharedRuntime>True</AndroidUseSharedRuntime>
     <AndroidLinkMode>None</AndroidLinkMode>
     <AndroidLinkSkip />
-    <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
+    <EmbedAssembliesIntoApk>False</EmbedAssembliesIntoApk>
     <BundleAssemblies>False</BundleAssemblies>
     <AndroidCreatePackagePerAbi>False</AndroidCreatePackagePerAbi>
     <AndroidSupportedAbis>armeabi,armeabi-v7a,x86</AndroidSupportedAbis>
@@ -186,7 +186,13 @@
       <SubType>Designer</SubType>
     </Content>
     <AndroidResource Include="Resources\drawable\add.png" />
-    <AndroidResource Include="Resources\drawable\addFriend.png" />
+    <AndroidResource Include="Resources\drawable\addDialog.png" />
+    <AndroidResource Include="Resources\drawable\background2.png" />
+    <AndroidResource Include="Resources\drawable\VK.png" />
+    <AndroidResource Include="Resources\drawable\odn.png" />
+    <AndroidResource Include="Resources\drawable\twitter.png" />
+    <AndroidResource Include="Resources\drawable\code.png" />
+    <AndroidResource Include="Resources\drawable\FB.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Common\XamarinSocialApp.Common\XamarinSocialApp.Common.csproj">
