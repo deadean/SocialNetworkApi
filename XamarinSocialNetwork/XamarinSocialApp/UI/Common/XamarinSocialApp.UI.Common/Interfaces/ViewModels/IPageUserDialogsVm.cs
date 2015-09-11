@@ -12,6 +12,7 @@ namespace XamarinSocialApp.UI.Common.Interfaces.ViewModels
 	{
 		string UserName { get; }
 		IUser User { get; }
-		ICommand ShowUserFriendsCommand { get; }
+		ICommand AddNewDialogCommand { get; }
+		ICommand RefreshDialogList { get; }
 	}
 }

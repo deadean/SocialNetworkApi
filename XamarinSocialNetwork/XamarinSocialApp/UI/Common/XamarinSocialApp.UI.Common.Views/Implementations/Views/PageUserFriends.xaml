@@ -1,7 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+<pages:BasePage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="XamarinSocialApp.UI.Common.Views.Implementations.Views.PageUserFriends"
+						 xmlns:pages="clr-namespace:XamarinSocialApp.UI.Common.Implementations.Bases"
 						 BackgroundImage="background2.png" >
 
 	<Grid Padding="10">
@@ -13,14 +14,14 @@
 
 		<Label Text="Мои друзья" FontSize="22" Grid.Row="0" XAlign="Center" FontAttributes="Bold" />
 
-		<ListView Grid.Row="1" ItemsSource="{Binding Friends}" SelectedItem="{Binding SelectedFriend, Mode=TwoWay}" >
+		<ListView Grid.Row="1" ItemsSource="{Binding Friends}" SelectedItem="{Binding SelectedFriend, Mode=TwoWay}" HasUnevenRows="True" >
 			<ListView.ItemTemplate>
 				<DataTemplate>
 					<ViewCell>
-						<StackLayout Orientation="Horizontal" >
+						<StackLayout Orientation="Horizontal" Padding="3"  >
 							<Image Source="{Binding UserPhoto}" />
-							<Label Text="{Binding FirstName}" FontSize="16" VerticalOptions="Center" />
-							<Label Text="{Binding LastName}"  FontSize="16" VerticalOptions="Center" />
+							<Label Text="{Binding FirstName}" FontSize="18" VerticalOptions="Center" />
+							<Label Text="{Binding LastName}"  FontSize="18" VerticalOptions="Center" />
 						</StackLayout>
 					</ViewCell>
 				</DataTemplate>
@@ -40,4 +41,4 @@
 	
 	
 	
-</ContentPage>
+</pages:BasePage>

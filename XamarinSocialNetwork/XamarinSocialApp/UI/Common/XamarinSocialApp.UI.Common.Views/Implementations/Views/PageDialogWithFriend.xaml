@@ -1,8 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+<pages:BasePage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
 						 Title="Dialog"
              x:Class="XamarinSocialApp.UI.Common.Views.Implementations.Views.PageDialogWithFriend"
+						 xmlns:pages="clr-namespace:XamarinSocialApp.UI.Common.Implementations.Bases"
 						 BackgroundImage="background2.png" >
 
 	<Grid Padding="10" >
@@ -28,15 +29,13 @@
 					<ViewCell>
 						<Grid ColumnSpacing="15" Padding="3">
 							<Grid.ColumnDefinitions>
-								<ColumnDefinition Width="50" />
 								<ColumnDefinition Width="100" />
 								<ColumnDefinition Width="*" />
 							</Grid.ColumnDefinitions>
-							<Image Source="{Binding UserPhoto}" Grid.Column="0" />
-							<Label Text="{Binding Name}" Grid.Column="1" LineBreakMode="WordWrap" XAlign="Center"
+							<Label Text="{Binding Name}" Grid.Column="0" LineBreakMode="WordWrap" XAlign="Center"
 										 FontSize="16" FontAttributes="Bold" VerticalOptions="Center" />
 							<Label Text="{Binding Content}" FontSize="16"
-										 Grid.Column="2" LineBreakMode="WordWrap" VerticalOptions="Center"  />
+										 Grid.Column="1" LineBreakMode="WordWrap" VerticalOptions="Center"  />
 						</Grid>
 					</ViewCell>
 				</DataTemplate>
@@ -55,4 +54,4 @@
 	</Grid>
 	
 	
-</ContentPage>
+</pages:BasePage>

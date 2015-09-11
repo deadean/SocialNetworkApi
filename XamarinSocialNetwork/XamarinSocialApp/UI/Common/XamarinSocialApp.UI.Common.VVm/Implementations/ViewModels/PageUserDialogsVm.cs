@@ -9,7 +9,6 @@ using Common.MVVM.Library;
 using XamarinSocialApp.Data.Interfaces.Entities.Database;
 using System.Collections.ObjectModel;
 using XamarinSocialApp.Services.UI.Interfaces.Web;
-using Common.MVVM.Library;
 using GalaSoft.MvvmLight.Ioc;
 using Microsoft.Practices.ServiceLocation;
 using XamarinSocialApp.UI.Data.Implementations.Entities.Databases;
@@ -36,7 +35,13 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 
 		#region Commands
 
-		public ICommand ShowUserFriendsCommand
+		public ICommand AddNewDialogCommand
+		{
+			get;
+			private set;
+		}
+
+		public ICommand RefreshDialogList
 		{
 			get;
 			private set;
@@ -104,7 +109,8 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 		public PageUserDialogsVm(IApplicationWebService iWebService)
 		{
 			modIWebService = iWebService;
-			ShowUserFriendsCommand = new AsyncCommand(OnShowUserFriendsCommand);
+			AddNewDialogCommand = new AsyncCommand(OnAddNewDialogCommand);
+			RefreshDialogList = new AsyncCommand(OnRefreshDialogList);
 		}
 
 		#endregion
@@ -236,7 +242,7 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 
 		#region Command Execute Handlers
 
-		private async Task OnShowUserFriendsCommand()
+		private async Task OnAddNewDialogCommand()
 		{
 			try
 			{
@@ -247,6 +253,27 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 
 			}
 		}
+
+		private async Task OnRefreshDialogList()
+		{
+			try
+			{
+				IsBusy = true;
+
+				IEnumerable<IDialog> dialogs = await modIWebService.GetDialogs(modUser);
+				this.Dialogs = new ObservableCollection<DialogVm>(dialogs.Select(x => new DialogVm(x)));
+				this.OnPropertyChanged(x => x.Dialogs);
+
+				IsBusy = false;
+
+				this.LoadUserDialogInfo();
+			}
+			catch (Exception ex)
+			{
+
+			}
+		}
+		
 
 		#endregion
 

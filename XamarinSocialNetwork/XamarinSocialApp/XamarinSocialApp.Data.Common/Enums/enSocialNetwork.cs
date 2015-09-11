@@ -9,6 +9,6 @@ namespace XamarinSocialApp.Data.Common.Enums
 	public enum enSocialNetwork
 	{
 		VK,
-		FaceBook
+		Twitter
 	}
 }

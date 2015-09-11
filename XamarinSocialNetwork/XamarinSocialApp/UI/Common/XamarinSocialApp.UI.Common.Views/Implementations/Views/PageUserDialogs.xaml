@@ -1,25 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+<pages:BasePage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
 						 xmlns:pages="clr-namespace:XamarinSocialApp.UI.Common.Implementations.Bases"
              x:Class="XamarinSocialApp.UI.Common.Views.Implementations.Views.PageUserDialogs"  
 						 BackgroundImage="background2.png" >
-	<!--<ContentPage.ToolbarItems>
-		<ToolbarItem Text="New" x:Name="toolbarNew"
-                 Order="Primary"
-                 Clicked="OnToolbarNewClicked">
-			<ToolbarItem.Icon>
-				<OnPlatform x:TypeArguments="FileImageSource"
-                    iOS="add.png"
-                    Android="addFriend.png"
-                    WinPhone="Images/add.png" />
-			</ToolbarItem.Icon>
-		</ToolbarItem>
-	</ContentPage.ToolbarItems>-->
 
-	<Grid Padding="10">
+	<Grid Padding="10" ColumnSpacing="10">
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="*" />
+			<ColumnDefinition Width="60" />
 			<ColumnDefinition Width="60" />
 		</Grid.ColumnDefinitions>
 		<Grid.RowDefinitions>
@@ -30,29 +19,30 @@
 	<Label Grid.Row="0" Grid.Column="0" Text="{Binding UserName}"
 				 FontSize="22" FontAttributes="Bold" XAlign="Center" />
 
-	<Button Grid.Row="0" Grid.Column="1" Clicked="OnToolbarNewClicked" HorizontalOptions="Start" >
-		<Button.Image>
-			<OnPlatform x:TypeArguments="FileImageSource"
-                    iOS="add.png"
-                    Android="addDialog.png"
-                    WinPhone="Images/add.png" />
-		</Button.Image>
-	</Button>
-		
-	<ListView Grid.Row="1" Grid.ColumnSpan="2" ItemsSource="{Binding Dialogs}"
+	<Image Source="refresh.png" Grid.Row="0" Grid.Column="1" >
+		<Image.GestureRecognizers>
+			<TapGestureRecognizer  Command="{Binding RefreshDialogList}"/>
+		</Image.GestureRecognizers>
+	</Image>
+
+	<Image Source="addDialog.png" Grid.Row="0" Grid.Column="2" >
+		<Image.GestureRecognizers>
+			<TapGestureRecognizer  Command="{Binding AddNewDialogCommand}"/>
+		</Image.GestureRecognizers>
+	</Image>
+
+		<ListView Grid.Row="1" Grid.ColumnSpan="2" ItemsSource="{Binding Dialogs}"
 						SelectedItem="{Binding SelectedDialogVm, Mode=TwoWay}" HasUnevenRows="True" >
 		<ListView.ItemTemplate>
 			<DataTemplate>
 				<ViewCell>
 					<Grid ColumnSpacing="15" Padding="3" >
 						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="50"/>
 							<ColumnDefinition Width="100"/>
 							<ColumnDefinition Width="*"/>
 						</Grid.ColumnDefinitions>
-						<Image Source="{Binding UserPhoto}" Grid.Column="0" />
 						<Label Text="{Binding Name}" FontSize="16" FontAttributes="Bold"
-									 Grid.Column="1" LineBreakMode="WordWrap" 
+									 Grid.Column="0" LineBreakMode="WordWrap" 
 									 XAlign="Center" YAlign="Center" />
 						<ActivityIndicator Grid.Row="0"
 											 IsRunning="{Binding IsBusy}"
@@ -62,7 +52,7 @@
 											 VerticalOptions="Center"
 											 HorizontalOptions="Center"/>
 
-						<Label Text="{Binding Content}" FontSize="16" Grid.Column="2"
+						<Label Text="{Binding Content}" FontSize="16" Grid.Column="1"
 									 LineBreakMode="TailTruncation" VerticalOptions="Center" />
 					</Grid>
 				</ViewCell>
@@ -73,11 +63,11 @@
 	<ActivityIndicator Grid.Row="1"
 											 IsRunning="{Binding IsBusy}"
 											 IsVisible ="{Binding IsBusy}"
-											 WidthRequest="50"
-											 HeightRequest="50"
+											 WidthRequest="75"
+											 HeightRequest="75"
 											 VerticalOptions="Center"
 											 HorizontalOptions="Center"/>
 
 	</Grid>
 
-</ContentPage>
+</pages:BasePage>

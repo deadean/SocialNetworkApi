@@ -42,6 +42,12 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 			private set;
 		}
 
+		public ICommand LoginTwitterCommand
+		{
+			get;
+			private set;
+		}
+
 		#endregion
 
 		#region Ctor
@@ -51,6 +57,7 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 			modIWebService = iWebService;
 			modIInternalService = iService;
 			LoginVkCommand = new AsyncCommand(OnLoginVkCommand);
+			LoginTwitterCommand = new AsyncCommand(OnLoginTwitterCommand);
 		}
 
 		#endregion
@@ -106,6 +113,26 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 					await modIInternalService.SaveEntity<User>(user as User);
 				}
 				await modNavigationService.Navigate<PageUserDialogsVm>(user, isFromCache: true);
+			}
+			catch (Exception ex)
+			{
+				//this.GetLog().Write(ex);
+			}
+		}
+
+		private async Task OnLoginTwitterCommand()
+		{
+			IUser user = null;
+			try
+			{
+					user = await modIWebService.Login(enSocialNetwork.Twitter);
+
+					if (user == null)
+						return;
+
+					//await modIInternalService.SaveEntity<User>(user as User);
+				
+				//await modNavigationService.Navigate<PageUserDialogsVm>(user, isFromCache: true);
 			}
 			catch (Exception ex)
 			{

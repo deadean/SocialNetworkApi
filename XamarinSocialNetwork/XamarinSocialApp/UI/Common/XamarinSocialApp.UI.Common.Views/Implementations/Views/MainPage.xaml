@@ -15,15 +15,39 @@
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="*"/>
 			<ColumnDefinition Width="*"/>
+			<ColumnDefinition Width="*"/>
 		</Grid.ColumnDefinitions>
 
-		<!--<Button Grid.Row="0" Grid.Column="0" Text="VK" Image="VK.png" Command="{Binding LoginVkCommand}" />-->
-		<Button Grid.Row="0" Grid.Column="0" Text="VK" Command="{Binding LoginVkCommand}" />
-		<Button Grid.Row="0" Grid.Column="1" Text="Facebook" />
-		<Button Grid.Row="1" Grid.Column="0" Text="Instagram" />
-		<Button Grid.Row="1" Grid.Column="1" Text="Twitter" />
-		<Button Grid.Row="2" Grid.Column="0" Text="Одноклассники" />
-		<Button Grid.Row="2" Grid.Column="1" Text="Codeproject" />
+		<Image Source="FB.png" Grid.Row="0" Grid.Column="0" >
+			<Image.GestureRecognizers>
+				<!--<TapGestureRecognizer  Command="{Binding LoginVkCommand}"/>-->
+			</Image.GestureRecognizers>
+		</Image>
+
+		<Image Source="twitter.png" Grid.Row="0" Grid.Column="2" >
+			<Image.GestureRecognizers>
+				<TapGestureRecognizer  Command="{Binding LoginTwitterCommand}"/>
+			</Image.GestureRecognizers>
+		</Image>
+
+		<Image Source="VK2.png" Grid.Row="1" Grid.Column="1" >
+			<Image.GestureRecognizers>
+				<TapGestureRecognizer  Command="{Binding LoginVkCommand}"/>
+			</Image.GestureRecognizers>
+		</Image>
+
+		<Image Source="odn.png" Grid.Row="2" Grid.Column="0" >
+			<Image.GestureRecognizers>
+				<!--<TapGestureRecognizer  Command="{Binding LoginVkCommand}"/>-->
+			</Image.GestureRecognizers>
+		</Image>
+
+		<Image Source="inst.png" Grid.Row="2" Grid.Column="2" >
+			<Image.GestureRecognizers>
+				<!--<TapGestureRecognizer  Command="{Binding LoginVkCommand}"/>-->
+			</Image.GestureRecognizers>
+		</Image>
+
 	</Grid>
 
 </pages:BasePage>

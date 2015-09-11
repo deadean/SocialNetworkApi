@@ -13,6 +13,7 @@ using XamarinSocialApp.Services.UI.Interfaces.Web.OAuth;
 using XamarinSocialApp.Droid.Services.OAuth;
 using Xamarin.Forms;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Xamarin.Auth;
 using System.Threading.Tasks;
 using XamarinSocialApp.Data.Interfaces.Entities.OAuth;
@@ -24,8 +25,10 @@ using DataIUser = XamarinSocialApp.Data.Interfaces.Entities.Database.IUser;
 using DataUser = XamarinSocialApp.UI.Data.Implementations.Entities.Databases.User;
 using DataMessage = XamarinSocialApp.UI.Data.Implementations.Entities.Databases.Message;
 using MessagesUI = XamarinSocialApp.UI.Data.Implementations.Messages.Messages;
-using XamarinSocialApp.UI.Data.Implementations.Entities.Databases;
-using Newtonsoft.Json.Linq;
+
+using LinqToTwitter;
+using Account = Xamarin.Auth.Account;
+using User = XamarinSocialApp.UI.Data.Implementations.Entities.Databases.User;
 
 [assembly: Dependency(typeof(OAuthService))]
 
@@ -226,6 +229,31 @@ namespace XamarinSocialApp.Droid.Services.OAuth
 			IUser user = null;
 			try
 			{
+				switch(socialNetwork)
+				{
+					case enSocialNetwork.VK:
+						user = await LoginToVk();
+						break;
+					case enSocialNetwork.Twitter:
+						user = await LoginToTwitter();
+						break;
+
+					default:
+						break;
+				}
+			}
+			catch (Exception ex)
+			{
+			}
+
+			return user;
+		}
+
+		private static async Task<DataIUser> LoginToVk()
+		{
+			IUser user = null;
+			try
+			{
 				TaskCompletionSource<int> ts = new TaskCompletionSource<int>();
 
 				var auth = new OAuth2Authenticator(
@@ -254,18 +282,16 @@ namespace XamarinSocialApp.Droid.Services.OAuth
 							Account = ee.Account;
 
 							//AccountStore.Create(Forms.Context).Save(ee.Account, "Vk");
-							
+
 							var response = t.Result.GetResponseText();
 							var users = JsonConvert.DeserializeObject<XamarinSocialApp.Droid.Data.VkData.VkUsers>(response);
 
 							string uid = users.response[0].uid;
-							string userPhoto = users.response[0].photo_50;
 							string firstName = users.response[0].first_name;
 							string lastName = users.response[0].last_name;
 
 							user = new User()
 							{
-								UserPhoto = userPhoto,
 								FirstName = firstName,
 								LastName = lastName,
 								Uid = uid,
@@ -287,10 +313,82 @@ namespace XamarinSocialApp.Droid.Services.OAuth
 				Forms.Context.StartActivity(intent);
 				await ts.Task;
 			}
-			catch (Exception ex)
+			catch (Exception)
 			{
 			}
+			return user;
+		}
 
+		private static async Task<DataIUser> LoginToTwitter()
+		{
+			IUser user = null;
+			try
+			{
+				//TaskCompletionSource<int> ts = new TaskCompletionSource<int>();
+
+				var auth = new OAuth1Authenticator(
+										consumerKey: "YVgafJLg6figpxcFTx9oBhXDw",
+										consumerSecret: "AdNdiuHSHIf5hN6HWnVrC9u6bnW3vVirjEhAFrfabacPIQdh98",
+					requestTokenUrl: new Uri("https://api.twitter.com/oauth/request_token"),
+					//https://api.twitter.com/oauth/authorize
+					authorizeUrl: new Uri("https://api.twitter.com/oauth/authorize"),
+					accessTokenUrl: new Uri("https://api.twitter.com/oauth/access_token"),
+					callbackUrl: new Uri("https://oauth.vk.com/blank.html"));
+
+				auth.AllowCancel = true;
+
+				auth.Completed += (s, ee) =>
+				{
+					if (!ee.IsAuthenticated)
+					{
+						//ts.SetResult(0);
+						return;
+					}
+
+					var twitterCtx = GetTwitterContext();
+
+					//var searchResponses = (from search in ctx.Search
+					//											 where search.Type == SearchType.Search
+					//											 && search.Query == searchText
+					//											 select search).SingleOrDefault();
+
+					//var tweets = from tweet in searchResponses.Statuses
+					//						 select new Message
+					//						 {
+					//							 Value = tweet.Text,
+					//							 Id = tweet.TweetIDs,
+					//							 ImageUri = tweet.User.ProfileImageUrl,
+					//							 UserName = tweet.User.ScreenNameResponse,
+					//							 Name = tweet.User.Name,
+					//							 CreatedAt = tweet.CreatedAt,
+					//							 ReTweets = tweet.RetweetCount,
+					//							 Favorite = tweet.FavoriteCount.Value
+					//						 };
+
+					//var followers = (from follower in twitterCtx.Friendship
+					//								 where follower.Type == FriendshipType.FollowersList &&
+					//											 follower.UserID == "3620214675"
+					//								 select follower).SingleOrDefault();
+
+					var followers = (from follower in twitterCtx.Friendship
+													 where follower.Type == FriendshipType.FollowersList &&
+																 follower.UserID == "3620214675"
+													 select follower.Users).ToList();
+
+
+					//string friendName = followers.Users.FirstOrDefault().Name;
+
+					string ss = String.Empty;
+
+				};
+
+				var intent = auth.GetUI(Forms.Context);
+				Forms.Context.StartActivity(intent);
+				//await ts.Task;
+			}
+			catch (Exception)
+			{
+			}
 			return user;
 		}
 		
@@ -313,7 +411,6 @@ namespace XamarinSocialApp.Droid.Services.OAuth
 			{
 				IUser userDialog = new User() 
 				{
-					UserPhoto = user.UserPhoto,
 					Uid = item.Message.UserId,
 					SerializeInfo = user.SerializeInfo
 				};
@@ -332,7 +429,7 @@ namespace XamarinSocialApp.Droid.Services.OAuth
 			Account acc = Account.Deserialize(user.SerializeInfo);
 			var request = new OAuth2Request("GET", new Uri("https://api.vk.com/method/friends.get"), null, acc);
 
-			request.Parameters.Add("fields", "nickname,photo_50");
+			request.Parameters.Add("fields", "nickname,photo_200");
 			request.Parameters.Add("order", "hints");
 
 			var res = await request.GetResponseAsync();
@@ -345,8 +442,8 @@ namespace XamarinSocialApp.Droid.Services.OAuth
 			foreach (var friend in listFriendsIds.response)
 			{
 				friends.Add(new DataUser() 
-				{ 
-					UserPhoto = friend.photo_50,
+				{
+					UserPhoto = friend.photo_200,
 					FirstName = friend.first_name, 
 					LastName = friend.last_name, 
 					SerializeInfo = user.SerializeInfo,
@@ -375,7 +472,6 @@ namespace XamarinSocialApp.Droid.Services.OAuth
 			{
 				var request = new OAuth2Request("GET", new Uri("https://api.vk.com/method/users.get"), null, accCurrent);
 				request.Parameters.Add("uids", user.Uid);
-				request.Parameters.Add("fields", "photo_50");
 
 				var res = await request.GetResponseAsync();
 				var responseText = res.GetResponseText();
@@ -385,7 +481,6 @@ namespace XamarinSocialApp.Droid.Services.OAuth
 				var jsonUser = users.response.First();
 				return new DataUser() 
 				{
-					UserPhoto = jsonUser.photo_50,
 					FirstName = jsonUser.first_name,
 					LastName = jsonUser.last_name,
 					ID = jsonUser.uid,
@@ -471,6 +566,26 @@ namespace XamarinSocialApp.Droid.Services.OAuth
 		private void StopRequest()
 		{
 			currentCountQueue--;
+		}
+
+		private static TwitterContext GetTwitterContext()
+		{
+			var auth = new XAuthAuthorizer()
+			{
+				CredentialStore = new InMemoryCredentialStore
+				{
+					ConsumerKey = "YVgafJLg6figpxcFTx9oBhXDw",
+					ConsumerSecret = "AdNdiuHSHIf5hN6HWnVrC9u6bnW3vVirjEhAFrfabacPIQdh98",
+					OAuthToken = "3620214675-KzcSqmYy131LlcQGe8nOptxCdQCBP8ajPYXYwvl",
+					OAuthTokenSecret = "GycvXtklGfaYz1WjOINEhkmZr6OwGDz38SUX68iCMWv9f",
+					ScreenName = "bogdanm__",
+					UserID = 3620214675
+				},
+			};
+			auth.AuthorizeAsync();
+
+			var ctx = new TwitterContext(auth);
+			return ctx;
 		}
 
 		#endregion
