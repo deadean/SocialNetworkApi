@@ -79,6 +79,10 @@ namespace XamarinSocialApp.Droid.Services.OAuth
 		{
 			try
 			{
+				if (user.SocialNetwork == enSocialNetwork.Twitter)
+					return;
+
+
 				this.StartRequest();
 
 				Account acc = Account.Deserialize(user.SerializeInfo.ToString());
@@ -282,8 +286,6 @@ namespace XamarinSocialApp.Droid.Services.OAuth
 							string account = ee.Account.Serialize();
 							Account = ee.Account;
 
-							//AccountStore.Create(Forms.Context).Save(ee.Account, "Vk");
-
 							var response = t.Result.GetResponseText();
 							var users = JsonConvert.DeserializeObject<XamarinSocialApp.Droid.Data.VkData.VkUsers>(response);
 
@@ -407,20 +409,6 @@ namespace XamarinSocialApp.Droid.Services.OAuth
 
 					ts.SetResult(0);
 
-					//var followers = (from follower in twitterCtx.Friendship
-					//								 where follower.Type == FriendshipType.FollowersList &&
-					//											 follower.UserID == user.UserIDResponse
-					//								 select follower.Users).ToList();
-
-					//string friendName = followers.SingleOrDefault().FirstOrDefault().Name;
-
-					//var msgs =
-					//(from dm in twitterCtx.DirectMessage
-					// where dm.Type == DirectMessageType.SentTo
-					// select dm).ToList();
-
-					//string message = msgs.FirstOrDefault().Text;
-
 				};
 
 				var intent = auth.GetUI(Forms.Context);
@@ -467,8 +455,10 @@ namespace XamarinSocialApp.Droid.Services.OAuth
 				{
 					IUser userDialog = new User()
 					{
-						Uid = msg.RecipientID.ToString(),
-						SerializeInfo = user.SerializeInfo
+						Uid = msg.SenderID.ToString(),
+						FirstName = msg.SenderScreenName,
+						SerializeInfo = user.SerializeInfo, 
+						SocialNetwork = user.SocialNetwork
 					};
 
 					dialogs.Add(new DataDialogs(userDialog, new List<IMessage>() 
@@ -522,33 +512,90 @@ namespace XamarinSocialApp.Droid.Services.OAuth
 			return dialogs;
 		}
 
-		public async Task<IEnumerable<DataIUser>> GetUserFriends(DataIUser user, enSocialNetwork enSocialNetwork)
+		public async Task<IEnumerable<DataIUser>> GetUserFriends(DataIUser user, enSocialNetwork socialNetwork)
 		{
-			Account acc = Account.Deserialize(user.SerializeInfo.ToString());
-			var request = new OAuth2Request("GET", new Uri("https://api.vk.com/method/friends.get"), null, acc);
-
-			request.Parameters.Add("fields", "nickname,photo_200");
-			request.Parameters.Add("order", "hints");
-
-			var res = await request.GetResponseAsync();
-			var responseText = res.GetResponseText();
-
-			var listFriendsIds = JsonConvert.DeserializeObject<XamarinSocialApp.Droid.Data.VkData.VkUsers>(responseText);
-
-			IList<DataIUser> friends = new List<DataIUser>();
-
-			foreach (var friend in listFriendsIds.response)
+			IEnumerable<DataIUser> dialogs = null;
+			switch (socialNetwork)
 			{
-				friends.Add(new DataUser() 
-				{
-					UserPhoto = friend.photo_200,
-					FirstName = friend.first_name, 
-					LastName = friend.last_name, 
-					SerializeInfo = user.SerializeInfo,
-					Uid = friend.uid
-				});
+				case enSocialNetwork.VK:
+					dialogs = await GetUserVkFriends(user);
+					break;
+
+				case enSocialNetwork.Twitter:
+					dialogs = await GetUserTwitterFriends(user);
+					break;
+
+				default:
+					break;
 			}
 
+			return dialogs;
+		}
+
+		public async Task<IEnumerable<DataIUser>> GetUserTwitterFriends(DataIUser user)
+		{
+			IList<DataIUser> friends = new List<DataIUser>();
+			try
+			{
+				TwitterContext context = this.GetTwitterContext(user.SerializeInfo);
+
+				var friendship =
+								await
+								(from friend in context.Friendship
+								 where friend.Type == FriendshipType.FollowersList &&
+											 friend.UserID == user.Uid
+								 select friend)
+								.SingleOrDefaultAsync();
+
+				if (friendship != null && friendship.Users != null)
+					friendship.Users.ForEach(friend =>
+																			friends.Add(new DataUser()
+																				{
+																					UserPhoto =  friend.ProfileImageUrl.Replace("normal", "bigger"),
+																					FirstName = friend.ScreenNameResponse,
+																					Uid = friend.UserIDResponse,
+																					SerializeInfo = user.SerializeInfo,
+																					SocialNetwork = user.SocialNetwork
+																				}));
+
+			}
+			catch (Exception)
+			{
+			}
+			return friends;
+		}
+
+		private static async Task<IEnumerable<DataIUser>> GetUserVkFriends(DataIUser user)
+		{
+			IList<DataIUser> friends = new List<DataIUser>();
+			try
+			{
+				Account acc = Account.Deserialize(user.SerializeInfo.ToString());
+				var request = new OAuth2Request("GET", new Uri("https://api.vk.com/method/friends.get"), null, acc);
+
+				request.Parameters.Add("fields", "nickname,photo_200");
+				request.Parameters.Add("order", "hints");
+
+				var res = await request.GetResponseAsync();
+				var responseText = res.GetResponseText();
+
+				var listFriendsIds = JsonConvert.DeserializeObject<XamarinSocialApp.Droid.Data.VkData.VkUsers>(responseText);
+
+				foreach (var friend in listFriendsIds.response)
+				{
+					friends.Add(new DataUser()
+					{
+						UserPhoto = friend.photo_200,
+						FirstName = friend.first_name,
+						LastName = friend.last_name,
+						SerializeInfo = user.SerializeInfo,
+						Uid = friend.uid
+					});
+				}
+			}
+			catch (Exception)
+			{
+			}
 			return friends;
 		}
 
@@ -560,16 +607,25 @@ namespace XamarinSocialApp.Droid.Services.OAuth
 			switch (socialNetwork)
 			{
 				case enSocialNetwork.VK:
+					return await GetVkUserInfoRequest(user);
 
-					break;
 				case enSocialNetwork.Twitter:
-
-					break;
+					return await GetTwitterInfoRequest(user);
 
 				default:
 					break;
 			}
 
+			return null;
+		}
+
+		private async Task<DataIUser> GetTwitterInfoRequest(DataIUser user)
+		{
+			return user;
+		}
+
+		private async Task<DataIUser> GetVkUserInfoRequest(IUser user)
+		{
 			Account accCurrent = Account.Deserialize(user.SerializeInfo.ToString());
 			if (accCurrent.HasNotValue())
 				return null;
@@ -590,7 +646,7 @@ namespace XamarinSocialApp.Droid.Services.OAuth
 				var users = JsonConvert.DeserializeObject<XamarinSocialApp.Droid.Data.VkData.VkUsers>(responseText);
 
 				var jsonUser = users.response.First();
-				return new DataUser() 
+				return new DataUser()
 				{
 					FirstName = jsonUser.first_name,
 					LastName = jsonUser.last_name,
@@ -600,7 +656,6 @@ namespace XamarinSocialApp.Droid.Services.OAuth
 			}
 			catch (Exception ex)
 			{
-
 			}
 			finally
 			{
@@ -614,6 +669,50 @@ namespace XamarinSocialApp.Droid.Services.OAuth
 		{
 			IDialog dialog = null;
 
+			try
+			{
+				switch (socialNetwork)
+				{
+					case enSocialNetwork.VK:
+						dialog = await GetVkDialogWithFriend(user, friend);
+						break;
+
+					case enSocialNetwork.Twitter:
+						dialog = await GetTwitterDialogWithFriend(user, friend);
+						break;
+
+					default:
+						break;
+				}
+			}
+			catch (Exception ex)
+			{
+			}
+
+			this.StopRequest();
+
+			return dialog;
+		}
+
+		private Task<IDialog> GetTwitterDialogWithFriend(DataIUser user, DataIUser friend)
+		{
+			IDialog dialog = null;
+ 
+			try
+			{
+				TwitterContext context = this.GetTwitterContext(user.SerializeInfo);
+
+			}
+			catch (Exception)
+			{
+			}
+
+			return null;
+		}
+
+		private async Task<IDialog> GetVkDialogWithFriend(DataIUser user, IUser friend)
+		{
+			IDialog dialog = null;
 			try
 			{
 				Account acc = Account.Deserialize(user.SerializeInfo.ToString());
@@ -645,15 +744,11 @@ namespace XamarinSocialApp.Droid.Services.OAuth
 					messages.Add(new DataMessage() { Content = item.Body, Sender = item.UserId == user.Uid ? user : friend });
 				}
 
-
 				dialog = new XamarinSocialApp.UI.Data.Implementations.Entities.Databases.Dialog(user, messages);
 			}
-			catch (Exception ex)
+			catch (Exception)
 			{
-
 			}
-
-			this.StopRequest();
 
 			return dialog;
 		}

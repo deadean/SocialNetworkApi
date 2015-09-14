@@ -125,11 +125,11 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 		{
 			try
 			{
-				int groupLength = 2;
+				int groupLength = 0;
 				System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
 				TimeSpan ts = new TimeSpan(0,0,0,1000);
 
-				for (int i = 0; i < this.Dialogs.Count-groupLength; i += groupLength)
+				for (int i = 0; i < this.Dialogs.Count - groupLength; i += groupLength)
 				{
 					sw.Start();
 
