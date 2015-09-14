@@ -96,11 +96,12 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 					Recipient = msg.Sender.Recipient 
 				};
 
-				this.Messages.Insert(0, new MessageVm(message) { Name = msg.Sender.Sender.Uid == modUser.Uid ? modUser.FirstName : modFriend.FirstName });
+				this.Messages.Insert(0, new MessageVm(message) { Name = msg.Sender.Sender.Uid == modUser.Uid ?
+																												 String.Format("{0} {1}", modUser.FirstName, modUser.LastName) :
+																												 String.Format("{0} {1}", modFriend.FirstName, modFriend.LastName) });
 			}
 			catch (Exception ex)
 			{
-
 			}
 		}
 
@@ -115,7 +116,9 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 					Recipient = msg.Sender.Recipient
 				};
 
-				this.Messages.Insert(0, new MessageVm(message) { Name = msg.Sender.Sender.Uid == modUser.Uid ? modUser.FirstName : modFriend.FirstName });
+				this.Messages.Insert(0, new MessageVm(message) { Name = msg.Sender.Sender.Uid == modUser.Uid ?
+																												 String.Format("{0} {1}", modUser.FirstName, modUser.LastName) :
+																												 String.Format("{0} {1}", modFriend.FirstName, modFriend.LastName) });
 			}
 			catch (Exception ex)
 			{

@@ -101,7 +101,7 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 			try
 			{
 				var users = await modIInternalService.Items<User>();
-				IUser user = users == null ? null : users.FirstOrDefault();
+				IUser user = users == null ? null : users.FirstOrDefault(x=> x.SocialNetwork == enSocialNetwork.VK);
 
 				if (user == null)
 				{
@@ -122,17 +122,19 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 
 		private async Task OnLoginTwitterCommand()
 		{
-			IUser user = null;
 			try
 			{
-					user = await modIWebService.Login(enSocialNetwork.Twitter);
+				var users = await modIInternalService.Items<User>();
+				IUser user = users == null ? null : users.FirstOrDefault(x => x.SocialNetwork == enSocialNetwork.Twitter);
 
-					if (user == null)
-						return;
+				user = await modIWebService.Login(enSocialNetwork.Twitter);
 
-					//await modIInternalService.SaveEntity<User>(user as User);
-				
-				//await modNavigationService.Navigate<PageUserDialogsVm>(user, isFromCache: true);
+				if (user == null)
+					return;
+
+				await modIInternalService.SaveEntity<User>(user as User);
+
+				await modNavigationService.Navigate<PageUserDialogsVm>(user, isFromCache: false);
 			}
 			catch (Exception ex)
 			{

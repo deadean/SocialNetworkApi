@@ -19,7 +19,7 @@
 	<Label Grid.Row="0" Grid.Column="0" Text="{Binding UserName}"
 				 FontSize="22" FontAttributes="Bold" XAlign="Center" />
 
-	<Image Source="refresh.png" Grid.Row="0" Grid.Column="1" >
+	<Image Source="black.png" Grid.Row="0" Grid.Column="1" >
 		<Image.GestureRecognizers>
 			<TapGestureRecognizer  Command="{Binding RefreshDialogList}"/>
 		</Image.GestureRecognizers>

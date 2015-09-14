@@ -29,6 +29,7 @@ using MessagesUI = XamarinSocialApp.UI.Data.Implementations.Messages.Messages;
 using LinqToTwitter;
 using Account = Xamarin.Auth.Account;
 using User = XamarinSocialApp.UI.Data.Implementations.Entities.Databases.User;
+using XamarinSocialApp.Droid.Data;
 
 [assembly: Dependency(typeof(OAuthService))]
 
@@ -80,7 +81,7 @@ namespace XamarinSocialApp.Droid.Services.OAuth
 			{
 				this.StartRequest();
 
-				Account acc = Account.Deserialize(user.SerializeInfo);
+				Account acc = Account.Deserialize(user.SerializeInfo.ToString());
 
 				var request = 
 					new OAuth2Request("GET", 
@@ -202,7 +203,7 @@ namespace XamarinSocialApp.Droid.Services.OAuth
 			try
 			{
 				this.StartRequest();
-				Account acc = Account.Deserialize(user.SerializeInfo);
+				Account acc = Account.Deserialize(user.SerializeInfo.ToString());
 				var request = new OAuth2Request("GET", new Uri("https://api.vk.com/method/messages.send"), null, acc);
 
 				request.Parameters.Add("user_id", friend.Uid);
@@ -319,12 +320,13 @@ namespace XamarinSocialApp.Droid.Services.OAuth
 			return user;
 		}
 
-		private static async Task<DataIUser> LoginToTwitter()
+		private async Task<DataIUser> LoginToTwitter()
 		{
-			IUser user = null;
+			DataIUser resultUser = null;
+			LinqToTwitter.User twitterUser = null;
 			try
 			{
-				//TaskCompletionSource<int> ts = new TaskCompletionSource<int>();
+				TaskCompletionSource<int> ts = new TaskCompletionSource<int>();
 
 				var auth = new OAuth1Authenticator(
 										consumerKey: "YVgafJLg6figpxcFTx9oBhXDw",
@@ -341,11 +343,22 @@ namespace XamarinSocialApp.Droid.Services.OAuth
 				{
 					if (!ee.IsAuthenticated)
 					{
-						//ts.SetResult(0);
+						ts.SetResult(0);
 						return;
 					}
 
 					var twitterCtx = GetTwitterContext();
+
+					var accounts =
+						from acct in twitterCtx.Account
+						where acct.Type == AccountType.VerifyCredentials
+						select acct;
+
+					LinqToTwitter.Account account = accounts.SingleOrDefault();
+
+					twitterUser = account.User;
+
+					#region unused requests
 
 					//var searchResponses = (from search in ctx.Search
 					//											 where search.Type == SearchType.Search
@@ -370,55 +383,140 @@ namespace XamarinSocialApp.Droid.Services.OAuth
 					//											 follower.UserID == "3620214675"
 					//								 select follower).SingleOrDefault();
 
-					var followers = (from follower in twitterCtx.Friendship
-													 where follower.Type == FriendshipType.FollowersList &&
-																 follower.UserID == "3620214675"
-													 select follower.Users).ToList();
+					#endregion
 
+					string uid = twitterUser.UserIDResponse;
+					string firstName = twitterUser.ScreenNameResponse;
 
-					//string friendName = followers.Users.FirstOrDefault().Name;
+					TwitterData.TwitterUser twUser = new TwitterData.TwitterUser();
+					twUser.ConsumerKey = twitterCtx.Authorizer.CredentialStore.ConsumerKey;
+					twUser.ConsumerSecret = twitterCtx.Authorizer.CredentialStore.ConsumerSecret;
+					twUser.OAuthToken = twitterCtx.Authorizer.CredentialStore.OAuthToken;
+					twUser.OAuthTokenSecret = twitterCtx.Authorizer.CredentialStore.OAuthTokenSecret;
 
-					string ss = String.Empty;
+					twUser.UserID = ulong.Parse(uid);
+					twUser.ScreenName = firstName;
+
+					resultUser = new User()
+					{
+						FirstName = firstName,
+						Uid = uid,
+						SerializeInfo = JsonConvert.SerializeObject(twUser),
+						SocialNetwork = enSocialNetwork.Twitter				
+					};
+
+					ts.SetResult(0);
+
+					//var followers = (from follower in twitterCtx.Friendship
+					//								 where follower.Type == FriendshipType.FollowersList &&
+					//											 follower.UserID == user.UserIDResponse
+					//								 select follower.Users).ToList();
+
+					//string friendName = followers.SingleOrDefault().FirstOrDefault().Name;
+
+					//var msgs =
+					//(from dm in twitterCtx.DirectMessage
+					// where dm.Type == DirectMessageType.SentTo
+					// select dm).ToList();
+
+					//string message = msgs.FirstOrDefault().Text;
 
 				};
 
 				var intent = auth.GetUI(Forms.Context);
 				Forms.Context.StartActivity(intent);
-				//await ts.Task;
+				await ts.Task;
 			}
 			catch (Exception)
 			{
 			}
-			return user;
+			return resultUser;
 		}
 		
 		public async Task<IEnumerable<IDialog>> GetDialogs(DataIUser user, enSocialNetwork socialNetwork)
 		{
-			Account acc = Account.Deserialize(user.SerializeInfo);
-			var request = new OAuth2Request("GET", new Uri("https://api.vk.com/method/messages.getDialogs"), null, acc);
-
-			request.Parameters.Add("count", "200");
-			request.Parameters.Add("v", "5.37");
-
-			var res = await request.GetResponseAsync();
-			var responseText = res.GetResponseText();
-
-			var msg = JsonConvert.DeserializeObject<XamarinSocialApp.Droid.Data.VkData.VkDialogsResponse>(responseText);
-
-			IList<IDialog> dialogs = new List<IDialog>();
-
-			foreach (var item in msg.Response.Messages)
+			IEnumerable<IDialog> dialogs = null;
+			switch(socialNetwork)
 			{
-				IUser userDialog = new User() 
+				case enSocialNetwork.VK:
+					dialogs = await GetVkDialogs(user);
+					break;
+
+				case enSocialNetwork.Twitter:
+					dialogs = await GetTwitterDialogs(user);
+					break;
+										
+			}
+			return dialogs;
+		}
+
+		public async Task<IEnumerable<IDialog>> GetTwitterDialogs(DataIUser user)
+		{
+			IList<IDialog> dialogs = new List<IDialog>();
+			try
+			{
+				TwitterContext context = this.GetTwitterContext(user.SerializeInfo);
+
+				var twitterDialogs = await
+						(from dm in context.DirectMessage
+						 where dm.Type == DirectMessageType.SentTo
+						 select dm)
+						.ToListAsync();
+
+				foreach (var msg in twitterDialogs)
 				{
-					Uid = item.Message.UserId,
-					SerializeInfo = user.SerializeInfo
-				};
-				//var userDialog = await GetUserInfoRequest(item.Message.UserId, acc, socialNetwork);
-				dialogs.Add(new DataDialogs(userDialog, new List<IMessage>() 
+					IUser userDialog = new User()
+					{
+						Uid = msg.RecipientID.ToString(),
+						SerializeInfo = user.SerializeInfo
+					};
+
+					dialogs.Add(new DataDialogs(userDialog, new List<IMessage>() 
+					{ 
+						new DataMessage() { Content = msg.Text } 
+					}));
+				}
+			}
+			catch (Exception)
+			{
+			}
+
+			return dialogs;
+		}
+
+		private static async Task<IEnumerable<IDialog>> GetVkDialogs(DataIUser user)
+		{
+			IList<IDialog> dialogs = new List<IDialog>();
+			try
+			{
+				Account acc = Account.Deserialize(user.SerializeInfo.ToString());
+				var request = new OAuth2Request("GET", new Uri("https://api.vk.com/method/messages.getDialogs"), null, acc);
+
+				request.Parameters.Add("count", "200");
+				request.Parameters.Add("v", "5.37");
+
+				var res = await request.GetResponseAsync();
+				var responseText = res.GetResponseText();
+
+				var msg = JsonConvert.DeserializeObject<XamarinSocialApp.Droid.Data.VkData.VkDialogsResponse>(responseText);
+
+
+				foreach (var item in msg.Response.Messages)
+				{
+					IUser userDialog = new User()
+					{
+						Uid = item.Message.UserId,
+						SerializeInfo = user.SerializeInfo
+					};
+					//var userDialog = await GetUserInfoRequest(item.Message.UserId, acc, socialNetwork);
+					dialogs.Add(new DataDialogs(userDialog, new List<IMessage>() 
 				{ 
 					new DataMessage() { Content = item.Message.Body } 
 				}));
+				}
+			}
+			catch (Exception)
+			{
 			}
 
 			return dialogs;
@@ -426,7 +524,7 @@ namespace XamarinSocialApp.Droid.Services.OAuth
 
 		public async Task<IEnumerable<DataIUser>> GetUserFriends(DataIUser user, enSocialNetwork enSocialNetwork)
 		{
-			Account acc = Account.Deserialize(user.SerializeInfo);
+			Account acc = Account.Deserialize(user.SerializeInfo.ToString());
 			var request = new OAuth2Request("GET", new Uri("https://api.vk.com/method/friends.get"), null, acc);
 
 			request.Parameters.Add("fields", "nickname,photo_200");
@@ -459,7 +557,20 @@ namespace XamarinSocialApp.Droid.Services.OAuth
 			if (user.HasNotValue())
 				return null;
 
-			Account accCurrent = Account.Deserialize(user.SerializeInfo);
+			switch (socialNetwork)
+			{
+				case enSocialNetwork.VK:
+
+					break;
+				case enSocialNetwork.Twitter:
+
+					break;
+
+				default:
+					break;
+			}
+
+			Account accCurrent = Account.Deserialize(user.SerializeInfo.ToString());
 			if (accCurrent.HasNotValue())
 				return null;
 
@@ -505,7 +616,7 @@ namespace XamarinSocialApp.Droid.Services.OAuth
 
 			try
 			{
-				Account acc = Account.Deserialize(user.SerializeInfo);
+				Account acc = Account.Deserialize(user.SerializeInfo.ToString());
 
 				this.StartRequest();
 
@@ -568,18 +679,28 @@ namespace XamarinSocialApp.Droid.Services.OAuth
 			currentCountQueue--;
 		}
 
-		private static TwitterContext GetTwitterContext()
+		private TwitterContext GetTwitterContext(string serializeInfo = "")
 		{
+			TwitterData.TwitterUser user = JsonConvert.DeserializeObject<TwitterData.TwitterUser>(serializeInfo);
 			var auth = new XAuthAuthorizer()
 			{
+				//CredentialStore = new InMemoryCredentialStore
+				//{
+				//	ConsumerKey = "YVgafJLg6figpxcFTx9oBhXDw",
+				//	ConsumerSecret = "AdNdiuHSHIf5hN6HWnVrC9u6bnW3vVirjEhAFrfabacPIQdh98",
+				//	OAuthToken = "3620214675-KzcSqmYy131LlcQGe8nOptxCdQCBP8ajPYXYwvl",
+				//	OAuthTokenSecret = "GycvXtklGfaYz1WjOINEhkmZr6OwGDz38SUX68iCMWv9f",
+				//	ScreenName = "bogdanm__",
+				//	UserID = 3620214675
+				//},
 				CredentialStore = new InMemoryCredentialStore
 				{
 					ConsumerKey = "YVgafJLg6figpxcFTx9oBhXDw",
 					ConsumerSecret = "AdNdiuHSHIf5hN6HWnVrC9u6bnW3vVirjEhAFrfabacPIQdh98",
 					OAuthToken = "3620214675-KzcSqmYy131LlcQGe8nOptxCdQCBP8ajPYXYwvl",
 					OAuthTokenSecret = "GycvXtklGfaYz1WjOINEhkmZr6OwGDz38SUX68iCMWv9f",
-					ScreenName = "bogdanm__",
-					UserID = 3620214675
+					ScreenName = user == null ? String.Empty : user.ScreenName,
+					UserID = user == null ? 0 : user.UserID
 				},
 			};
 			auth.AuthorizeAsync();
@@ -593,9 +714,5 @@ namespace XamarinSocialApp.Droid.Services.OAuth
 		#region Protected Methods
 
 		#endregion
-
-
-
-		
 	}
 }

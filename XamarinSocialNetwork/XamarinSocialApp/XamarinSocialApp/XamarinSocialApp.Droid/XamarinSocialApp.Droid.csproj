@@ -190,6 +190,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\TwitterData.cs" />
     <Compile Include="Data\VkData.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
@@ -224,6 +225,7 @@
     <AndroidResource Include="Resources\drawable\inst.png" />
     <AndroidResource Include="Resources\drawable\refresh.png" />
     <AndroidResource Include="Resources\drawable\VK2.png" />
+    <AndroidResource Include="Resources\drawable\black.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Common\XamarinSocialApp.Common\XamarinSocialApp.Common.csproj">
