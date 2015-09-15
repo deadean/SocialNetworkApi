@@ -21,6 +21,7 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 		private string mvUserPhoto;
 		private string mvContent;
 		private string mvName;
+		private string mvDateMessage;
 		
 		#endregion
 
@@ -68,6 +69,20 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 			}
 		}
 
+		public string DateMessage
+		{
+			get
+			{
+				return mvDateMessage;
+			}
+
+			set
+			{
+				mvDateMessage = value;
+				this.OnPropertyChanged();
+			}
+		}
+
 		#endregion
 
 		#region Ctor
@@ -75,9 +90,10 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 		public MessageVm(IMessage message)
 		{
 			EntityModel = message;
-			UserPhoto = message.Sender.UserPhoto;
+			//UserPhoto = message.Sender.UserPhoto;
 			Name = String.Format("{0} {1}", message.Sender.FirstName, message.Sender.LastName);
 			Content = message.Content;
+			DateMessage = message.DateMessage;
 		}
 
 		#endregion

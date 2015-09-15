@@ -93,6 +93,9 @@ namespace XamarinSocialApp.Droid.Data
 
 			[JsonProperty("body")]
 			public string Body { get; set; }
+
+			[JsonProperty("date")]
+			public long DateMessage { get; set; }
 		}
 
 		public class MessageInDialog

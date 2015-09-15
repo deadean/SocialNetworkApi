@@ -13,5 +13,6 @@ namespace XamarinSocialApp.Data.Interfaces.Entities.Database
 		IUser Recipient { get; }
 		string ParticipientId { get; }
 		string MessageId { get; }
+		string DateMessage { get; }
 	}
 }

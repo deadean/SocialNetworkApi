@@ -202,20 +202,25 @@ namespace XamarinSocialApp.Droid.Services.OAuth
 			return String.Empty;
 		}
 
-		public async Task<bool> SendMessage(DataIUser user, DataIUser friend, string Message, enSocialNetwork enSocialNetwork)
+		public async Task<bool> SendMessage(DataIUser user, DataIUser friend, string message, enSocialNetwork socialNetwork)
 		{
 			try
 			{
 				this.StartRequest();
-				Account acc = Account.Deserialize(user.SerializeInfo.ToString());
-				var request = new OAuth2Request("GET", new Uri("https://api.vk.com/method/messages.send"), null, acc);
 
-				request.Parameters.Add("user_id", friend.Uid);
-				request.Parameters.Add("message", Message);
+				switch (socialNetwork)
+				{
+					case enSocialNetwork.VK:
+						await SendVkMessage(user, friend, message);
+						break;
 
-				var res1 = await request.GetResponseAsync();
-				var responseText = res1.GetResponseText();
+					case enSocialNetwork.Twitter:
+						await SendTwitterMessage(user, friend, message);
+						break;
 
+					default:
+						break;
+				}
 			}
 			catch (Exception ex)
 			{
@@ -224,6 +229,46 @@ namespace XamarinSocialApp.Droid.Services.OAuth
 			finally
 			{
 				this.StopRequest();
+			}
+
+			return true;
+		}
+
+		private async Task<bool> SendTwitterMessage(DataIUser user, DataIUser friend, string message)
+		{
+			try
+			{
+				TwitterContext context = this.GetTwitterContext(user.SerializeInfo);
+
+				var sentMessage = await context.NewDirectMessageAsync(Convert.ToUInt64(friend.Uid), message);
+
+				if (sentMessage == null)
+					return false;
+			}
+			catch (Exception)
+			{
+				return false;
+			}
+
+			return true;
+		}
+
+		private async Task<bool> SendVkMessage(DataIUser user, DataIUser friend, string Message)
+		{
+			try
+			{
+				Account acc = Account.Deserialize(user.SerializeInfo.ToString());
+				var request = new OAuth2Request("GET", new Uri("https://api.vk.com/method/messages.send"), null, acc);
+
+				request.Parameters.Add("user_id", friend.Uid);
+				request.Parameters.Add("message", Message);
+
+				var res1 = await request.GetResponseAsync();
+				var responseText = res1.GetResponseText();
+			}
+			catch (Exception)
+			{
+				return false;
 			}
 
 			return true;
@@ -461,9 +506,9 @@ namespace XamarinSocialApp.Droid.Services.OAuth
 						SocialNetwork = user.SocialNetwork
 					};
 
-					dialogs.Add(new DataDialogs(userDialog, new List<IMessage>() 
+					dialogs.Add(new DataDialogs(userDialog, new List<IMessage>()
 					{ 
-						new DataMessage() { Content = msg.Text } 
+						new DataMessage() { Content = msg.Text, DateMessage = msg.CreatedAt.ToString() } 
 					}));
 				}
 			}
@@ -498,10 +543,13 @@ namespace XamarinSocialApp.Droid.Services.OAuth
 						Uid = item.Message.UserId,
 						SerializeInfo = user.SerializeInfo
 					};
+					DateTime start = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
+
+					string dateMessage = start.AddSeconds(item.Message.DateMessage).ToLocalTime().ToString();				
 					//var userDialog = await GetUserInfoRequest(item.Message.UserId, acc, socialNetwork);
 					dialogs.Add(new DataDialogs(userDialog, new List<IMessage>() 
 				{ 
-					new DataMessage() { Content = item.Message.Body } 
+					new DataMessage() { Content = item.Message.Body, DateMessage = dateMessage } 
 				}));
 				}
 			}
@@ -694,20 +742,55 @@ namespace XamarinSocialApp.Droid.Services.OAuth
 			return dialog;
 		}
 
-		private Task<IDialog> GetTwitterDialogWithFriend(DataIUser user, DataIUser friend)
+		private async Task<IDialog> GetTwitterDialogWithFriend(DataIUser user, DataIUser friend)
 		{
 			IDialog dialog = null;
+			IUser userInDialog = null;
+			IList<IMessage> messages = new List<IMessage>();
  
 			try
 			{
 				TwitterContext context = this.GetTwitterContext(user.SerializeInfo);
 
+				var receivedMessages = await
+						(from dm in context.DirectMessage
+						 where dm.Type == DirectMessageType.SentTo
+						 select dm).OrderByDescending(x => x.CreatedAt)
+						.ToListAsync();
+
+				var sentMessages = await
+						(from dm in context.DirectMessage
+						 where dm.Type == DirectMessageType.SentBy
+						 select dm).OrderByDescending(x => x.CreatedAt)
+						.ToListAsync();
+
+				foreach (var message in receivedMessages)
+				{
+					if (message.SenderID.ToString() == friend.Uid)
+					{
+						userInDialog = new User() { FirstName = message.Sender.ScreenNameResponse };
+						messages.Add(new DataMessage() { Content = message.Text, Sender = userInDialog, DateMessage = message.CreatedAt.ToString() });
+					}
+				}
+
+				foreach (var message in sentMessages)
+				{
+					if (message.RecipientID.ToString() == friend.Uid)
+					{
+						userInDialog = new User() { FirstName = message.Sender.ScreenNameResponse };
+						messages.Add(new DataMessage() { Content = message.Text, Sender = userInDialog, DateMessage = message.CreatedAt.ToString() });
+					}
+				}
+
+				messages = messages.OrderByDescending(x => x.DateMessage).ToList();
+
+				dialog = new XamarinSocialApp.UI.Data.Implementations.Entities.Databases.Dialog(user, messages);
 			}
 			catch (Exception)
 			{
 			}
 
-			return null;
+			return dialog;
 		}
 
 		private async Task<IDialog> GetVkDialogWithFriend(DataIUser user, IUser friend)

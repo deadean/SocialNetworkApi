@@ -170,7 +170,8 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 			{
 				bool isSent = await modIWebService.SendMessage(modUser, modFriend, Message);
 				var message = new Message() { Sender = modUser, Content = Message, Recipient = modFriend };
-				//Messenger.Default.Send<MessagesUI.MessageNewMyMessageWasSent>(new MessagesUI.MessageNewMyMessageWasSent(message));
+
+
 			}
 			catch (Exception ex)
 			{

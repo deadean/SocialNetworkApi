@@ -22,7 +22,7 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 		private string mvUserPhoto;
 		private string mvName;
 		private string mvContent;
-
+		private string mvDateMessage;
 		#endregion
 
 		#region Properties
@@ -69,8 +69,20 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 				this.OnPropertyChanged();
 			}
 		}
-		
-		
+
+		public string DateMessage
+		{
+			get
+			{
+				return mvDateMessage;
+			}
+
+			set
+			{
+				mvDateMessage = value;
+				this.OnPropertyChanged();
+			}
+		}
 
 		#endregion
 
@@ -83,6 +95,9 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 			UserPhoto = dialog.User.UserPhoto;
 			Name = String.Format("{0} {1}", dialog.User.FirstName, dialog.User.LastName);
 			Content = EntityModel.Messages.First().Content;
+			DateMessage = EntityModel.Messages.First().DateMessage;
+			//DateMessage = Convert.ToDateTime(EntityModel.Messages.First().DateMessage);
+
 			IsBusy = true;
 		}
 

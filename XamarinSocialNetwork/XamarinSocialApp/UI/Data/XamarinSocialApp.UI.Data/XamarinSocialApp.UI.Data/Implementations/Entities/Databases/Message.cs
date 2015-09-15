@@ -25,6 +25,7 @@ namespace XamarinSocialApp.UI.Data.Implementations.Entities.Databases
 		public IUser Recipient { get; set; }
 		public string ParticipientId { get; set; }
 		public string MessageId { get; set; }
+		public string DateMessage { get; set; }
 
 		#endregion
 

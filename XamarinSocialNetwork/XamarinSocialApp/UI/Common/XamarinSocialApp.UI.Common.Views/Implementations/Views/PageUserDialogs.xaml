@@ -40,6 +40,7 @@
 						<Grid.ColumnDefinitions>
 							<ColumnDefinition Width="100"/>
 							<ColumnDefinition Width="*"/>
+							<ColumnDefinition Width="100" />
 						</Grid.ColumnDefinitions>
 						<Label Text="{Binding Name}" FontSize="16" FontAttributes="Bold"
 									 Grid.Column="0" LineBreakMode="WordWrap" 
@@ -54,6 +55,8 @@
 
 						<Label Text="{Binding Content}" FontSize="16" Grid.Column="1"
 									 LineBreakMode="TailTruncation" VerticalOptions="Center" />
+						
+						<Label Text="{Binding DateMessage}" FontSize="16" Grid.Column="2" VerticalOptions="Center" />
 					</Grid>
 				</ViewCell>
 			</DataTemplate>

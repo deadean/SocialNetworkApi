@@ -125,11 +125,11 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 		{
 			try
 			{
-				int groupLength = 0;
+				int groupLength = 2;
 				System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
 				TimeSpan ts = new TimeSpan(0,0,0,1000);
 
-				for (int i = 0; i < this.Dialogs.Count - groupLength; i += groupLength)
+				for (int i = 0; i <= this.Dialogs.Count - groupLength; i += groupLength)
 				{
 					sw.Start();
 
@@ -175,7 +175,7 @@ namespace XamarinSocialApp.UI.Common.VVm.Implementations.ViewModels
 		{
 			try
 			{
-				var dialogRecipient = this.Dialogs.First(x => x.EntityModel.User.Uid == message.Sender.Recipient.Uid);
+				var dialogRecipient = this.Dialogs.FirstOrDefault(x => x.EntityModel.User.Uid == message.Sender.Recipient.Uid);
 				if (dialogRecipient.HasNotValue())
 					return;
 

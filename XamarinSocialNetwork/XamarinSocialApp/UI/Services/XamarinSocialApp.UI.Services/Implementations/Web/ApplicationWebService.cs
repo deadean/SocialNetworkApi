@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GalaSoft.MvvmLight.Messaging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,8 @@ using XamarinSocialApp.Data.Interfaces.Entities.Database;
 using XamarinSocialApp.Services.UI.Interfaces.Web;
 using XamarinSocialApp.Services.UI.Interfaces.Web.OAuth;
 using XamarinSocialApp.UI.Data.Implementations.Entities.Databases;
+using MessagesUI = XamarinSocialApp.UI.Data.Implementations.Messages.Messages;
+
 
 namespace XamarinSocialApp.UI.Services.Implementations.Web
 {
@@ -47,9 +50,17 @@ namespace XamarinSocialApp.UI.Services.Implementations.Web
 
 		#region Public Methods
 
-		public Task<bool> SendMessage(IUser user, IUser friend, string Message)
+		public async Task<bool> SendMessage(IUser user, IUser friend, string message)
 		{
-			return modService.SendMessage(user, friend, Message, user.SocialNetwork);
+			bool result = await modService.SendMessage(user, friend, message, user.SocialNetwork);
+
+			if (user.SocialNetwork == enSocialNetwork.Twitter)
+			{
+				var messages = new Message() { Sender = user, Content = message, Recipient = friend };
+				Messenger.Default.Send<MessagesUI.MessageNewMyMessageWasSent>(new MessagesUI.MessageNewMyMessageWasSent(messages));
+			}
+
+			return result;
 		}
 
 		public Task<IUser> Login(enSocialNetwork socialNetwork)
